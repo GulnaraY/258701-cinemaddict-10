@@ -4,7 +4,11 @@ const FILM_COUNT_MAIN = 5;
 const FILM_COUNT_TOP_RATED = 2;
 const FILM_COUNT_MOST_COMMENTED = 2;
 
-const createUserRating = () => {
+const siteHeaderElement = document.querySelector(`.header`);
+const siteMainElement = document.querySelector(`.main`);
+const siteFooterElement = document.querySelector(`.footer`);
+
+const createUserProfile = () => {
   return (`<section class="header__profile profile">
   <p class="profile__rating">Movie Buff</p>
   <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
@@ -35,26 +39,26 @@ const createFilmsContainer = () => {
   <section class="films-list">
   <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
   <div class="films-list__container">
-  ${new Array(FILM_COUNT_MAIN).fill(``).map(() => createFilmArticle()).join(``)}
+  ${new Array(FILM_COUNT_MAIN).fill(``).map(() => createFilmCard()).join(``)}
   </div>
   <button class="films-list__show-more">Show more</button>
   </section>
   <section class="films-list--extra">
   <h2 class="films-list__title">Top rated</h2>
   <div class="films-list__container">
-  ${new Array(FILM_COUNT_TOP_RATED).fill(``).map(() => createFilmArticle()).join(``)}
+  ${new Array(FILM_COUNT_TOP_RATED).fill(``).map(() => createFilmCard()).join(``)}
   </div>
   </section>
   <section class="films-list--extra">
   <h2 class="films-list__title">Most commented</h2>
   <div class="films-list__container">
-  ${new Array(FILM_COUNT_MOST_COMMENTED).fill(``).map(() => createFilmArticle()).join(``)}
+  ${new Array(FILM_COUNT_MOST_COMMENTED).fill(``).map(() => createFilmCard()).join(``)}
   </div>
   </section>
   </section>`);
 };
 
-const createFilmArticle = () => {
+const createFilmCard = () => {
   return (`<article class="film-card">
   <h3 class="film-card__title">Popeye the Sailor Meets Sindbad the Sailor</h3>
   <p class="film-card__rating">6.3</p>
@@ -250,11 +254,7 @@ const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const siteHeaderElement = document.querySelector(`.header`);
-const siteMainElement = document.querySelector(`.main`);
-const siteFooterElement = document.querySelector(`.footer`);
-
-render(siteHeaderElement, createUserRating());
+render(siteHeaderElement, createUserProfile());
 render(siteMainElement, createMainNavigation());
 render(siteMainElement, createSortingBlock());
 render(siteMainElement, createFilmsContainer());
