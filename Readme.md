@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Гульнара Якупова](https://up.htmlacademy.ru/ecmascript/10/user/258701).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Лыков](https://up.htmlacademy.ru/ecmascript/10/user/529621).
 
 ---
 
