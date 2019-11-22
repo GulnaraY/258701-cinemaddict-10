@@ -2,6 +2,3 @@
   "extends": "stylelint-config-htmlacademy"
 }
 
-parseOptions:
-  ecmaVersion: 2015
-  sourseType: `module`
