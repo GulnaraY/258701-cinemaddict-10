@@ -1,3 +1,5 @@
+import {getRandomBoolean, getRandomElement, getRandomNumber, getRandomPart, getRandomFloatNumber} from '../util.js';
+
 const DESCRIPTION_MIN = 1;
 const DESCRIPTION_MAX = 3;
 const MAX_RATING = 10;
@@ -57,31 +59,6 @@ const genres = new Set([
   `TVshow`,
 ]);
 
-const getRandomNumber = (max, min = 0) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-const gerRandomFloatNumber = (max, min = 0) => {
-  return parseFloat((Math.random() * (max - min) + min).toFixed(1));
-};
-
-const getRandomElement = (array) => {
-  return array[getRandomNumber(array.length - 1)];
-};
-
-const getRandomBoolean = () => {
-  return Math.random() > 0.5;
-};
-
-const getRandomPart = (array, minquantity, maxquantity) => {
-  const quantity = getRandomNumber(maxquantity, minquantity);
-  let resultString = ``;
-  for (let i = 1; i <= quantity; i++) {
-    resultString += getRandomElement(array);
-  }
-  return resultString;
-};
-
 export const generateTask = () => {
   return {
     title: getRandomElement(Array.from(titles)),
@@ -91,7 +68,7 @@ export const generateTask = () => {
     isWatched: getRandomBoolean(),
     isInWatchlist: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
-    rating: gerRandomFloatNumber(MAX_RATING),
+    rating: getRandomFloatNumber(MAX_RATING),
     year: getRandomNumber(LATEST_YEAR, EARLIEST_YEAR),
     duration: `${getRandomNumber(MAX_DURATION, MIN_DURATION)}m`,
     comments: getRandomNumber(MAX_COMMENTS_QUANTITY),

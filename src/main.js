@@ -17,5 +17,3 @@ render(siteMainElement, createMainNavigation());
 render(siteMainElement, createSortingBlock());
 render(siteMainElement, createFilmsContainer());
 // render(siteFooterElement, createPopup(), `afterend`);
-
-
