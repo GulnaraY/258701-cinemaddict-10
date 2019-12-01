@@ -59,7 +59,7 @@ const genres = new Set([
   `TVshow`,
 ]);
 
-export const generateTask = () => {
+export const generateFilm = () => {
   return {
     title: getRandomElement(titles),
     description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),
@@ -75,8 +75,8 @@ export const generateTask = () => {
   };
 };
 
-export const generateTasks = (count) => {
+export const generateFilms = (count) => {
   return new Array(count)
   .fill(``)
-  .map(generateTask);
+  .map(generateFilm);
 };
