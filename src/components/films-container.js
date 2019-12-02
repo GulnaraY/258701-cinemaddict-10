@@ -1,6 +1,6 @@
 import {createFilmCard} from './film-card.js';
 import {createShowMoreButton} from './show-more-button.js';
-import {filmsToRender, topRatedFilms, mostCommentedFilms} from '../main.js';
+import {filmsToRender, getSortedItems} from '../main.js';
 
 export const createFilmsContainer = () => {
   return (`<section class="films">
@@ -14,13 +14,13 @@ export const createFilmsContainer = () => {
   <section class="films-list--extra">
     <h2 class="films-list__title">Top rated</h2>
     <div class="films-list__container">
-      ${topRatedFilms.map((film) => createFilmCard(film)).join(``)}
+      ${getSortedItems(`rating`).map((film) => createFilmCard(film)).join(``)}
     </div>
   </section>
   <section class="films-list--extra">
     <h2 class="films-list__title">Most commented</h2>
     <div class="films-list__container">
-      ${mostCommentedFilms.map((film) => createFilmCard(film)).join(``)}
+      ${getSortedItems(`comments`).map((film) => createFilmCard(film)).join(``)}
     </div>
   </section>
   </section>`);

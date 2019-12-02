@@ -10,8 +10,7 @@ import {getDetailInfo} from './mock/popup-data.js';
 
 const FILM_COUNT = 22;
 const ONE_RENDER_QUANTITY = 5;
-const TOP_RATED_QUANTITY = 2;
-const MOST_COMMENTED_QUANTITY = 2;
+const ADDITIONAL_BLOCK_QUANTITY = 2;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
@@ -25,25 +24,12 @@ const totalAmount = films.length;
 const renderingFilms = [...films];
 
 let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
-const topRatedFilms = [...films].sort((a, b) => {
-  if (a.rating < b.rating) {
-    return 1;
-  } else if (a.rating > b.rating) {
-    return -1;
-  }
-  return 0;
-}
-).splice(0, TOP_RATED_QUANTITY);
 
-const mostCommentedFilms = [...films].sort((a, b) => {
-  if (a.comments < b.comments) {
-    return 1;
-  } else if (a.comments > b.comments) {
-    return -1;
-  }
-  return 0;
-}
-).splice(0, MOST_COMMENTED_QUANTITY);
+const getSortedItems = (sorter) => {
+  return [...films].sort((a, b) => {
+    return b[sorter] - a[sorter];
+  }).splice(0, ADDITIONAL_BLOCK_QUANTITY);
+};
 
 const getFilmsCount = (filterValue) => {
   return [...films].filter((film) => film[filterValue]).length;
@@ -74,4 +60,4 @@ const onLoadMoreClick = () => {
 
 loadMoreButton.addEventListener(`click`, onLoadMoreClick);
 
-export {totalAmount, filmsToRender, topRatedFilms, mostCommentedFilms, getFilmsCount};
+export {totalAmount, filmsToRender, getSortedItems, getFilmsCount};
