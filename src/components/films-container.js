@@ -31,3 +31,7 @@ export const createFilmsContainer = () => {
   </section>
   </section>`);
 };
+
+export const createAdditionalBlock = () => {
+    return `${filmsToRender.map((film) => createFilmCard(film)).join(``)}`;
+};
