@@ -1,12 +1,6 @@
 import {createFilmCard} from './film-card.js';
 import {createShowMoreButton} from './show-more-button.js';
-import {generateFilms} from '../mock/film-data.js';
 import {filmsToRender, topRatedFilms, mostCommentedFilms} from '../main.js';
-
-
-const FILM_COUNT_MAIN = 5;
-const FILM_COUNT_TOP_RATED = 2;
-const FILM_COUNT_MOST_COMMENTED = 2;
 
 export const createFilmsContainer = () => {
   return (`<section class="films">
@@ -33,5 +27,5 @@ export const createFilmsContainer = () => {
 };
 
 export const createAdditionalBlock = () => {
-    return `${filmsToRender.map((film) => createFilmCard(film)).join(``)}`;
+  return `${filmsToRender.map((film) => createFilmCard(film)).join(``)}`;
 };
