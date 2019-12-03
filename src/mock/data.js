@@ -1,4 +1,4 @@
-const titles = new Set([
+const titles = [
   `Friends`,
   `The Big Bang Theory`,
   `Revolutionary Road`,
@@ -14,7 +14,7 @@ const titles = new Set([
   `Harry Potter`,
   `Frozen`,
   `Lalaland`,
-]);
+];
 
 const descriptionParts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,

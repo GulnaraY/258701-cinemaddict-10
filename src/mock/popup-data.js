@@ -19,26 +19,26 @@ const EARLIEST_COMMENTING_DATE = Date.parse(new Date(`2016-01-01`));
 const LATEST_COMMENTING_DATE = Date.now();
 const MAX_COMMENT_QUANTITTY = 5;
 
-const directors = new Set([
+const directors = [
   `David Fincher`,
   `Martin Scorseze`,
   `Pablo Almodovar`,
   `Quentin Tarantino`
-]);
+];
 
-const writers = new Set([
+const writers = [
   `Ethan Coen`,
   `Quentin Tarantino`,
   `Francis Coppola`,
-]);
+];
 
-const actors = new Set([
+const actors = [
   `Leonardo DiCaprio`,
   `Margot Roby`,
   `Brad Pit`,
   `Jennifer Aniston`,
   `Lena Headey`,
-]);
+];
 
 const ages = new Set([
   `7`,
@@ -64,13 +64,13 @@ const userNames = [
   `Tim Cook`,
 ];
 
-const reactions = new Set([
+const reactions = [
   `angry`,
   `puke`,
   `sleeping`,
   `smile`,
   `trophy`,
-]);
+];
 
 const commentTexts = [
   `awful`,
