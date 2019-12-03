@@ -37,20 +37,18 @@ render(siteMainElement, createMainNavigation(generateFilters()));
 render(siteMainElement, createSortingBlock());
 render(siteMainElement, createFilmsContainer());
 render(siteMainElement, createFooter(), `afterend`);
-
+const filmsContainer = siteMainElement.querySelector(`.films-list__container`);
 const siteFooterElement = document.querySelector(`.footer`);
 render(siteFooterElement, createPopup(getDetailInfo()), `afterend`);
-
 
 const loadMoreButton = document.querySelector(`.films-list__show-more`);
 
 const onLoadMoreClick = () => {
-  const filmsContainer = siteMainElement.querySelector(`.films-list__container`);
+
   if (renderingFilms.length) {
     filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
     render(filmsContainer, createAdditionalBlock());
-  }
-  if (!renderingFilms.length) {
+  } else if (!renderingFilms.length) {
     loadMoreButton.remove();
   }
 };
