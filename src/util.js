@@ -31,4 +31,8 @@ const getRandomPart = (elements, minquantity, maxquantity, divider = ` `) => {
   return resultArray.join(divider);
 };
 
-export {getRandomNumber, getRandomBoolean, getRandomFloatNumber, getRandomPart, getRandomElement};
+const render = (container, template, place = `beforeend`) => {
+  container.insertAdjacentHTML(place, template);
+};
+
+export {getRandomNumber, getRandomBoolean, getRandomFloatNumber, getRandomPart, getRandomElement, render};

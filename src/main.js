@@ -7,6 +7,7 @@ import {createFooter} from './components/footer.js';
 import {generateFilters} from './mock/filter-data.js';
 import {createPopup} from './components/popup.js';
 import {getDetailInfo} from './mock/popup-data.js';
+import {render} from './util.js';
 
 const FILM_COUNT = 22;
 const ONE_RENDER_QUANTITY = 5;
@@ -14,10 +15,6 @@ const ADDITIONAL_BLOCK_QUANTITY = 2;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
-
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const films = generateFilms(FILM_COUNT);
 const totalAmount = films.length;
