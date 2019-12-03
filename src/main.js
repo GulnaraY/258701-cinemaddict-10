@@ -11,7 +11,6 @@ import {render} from './util.js';
 
 const FILM_COUNT = 22;
 const ONE_RENDER_QUANTITY = 5;
-const ADDITIONAL_BLOCK_QUANTITY = 2;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
@@ -21,16 +20,6 @@ const totalAmount = films.length;
 const renderingFilms = [...films];
 
 let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
-
-const getSortedItems = (sorter) => {
-  return [...films].sort((a, b) => {
-    return b[sorter] - a[sorter];
-  }).splice(0, ADDITIONAL_BLOCK_QUANTITY);
-};
-
-const getFilmsCount = (filterValue) => {
-  return [...films].filter((film) => film[filterValue]).length;
-};
 
 render(siteHeaderElement, createUserProfile());
 render(siteMainElement, createMainNavigation(generateFilters()));
@@ -55,4 +44,4 @@ const onLoadMoreClick = () => {
 
 loadMoreButton.addEventListener(`click`, onLoadMoreClick);
 
-export {totalAmount, filmsToRender, getSortedItems, getFilmsCount};
+export {totalAmount, filmsToRender, films};

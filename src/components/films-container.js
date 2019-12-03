@@ -1,6 +1,7 @@
 import {createFilmCard} from './film-card.js';
 import {createShowMoreButton} from './show-more-button.js';
-import {filmsToRender, getSortedItems} from '../main.js';
+import {filmsToRender} from '../main.js';
+import {getSortedItems} from '../filters.js';
 
 export const createFilmsContainer = () => {
   return (`<section class="films">

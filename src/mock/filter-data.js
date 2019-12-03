@@ -1,4 +1,4 @@
-import {getFilmsCount} from '../main.js';
+import {getFilmsCount} from '../filters.js';
 
 const menuBlocks = [
   `All movies`,
