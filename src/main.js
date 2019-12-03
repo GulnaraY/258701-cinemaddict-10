@@ -36,7 +36,7 @@ const onLoadMoreClick = () => {
 
   if (renderingFilms.length) {
     filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
-    render(filmsContainer, createAdditionalBlock());
+    render(filmsContainer, createAdditionalBlock(filmsToRender));
   } else if (!renderingFilms.length) {
     loadMoreButton.remove();
   }

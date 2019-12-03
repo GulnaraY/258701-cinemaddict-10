@@ -26,6 +26,7 @@ export const createFilmsContainer = () => {
   </section>`);
 };
 
-export const createAdditionalBlock = () => {
-  return `${filmsToRender.map((film) => createFilmCard(film)).join(``)}`;
+export const createAdditionalBlock = (films) => {
+  return `${films.map((film) => createFilmCard(film)).join(``)}`;
 };
+
