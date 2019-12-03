@@ -11,10 +11,11 @@ export const createPopup = (details) => {
   };
 
   const detailsMarkup = () => {
-    return Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
-    <td class="film-details__term">${detail}</td>
-    ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
-    <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
+    return Object.keys(detailsMap).map((detail) => (`
+    <tr class="film-details__row">
+      <td class="film-details__term">${detail}</td>
+      ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
+      <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
     </tr>`)).join(``);
   };
 
@@ -70,19 +71,19 @@ export const createPopup = (details) => {
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
         <ul class="film-details__comments-list">
-        ${comments.map((comment) => `<li class="film-details__comment">
-        <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
-        </span>
-        <div>
-          <p class="film-details__comment-text">${comment.text}</p>
-          <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.name}</span>
-            <span class="film-details__comment-day">${comment.date}</span>
-            <button class="film-details__comment-delete">Delete</button>
-          </p>
-        </div>
-      </li>`).join(``)}
+          ${comments.map((comment) => `<li class="film-details__comment">
+            <span class="film-details__comment-emoji">
+              <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
+            </span>
+            <div>
+              <p class="film-details__comment-text">${comment.text}</p>
+              <p class="film-details__comment-info">
+                <span class="film-details__comment-author">${comment.name}</span>
+                <span class="film-details__comment-day">${comment.date}</span>
+                <button class="film-details__comment-delete">Delete</button>
+              </p>
+            </div>
+          </li>`).join(``)}
         </ul>
 
         <div class="film-details__new-comment">
