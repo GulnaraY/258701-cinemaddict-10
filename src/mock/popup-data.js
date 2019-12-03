@@ -1,3 +1,7 @@
+/**
+ * Модуль для генерации данных для попапа(детальная информация о фильме)
+ * @exports getDetailInfo
+ */
 import {titles, genres, descriptionParts, posters} from '../mock/data.js';
 import {getRandomElement, getRandomPart, getRandomFloatNumber, getRandomNumber, getRandomBoolean} from '../util.js';
 
@@ -87,6 +91,10 @@ const generateComment = () => ({
   date: new Date(getRandomNumber(LATEST_COMMENTING_DATE, EARLIEST_COMMENTING_DATE)).toDateString(),
 });
 
+/**
+* Генерирует объект с детальной информацией о фильме
+* @return {Object} - моки с детальной инфой о фильме
+*/
 export const getDetailInfo = () => ({
   title: getRandomElement(titles),
   description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),

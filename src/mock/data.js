@@ -1,3 +1,10 @@
+/**
+ * Хранение данных для генерации информации о фильмах
+ * @exports titles
+ * @exports descriptionParts
+ * @exports posters
+ * @exports genres
+ */
 const titles = [
   `Friends`,
   `The Big Bang Theory`,

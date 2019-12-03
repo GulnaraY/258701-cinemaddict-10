@@ -1,3 +1,8 @@
+/**
+ * Генерирует верстку контейнера с фильмами
+ *@exports createFilmsContainer()
+ *@exports createAdditionalBlock()
+ */
 import {createFilmCard} from './film-card.js';
 import {createShowMoreButton} from './show-more-button.js';
 import {filmsToRender} from '../main.js';
@@ -8,7 +13,12 @@ const sortingMap = {
   comments: `Most commented`,
 };
 
-export const createFilmsContainer = () => {
+/**
+* Создает динамическую верстку блока с фильмами и доп блоков на основе моков
+* @return {String} - верстка контентного блока
+*/
+const createFilmsContainer = () => {
+
   return (`<section class="films">
   <section class="films-list">
     <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
@@ -26,7 +36,13 @@ export const createFilmsContainer = () => {
   </section>`);
 };
 
-export const createAdditionalBlock = (films) => {
+/**
+* Создает верстку дополнительной группы карточек после нажатия на showMoreButton
+* @param {Array} films - моковые данные для отрисовки блока
+* @return {String} - верстка дополнительного блока
+*/
+const createAdditionalBlock = (films) => {
   return `${films.map((film) => createFilmCard(film)).join(``)}`;
 };
 
+export {createFilmsContainer, createAdditionalBlock};

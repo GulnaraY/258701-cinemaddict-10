@@ -1,3 +1,9 @@
+/**
+ * Модуль для генерации моковых данных с информацией о фильмах
+ * @exports generateFilm()
+ * @exports generateFilms()
+ */
+
 import {getRandomBoolean, getRandomElement, getRandomNumber, getRandomPart, getRandomFloatNumber} from '../util.js';
 import {titles, descriptionParts, posters, genres} from './data.js';
 
@@ -10,7 +16,11 @@ const MIN_DURATION = 20;
 const MAX_DURATION = 180;
 const MAX_COMMENTS_QUANTITY = 5;
 
-export const generateFilm = () => {
+/**
+* Генерирует моки с информацией об одном фильме
+* @return {Object} - моковые данные о фильме
+*/
+const generateFilm = () => {
   return {
     title: getRandomElement(titles),
     description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),
@@ -25,11 +35,16 @@ export const generateFilm = () => {
     comments: getRandomNumber(MAX_COMMENTS_QUANTITY),
   };
 };
+/**
+* Генерирует заданное число моковых данных о фильмах
+* @param {Number} count - необходимое количество объектов
+* @return {Array} - набор данных о фильмах
+*/
+const generateFilms = (count) => {
 
-export const generateFilms = (count) => {
   return new Array(count)
   .fill(``)
   .map(generateFilm);
 };
 
-
+export {generateFilm, generateFilms};
