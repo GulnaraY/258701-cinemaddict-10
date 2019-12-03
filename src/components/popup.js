@@ -1,5 +1,23 @@
 export const createPopup = (details) => {
   const {title, description, poster, director, writers, actors, genres, age, rating, yourRating, country, releaseDate, runTime, isWatched, isFavorite, isInWatchlist, comments} = details;
+  const detailsMap = {
+    Director: director,
+    Writers: writers,
+    Actors: actors,
+    [`Release Date`]: releaseDate,
+    Runtime: runTime,
+    Country: country,
+    Genres: genres,
+  };
+
+  const detailsMarkup = () => {
+    return Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
+    <td class="film-details__term">${detail}</td>
+    ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
+    <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
+    </tr>`)).join(``);
+  };
+
   return (`<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
@@ -27,35 +45,7 @@ export const createPopup = (details) => {
           </div>
 
           <table class="film-details__table">
-            <tr class="film-details__row">
-              <td class="film-details__term">Director</td>
-              <td class="film-details__cell">${director}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${writers}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${actors}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${releaseDate}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${runTime}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${country}</td>
-            </tr>
-            <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
-              <td class="film-details__cell">
-              ${genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}
-            </tr>
+            ${detailsMarkup()}
           </table>
 
           <p class="film-details__film-description">
