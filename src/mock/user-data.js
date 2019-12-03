@@ -1,5 +1,5 @@
 import {getRandomNumber} from '../util.js';
 
-export const generateUserInfo = () => {
+export const getUserRating = () => {
   return getRandomNumber(1000);
 };
