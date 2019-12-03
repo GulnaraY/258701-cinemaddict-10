@@ -10,13 +10,22 @@ export const createPopup = (details) => {
     Genres: genres,
   };
 
-  const detailsMarkup = () => {
-    return Object.keys(detailsMap).map((detail) => (`
-    <tr class="film-details__row">
-      <td class="film-details__term">${detail}</td>
-      ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
-      <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
-    </tr>`)).join(``);
+  const controlsMap = {
+    watchlist:
+    {
+      value: isInWatchlist,
+      label: `Add to watchlist`,
+    },
+    watched:
+    {
+      value: isWatched,
+      label: `Already watched`,
+    },
+    favorite:
+    {
+      value: isFavorite,
+      label: `Add to favorites`,
+    }
   };
 
   return (`<section class="film-details">
@@ -46,7 +55,11 @@ export const createPopup = (details) => {
           </div>
 
           <table class="film-details__table">
-            ${detailsMarkup()}
+            ${Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
+              <td class="film-details__term">${detail}</td>
+              ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
+              <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
+            </tr>`)).join(``)}
           </table>
 
           <p class="film-details__film-description">
@@ -56,14 +69,10 @@ export const createPopup = (details) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isInWatchlist ? `checked` : ``}>
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
-        <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
-        <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
+        ${Object.keys(controlsMap).map((control) => `
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="${control}" name="control" ${controlsMap[control].value ? `checked` : ``}>
+          <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">${controlsMap[control].label}</label>
+        `).join(``)}
       </section>
     </div>
 
@@ -76,7 +85,7 @@ export const createPopup = (details) => {
               <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
             </span>
             <div>
-              <p class="film-details__comment-text">${comment.text}</p>
+              <p c lass="film-details__comment-text">${comment.text}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.name}</span>
                 <span class="film-details__comment-day">${comment.date}</span>
