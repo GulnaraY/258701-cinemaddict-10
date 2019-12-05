@@ -5,6 +5,7 @@
  * @exports posters
  * @exports genres
  */
+
 const titles = [
   `Friends`,
   `The Big Bang Theory`,

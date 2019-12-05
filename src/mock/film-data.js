@@ -16,6 +16,7 @@ const MIN_DURATION = 20;
 const MAX_DURATION = 180;
 const MAX_COMMENTS_QUANTITY = 5;
 const FILM_COUNT = 22;
+
 /**
 * Генерирует моки с информацией об одном фильме
 * @return {Object} - моковые данные о фильме
@@ -35,6 +36,7 @@ const generateFilm = () => {
     comments: getRandomNumber(MAX_COMMENTS_QUANTITY),
   };
 };
+
 /**
 * Генерирует заданное число моковых данных о фильмах
 * @param {Number} count - необходимое количество объектов

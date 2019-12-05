@@ -2,6 +2,7 @@
  * Генерация данных пользователя
  * @exports getUserRating()
  */
+
 import {getRandomNumber} from '../util.js';
 
 /**

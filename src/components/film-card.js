@@ -3,6 +3,7 @@
  * @param {Object} film - объект с моковыми данными
  * @return {String} - верстка карточки фильма
  */
+
 export const createFilmCard = (film) => {
   const {title, description, rating, year, genre, poster, isWatched, comments, duration, isFavorite, isInWatchlist} = film;
   return (`<article class="film-card">

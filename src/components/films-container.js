@@ -3,6 +3,7 @@
  *@exports createFilmsContainer()
  *@exports createAdditionalBlock()
  */
+
 import {createFilmCard} from './film-card.js';
 import {createShowMoreButton} from './show-more-button.js';
 import {filmsToRender} from '../main.js';

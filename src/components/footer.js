@@ -1,4 +1,5 @@
 import {totalAmount} from '../main.js';
+
 export const createFooter = () => {
   return `<footer class="footer">
   <section class="footer__logo logo logo--smaller">Cinemaddict</section>
