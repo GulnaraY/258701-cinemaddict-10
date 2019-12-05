@@ -1,3 +1,5 @@
+import {createElement} from '../util.js';
+
 export const createPopup = (details) => {
   const {title, description, poster, director, writers, actors, genres, age, rating, yourRating, country, releaseDate, runTime, isWatched, isFavorite, isInWatchlist, comments} = details;
   const detailsMap = {
@@ -129,3 +131,25 @@ export const createPopup = (details) => {
   </form>
 </section>`);
 };
+
+export default class Popup {
+  constructor(details) {
+    this._element = null;
+    this._details = details;
+  }
+
+  getTemplate() {
+    return createPopup(this._details);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
