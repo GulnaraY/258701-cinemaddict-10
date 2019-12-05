@@ -1,5 +1,10 @@
 export const createPopup = (details) => {
-  const {title, description, poster, director, writers, actors, genres, age, rating, yourRating, country, releaseDate, runTime, isWatched, isFavorite, isInWatchlist, comments} = details;
+  // информация о фильме
+  const {title, description, poster, director, writers, actors, genres, age, rating, country, releaseDate, runTime} = details;
+
+  // инофрмация от пользователя
+  const {isFavorite, isInWatchlist, isWatched, yourRating, comments} = details;
+
   const detailsMap = {
     Director: director,
     Writers: writers,
@@ -85,7 +90,7 @@ export const createPopup = (details) => {
               <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
             </span>
             <div>
-              <p c lass="film-details__comment-text">${comment.text}</p>
+              <p class="film-details__comment-text">${comment.text}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.name}</span>
                 <span class="film-details__comment-day">${comment.date}</span>
