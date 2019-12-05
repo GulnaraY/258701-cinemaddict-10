@@ -1,3 +1,24 @@
+const getDetailDataTemplate = (data) => {
+  if (!(data instanceof Array)) {
+    return `<td class="film-details__cell">${data}</td>`;
+  } else {
+    const templatesArray = `<td class="film-details__cell">
+    ${data.map((genre) => `
+    <span class="film-details__genre">${genre}</span>`).join(``)}
+    </td>`;
+    return templatesArray;
+  }
+};
+
+const getDetailsTable = (detailsMap) => {
+  return `<table class="film-details__table">
+  ${Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
+    <td class="film-details__term">${detail}</td>
+    ${getDetailDataTemplate(detailsMap[detail])}
+  </tr>`)).join(``)}
+</table>`;
+};
+
 export const createPopup = (details) => {
   // информация о фильме
   const {title, description, poster, director, writers, actors, genres, age, rating, country, releaseDate, runTime} = details;
@@ -58,15 +79,7 @@ export const createPopup = (details) => {
               <p class="film-details__user-rating">Your rate ${yourRating}</p>
             </div>
           </div>
-
-          <table class="film-details__table">
-            ${Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
-              <td class="film-details__term">${detail}</td>
-              ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
-              <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
-            </tr>`)).join(``)}
-          </table>
-
+          ${getDetailsTable(detailsMap)}
           <p class="film-details__film-description">
           ${description}
           </p>
