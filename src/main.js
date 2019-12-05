@@ -9,13 +9,12 @@ import {createPopup} from './components/popup.js';
 import {getDetailInfo} from './mock/popup-data.js';
 import {render} from './util.js';
 
-const FILM_COUNT = 22;
 const ONE_RENDER_QUANTITY = 5;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
-const films = generateFilms(FILM_COUNT);
+const films = generateFilms();
 const totalAmount = films.length;
 const renderingFilms = [...films];
 

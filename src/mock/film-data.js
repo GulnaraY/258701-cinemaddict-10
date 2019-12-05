@@ -15,7 +15,7 @@ const LATEST_YEAR = 2019;
 const MIN_DURATION = 20;
 const MAX_DURATION = 180;
 const MAX_COMMENTS_QUANTITY = 5;
-
+const FILM_COUNT = 22;
 /**
 * Генерирует моки с информацией об одном фильме
 * @return {Object} - моковые данные о фильме
@@ -40,9 +40,9 @@ const generateFilm = () => {
 * @param {Number} count - необходимое количество объектов
 * @return {Array} - набор данных о фильмах
 */
-const generateFilms = (count) => {
+const generateFilms = () => {
 
-  return new Array(count)
+  return new Array(FILM_COUNT)
   .fill(``)
   .map(generateFilm);
 };
