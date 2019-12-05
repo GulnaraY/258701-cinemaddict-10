@@ -1,9 +1,13 @@
+
 const createFilterMarkup = (filter, isChecked, isStats) => {
   const {name, count} = filter;
+  const isItemChecked = `${isChecked ? `main-navigation__item--active` : ``}`;
+  const isItAdditionalItem = `${isStats ? `main-navigation__item--additional` : ``}`;
+  const isItCountingItem = `${isChecked || isStats ? `` : `<span class="main-navigation__item-count">${count}</span>`}`;
   return `<a href="#${name}" class="main-navigation__item
-  ${isChecked ? `main-navigation__item--active` : ``}
-  ${isStats ? `main-navigation__item--additional` : ``}">${name}
-  ${isChecked || isStats ? `` : `<span class="main-navigation__item-count">${count}</span>`}
+  ${isItemChecked}
+  ${isItAdditionalItem}">${name}
+  ${isItCountingItem}
    </a>`;
 };
 
