@@ -2,11 +2,10 @@ const getDetailDataTemplate = (data) => {
   if (!(data instanceof Array)) {
     return `<td class="film-details__cell">${data}</td>`;
   } else {
-    const templatesArray = `<td class="film-details__cell">
+    return `<td class="film-details__cell">
     ${data.map((genre) => `
     <span class="film-details__genre">${genre}</span>`).join(``)}
     </td>`;
-    return templatesArray;
   }
 };
 

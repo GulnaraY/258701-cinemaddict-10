@@ -1,4 +1,3 @@
-
 const createFilterMarkup = (filter, isChecked, isStats) => {
   const {name, count} = filter;
   const isItemChecked = `${isChecked ? `main-navigation__item--active` : ``}`;
