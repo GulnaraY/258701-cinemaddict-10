@@ -21,14 +21,14 @@ const sortingMap = {
 * Создает динамическую верстку блока с фильмами и доп блоков на основе моков
 * @return {String} - верстка контентного блока
 */
-const createFilmsContainer = () => {
+const createFilmsContainer = (showMoreButton) => {
   return (`<section class="films">
   <section class="films-list">
     <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
     <div class="films-list__container">
       ${filmsToRender.map((film) => new FilmCardComponent(film).getTemplate()).join(``)}
     </div>
-    ${new ShowMoreButtonComponent().getTemplate()}
+    ${showMoreButton.getTemplate()}
   </section>
   ${Object.keys(sortingMap).map((sorter) => (`<section class="films-list--extra">
     <h2 class="films-list__title">${sortingMap[sorter]}</h2>
@@ -40,12 +40,13 @@ const createFilmsContainer = () => {
 };
 
 export default class Filmscontainer {
-  constructor() {
+  constructor(showMore) {
     this._element = null;
+    this._showMoreButton = showMore;
   }
 
   getTemplate() {
-    return createFilmsContainer();
+    return createFilmsContainer(this._showMoreButton);
   }
 
   getElement() {

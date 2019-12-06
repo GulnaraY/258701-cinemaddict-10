@@ -9,8 +9,9 @@ import SortingComponent from './components/sorting.js';
 import UserComponent from './components/user.js';
 import PopupComponent from './components/popup.js';
 import FilmCardComponent from './components/film-card.js';
-
-const FILM_COUNT = 22;
+import ShowMoreButtonComponent from './components/show-more-button.js';
+import {unrender} from './util.js';
+const FILM_COUNT = 7;
 const ONE_RENDER_QUANTITY = 5;
 
 const siteHeaderElement = document.querySelector(`.header`);
@@ -26,13 +27,14 @@ let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
 render(siteHeaderElement, new UserComponent().getElement());
 render(siteMainElement, new NavigationCopmonent().getElement(generateFilters()));
 render(siteMainElement, new SortingComponent().getElement());
-render(siteMainElement, new FilmsContainerComponent().getElement());
+
+const showMoreButton = new ShowMoreButtonComponent();
+render(siteMainElement, new FilmsContainerComponent(showMoreButton).getElement());
 render(siteMainElement, new FooterComponent().getElement());
 const filmsContainer = siteMainElement.querySelector(`.films-list__container`);
-render(bodyElement, new PopupComponent(getDetailInfo()).getElement());
+// render(bodyElement, new PopupComponent(getDetailInfo()).getElement());
 
 const loadMoreButton = document.querySelector(`.films-list__show-more`);
-
 const onLoadMoreClick = () => {
 
   if (renderingFilms.length) {
@@ -40,6 +42,8 @@ const onLoadMoreClick = () => {
     filmsToRender.map((film) => render(filmsContainer, new FilmCardComponent(film).getElement()));
   } else if (!renderingFilms.length) {
     loadMoreButton.remove();
+    showMoreButton.getElement().remove();
+    showMoreButton.removeElement();
   }
 };
 
