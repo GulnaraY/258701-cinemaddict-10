@@ -1,13 +1,5 @@
 import {totalAmount} from '../main.js';
 import {createElement} from '../util.js'
-// export const createFooter = () => {
-//   return `<footer class="footer">
-//   <section class="footer__logo logo logo--smaller">Cinemaddict</section>
-//   <section class="footer__statistics">
-//     <p>${totalAmount} movies inside</p>
-//   </section>
-// </footer>`;
-// };
 
 export default class Footer {
   constructor() {

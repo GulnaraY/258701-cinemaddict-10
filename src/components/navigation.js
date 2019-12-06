@@ -1,4 +1,4 @@
-import {createElement} from '../util.js'
+import {createElement} from '../util.js';
 
 const createFilterMarkup = (filter, isChecked, isStats) => {
   const {name, count} = filter;
@@ -8,10 +8,6 @@ const createFilterMarkup = (filter, isChecked, isStats) => {
   ${isChecked || isStats ? `` : `<span class="main-navigation__item-count">${count}</span>`}
    </a>`;
 };
-
-// export const createMainNavigation = (filters) => {
-
-// };
 
 export default class Navigation {
   constructor() {

@@ -3,6 +3,7 @@
  *@exports createFilmsContainer()
  *@exports createAdditionalBlock()
  */
+
 // import {createFilmCard} from './film-card.js';
 import {filmsToRender} from '../main.js';
 import {getSortedItems} from '../filters.js';
@@ -38,15 +39,6 @@ const createFilmsContainer = () => {
   </section>`);
 };
 
-/**
-* Создает верстку дополнительной группы карточек после нажатия на showMoreButton
-* @param {Array} films - моковые данные для отрисовки блока
-* @return {String} - верстка дополнительного блока
-*/
-const createAdditionalBlock = (films) => {
-  return `${films.map((film) => createFilmCard(film)).join(``)}`;
-};
-
 export default class Filmscontainer {
   constructor() {
     this._element = null;
@@ -62,10 +54,6 @@ export default class Filmscontainer {
     }
 
     return this._element;
-  }
-
-  addRow(films) {
-    return createElement(`${films.map((film) => new FilmCardComponent(film).getTemplate()).join(``)}`);
   }
 
   removeElement() {
