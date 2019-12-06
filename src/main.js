@@ -11,7 +11,7 @@ import PopupComponent from './components/popup.js';
 import FilmCardComponent from './components/film-card.js';
 import ShowMoreButtonComponent from './components/show-more-button.js';
 import {unrender} from './util.js';
-const FILM_COUNT = 7;
+const FILM_COUNT = 18;
 const ONE_RENDER_QUANTITY = 5;
 
 const siteHeaderElement = document.querySelector(`.header`);
@@ -40,9 +40,10 @@ const onLoadMoreClick = () => {
   if (renderingFilms.length) {
     filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
     filmsToRender.map((film) => render(filmsContainer, new FilmCardComponent(film).getElement()));
-  } else if (!renderingFilms.length) {
-    loadMoreButton.remove();
-    showMoreButton.getElement().remove();
+  }
+
+  if (!renderingFilms.length) {
+    unrender(loadMoreButton);
     showMoreButton.removeElement();
   }
 };
