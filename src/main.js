@@ -14,14 +14,13 @@ import {unrender} from './util.js';
 import {generateDetailInfo} from './mock/film-data.js';
 import {getSortedItems} from './filters.js';
 
-const FILM_COUNT = 18;
 const ONE_RENDER_QUANTITY = 5;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const bodyElement = document.querySelector(`body`);
 
-const films = generateDetailInfo(FILM_COUNT);
+const films = generateDetailInfo();
 const totalAmount = films.length;
 const renderingFilms = [...films];
 let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);

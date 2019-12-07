@@ -21,6 +21,7 @@ const MIN_IN_HOUR = 60;
 const EARLIEST_COMMENTING_DATE = Date.parse(new Date(`2016-01-01`));
 const LATEST_COMMENTING_DATE = Date.now();
 const MAX_COMMENT_QUANTITTY = 5;
+const FILM_COUNT = 18;
 
 const titles = [
   `Friends`,
@@ -170,12 +171,11 @@ export const getDetailInfo = () => {
 
 /**
  *Генерирует необходимое количество моковых данных для карточек фильмов и попапов
- * @param {Number} count
  * @return {Array} массив содержащий объкты с данными по фильмам
  */
-export const generateDetailInfo = (count) => {
+export const generateDetailInfo = () => {
 
-  return new Array(count)
+  return new Array(FILM_COUNT)
   .fill(``)
   .map(getDetailInfo);
 };
