@@ -2,6 +2,36 @@
 
 import {createElement} from '../util.js';
 
+/**
+ * Возвращает разметку строки
+ * @param {Any} data
+ * @return {String}
+ */
+const getDetailDataTemplate = (data) => {
+  if (!(data instanceof Array)) {
+    return `<td class="film-details__cell">${data}</td>`;
+  } else {
+    return `<td class="film-details__cell">
+    ${data.map((genre) => `
+    <span class="film-details__genre">${genre}</span>`).join(``)}
+    </td>`;
+  }
+};
+
+/**
+ * Получает разметку таблицы с деталями фильма
+ * @param {Object} detailsMap
+ * @return {String}
+ */
+const getDetailsTable = (detailsMap) => {
+  return `<table class="film-details__table">
+  ${Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
+    <td class="film-details__term">${detail}</td>
+    ${getDetailDataTemplate(detailsMap[detail])}
+  </tr>`)).join(``)}
+</table>`;
+};
+
 /** Модуль, возвращающий разметку попапа
  * @param {Object} details - данные из класса для формирования разметки
  * @return {String} - разметка попапа

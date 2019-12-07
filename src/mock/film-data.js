@@ -2,7 +2,6 @@
  * Модуль для генерации данных для попапа(детальная информация о фильме)
  * @exports getDetailInfo
  */
-// import {titles, genres, descriptionParts, posters} from '../mock/data.js';
 import {getRandomElement, getRandomPart, getRandomFloatNumber, getRandomNumber, getRandomBoolean} from '../util.js';
 
 const DESCRIPTION_MIN = 1;

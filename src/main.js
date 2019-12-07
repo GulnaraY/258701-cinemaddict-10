@@ -11,7 +11,7 @@ import PopupComponent from './components/popup.js';
 import FilmCardComponent from './components/film-card.js';
 import ShowMoreButtonComponent from './components/show-more-button.js';
 import {unrender} from './util.js';
-import {generateDetailInfo} from './mock/popup-data.js';
+import {generateDetailInfo} from './mock/film-data.js';
 import {getSortedItems} from './filters.js';
 
 const FILM_COUNT = 18;
