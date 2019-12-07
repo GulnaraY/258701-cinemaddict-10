@@ -1,3 +1,5 @@
+/** Основной модуль. Точка входа */
+
 import {generateFilters} from './mock/filter-data.js';
 import {render} from './util.js';
 import FilmsContainerComponent from './components/films-container.js';
@@ -47,6 +49,11 @@ const renderData = {
   }
 };
 
+/**
+ * Рендерит карточки фильмов, по ходу навешивая обработчики событий
+ * @param {Object} film - объект с данными по фильм
+ * @param {Object} container - дом нода в которую рендерим элемент
+ */
 const renderFilm = (film, container) => {
   const filmCard = new FilmCardComponent(film).getElement();
   const filmPopup = new PopupComponent(film);
@@ -85,11 +92,12 @@ Object.keys(renderData).map((key) => renderData[key].data.forEach((film) => {
 
 render(siteMainElement, new FooterComponent().getElement());
 const loadMoreButton = document.querySelector(`.films-list__show-more`);
-const onLoadMoreClick = () => {
 
+/** Обработчик нажатия на кнопку show more */
+const onLoadMoreClick = () => {
   if (renderingFilms.length) {
     filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
-    filmsToRender.map((film) => renderFilm(film));
+    filmsToRender.map((film) => renderFilm(film, filmsContainer));
   }
 
   if (!renderingFilms.length) {

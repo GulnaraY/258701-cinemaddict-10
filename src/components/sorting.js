@@ -1,5 +1,7 @@
+/** Модуль для создания экземпляра класса для блока Сортировки */
 import {createElement} from '../util.js';
 
+/** Класс, описывающий блок сортировки */
 export default class Sorting {
   constructor() {
     this._element = null;

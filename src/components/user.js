@@ -1,6 +1,8 @@
+/** Модуль для создания класса для Блока пользователя */
 import {getUserRating} from '../mock/user-data';
 import {createElement} from '../util.js';
 
+/** Класс, описывающий блок пользователя */
 export default class UserInfo {
   constructor() {
     this._element = null;

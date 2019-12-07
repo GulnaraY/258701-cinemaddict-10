@@ -3,7 +3,9 @@
  * @exports getFilmsCount()
  * @exports getSortedItems()
  */
+
 import {films} from './main.js';
+
 const ADDITIONAL_BLOCK_QUANTITY = 2;
 
 const getSortedItems = (filmsToSort, sorter) => {

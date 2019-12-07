@@ -1,11 +1,12 @@
 /**
- * Генерирует верстку карточки фильма на основе моковых данных
- * @param {Object} film - объект с моковыми данными
- * @return {String} - верстка карточки фильма
- */
+ * * Модуль для генерации экзепляра класса для создания карточки фильма */
 
 import {createElement, getRandomElement} from '../util.js';
 
+/**
+ *  Класс для генерации компонента карточки филька
+ принимает на вход объект с моковыми данными
+ */
 export default class FilmCard {
   constructor({title, description, rating, releaseDate, genres, poster, isWatched, comments, runTime, isFavorite, isInWatchlist}) {
     this._description = description;

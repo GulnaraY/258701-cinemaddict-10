@@ -1,5 +1,7 @@
-import {createElement} from '../util.js'
+/** Модуль для создания экземпляра класса ShowMoreButton */
+import {createElement} from '../util.js';
 
+/** Класс, описывающий кнопку ShowMore */
 export default class ShowMoreButton {
   constructor() {
     this._element = null;

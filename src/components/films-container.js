@@ -1,15 +1,6 @@
-/**
- * Генерирует верстку контейнера с фильмами
- *@exports createFilmsContainer()
- *@exports createAdditionalBlock()
- */
+/** Модуль для генерации экземпляра класса для создании контейнера для карточек фильмов */
 
-// import {createFilmCard} from './film-card.js';
-import {filmsToRender} from '../main.js';
-import {getSortedItems} from '../filters.js';
-import FilmCardComponent from './film-card.js';
 import {createElement} from '../util.js';
-
 
 const sortingMap = {
   rating: `Top rated`,
@@ -17,9 +8,10 @@ const sortingMap = {
 };
 
 /**
-* Создает динамическую верстку блока с фильмами и доп блоков на основе моков
-* @return {String} - верстка контентного блока
-*/
+ * Метод возвращающий верстку контейнера фильмов
+ * @param {Class} showMoreButton - экземпляр класса ShowMoreButton
+ * @return {String}- разметка
+ */
 const createFilmsContainer = (showMoreButton) => {
   return (`<section class="films">
   <section class="films-list">
@@ -36,9 +28,10 @@ const createFilmsContainer = (showMoreButton) => {
   </section>`);
 };
 
-// ${getSortedItems(sorter).map((film) => new FilmCardComponent(film).getTemplate()).join(``)}
-
-
+/**
+ *Класс для создания компонента контейнера фильмов
+принимает на вход ссылку на созданный компонент showMoreButton
+ */
 export default class Filmscontainer {
   constructor(showMore) {
     this._element = null;

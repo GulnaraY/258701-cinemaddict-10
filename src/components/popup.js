@@ -1,6 +1,12 @@
+/** Модуль для создания компонета класса для Попапа с детальной информацией */
+
 import {createElement} from '../util.js';
 
-export const createPopup = (details) => {
+/** Модуль, возвращающий разметку попапа
+ * @param {Object} details - данные из класса для формирования разметки
+ * @return {String} - разметка попапа
+ */
+const createPopup = (details) => {
   const {title, description, poster, director, writers, actors, genres, age, rating, yourRating, country, releaseDate, runTime, isWatched, isFavorite, isInWatchlist, comments} = details;
   const detailsMap = {
     Director: director,
@@ -132,6 +138,9 @@ export const createPopup = (details) => {
 </section>`);
 };
 
+/** Класс для создания компонента попапа
+ * принимает на вход объект с данными
+ */
 export default class Popup {
   constructor(details) {
     this._element = null;

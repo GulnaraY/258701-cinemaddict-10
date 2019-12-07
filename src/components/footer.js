@@ -1,6 +1,9 @@
-import {totalAmount} from '../main.js';
-import {createElement} from '../util.js'
+/** Модуль для создания компонента футера страницы*/
 
+import {totalAmount} from '../main.js';
+import {createElement} from '../util.js';
+
+/** Класс для создания компонента Футера сайта */
 export default class Footer {
   constructor() {
     this._element = null;

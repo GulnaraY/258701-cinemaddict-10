@@ -1,5 +1,16 @@
+/**
+ * Модуль для создания экземппляра класса для основной навигации
+ */
+
 import {createElement} from '../util.js';
 
+/**
+ * метод для создания разметки навигации
+ * @param {object} filter
+ * @param {Boolean} isChecked
+ * @param {Boolean} isStats
+ * @return {String} разметка навигации
+ */
 const createFilterMarkup = (filter, isChecked, isStats) => {
   const {name, count} = filter;
   return `<a href="#${name}" class="main-navigation__item
@@ -9,6 +20,9 @@ const createFilterMarkup = (filter, isChecked, isStats) => {
    </a>`;
 };
 
+/**
+ * Класс для создания компонента основной навигаци
+ */
 export default class Navigation {
   constructor() {
     this._element = null;
