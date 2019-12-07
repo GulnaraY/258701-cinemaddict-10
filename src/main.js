@@ -13,6 +13,7 @@ import ShowMoreButtonComponent from './components/show-more-button.js';
 import {unrender} from './util.js';
 import {generateDetailInfo} from './mock/film-data.js';
 import {getSortedItems} from './filters.js';
+import {ESC_CODE} from './util.js';
 
 const ONE_RENDER_QUANTITY = 5;
 
@@ -82,6 +83,15 @@ const renderFilm = (film, container) => {
     const popupNode = document.querySelector(`.film-details`);
     unrender(popupNode);
   });
+
+  document.addEventListener(`keydown`, (evt) => {
+    if (evt.keyCode === ESC_CODE) {
+      filmPopup.removeElement();
+      const popupNode = document.querySelector(`.film-details`);
+      unrender(popupNode);
+    }
+  });
+
   render(container, filmCard);
 };
 

@@ -2,6 +2,8 @@
  * Модуль со служебными функциями
  */
 
+export const ESC_CODE = 27;
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
