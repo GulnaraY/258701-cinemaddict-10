@@ -4,21 +4,21 @@
  * @return {String} - верстка карточки фильма
  */
 
-import {createElement} from '../util.js';
+import {createElement, getRandomElement} from '../util.js';
 
 export default class FilmCard {
-  constructor({title, description, rating, year, genre, poster, isWatched, comments, duration, isFavorite, isInWatchlist}) {
+  constructor({title, description, rating, releaseDate, genres, poster, isWatched, comments, runTime, isFavorite, isInWatchlist}) {
     this._description = description;
     this._title = title;
     this._rating = rating;
-    this._year = year;
-    this._genre = genre;
+    this._year = releaseDate;
+    this._genre = getRandomElement(genres);
     this._poster = poster;
     this._isWatched = isWatched;
     this._isFavorite = isFavorite;
     this._isInWatchlist = isInWatchlist;
-    this._comments = comments;
-    this._duration = duration;
+    this._comments = comments.length;
+    this._duration = runTime;
     this._element = null;
   }
 

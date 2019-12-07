@@ -59,8 +59,6 @@ const countries = new Set([
   `Italy`,
 ]);
 
-const duration = getRandomNumber(MAX_DURATION, MIN_DURATION);
-
 const userNames = [
   `Tim Macoveev`,
   `John Doe`,
@@ -95,24 +93,34 @@ const generateComment = () => ({
 * Генерирует объект с детальной информацией о фильме
 * @return {Object} - моки с детальной инфой о фильме
 */
-export const getDetailInfo = () => ({
-  title: getRandomElement(titles),
-  description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),
-  poster: getRandomElement(posters),
-  director: getRandomElement(directors),
-  writers: getRandomPart(writers, WRITERS_MIN_QUANTITY, WRITERS_MAX_QUANTITY, `, `),
-  actors: getRandomPart(actors, ACTORS_MIN_QUANTITY, ACTORS_MAX_QUANTITY, `, `),
-  genres: getRandomPart(genres, GENRE_MIN_QUANTITY, GENRE_MAX_QUANTITY).split(` `),
-  age: getRandomElement(ages),
-  rating: getRandomFloatNumber(MAX_RATING),
-  yourRating: getRandomFloatNumber(MAX_RATING),
-  country: getRandomElement(countries),
-  releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)).toDateString(),
-  runTime: `${Math.trunc(duration / MIN_IN_HOUR)}h ${duration % MIN_IN_HOUR}m`,
-  isWatched: getRandomBoolean(),
-  isFavorite: getRandomBoolean(),
-  isInWatchlist: getRandomBoolean(),
-  comments: new Array(getRandomNumber(MAX_COMMENT_QUANTITTY)).fill(``).map(() => generateComment()),
-});
+export const getDetailInfo = () => {
+  const duration = getRandomNumber(MAX_DURATION, MIN_DURATION);
+  return {
+    title: getRandomElement(titles),
+    description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),
+    poster: getRandomElement(posters),
+    director: getRandomElement(directors),
+    writers: getRandomPart(writers, WRITERS_MIN_QUANTITY, WRITERS_MAX_QUANTITY, `, `),
+    actors: getRandomPart(actors, ACTORS_MIN_QUANTITY, ACTORS_MAX_QUANTITY, `, `),
+    genres: getRandomPart(genres, GENRE_MIN_QUANTITY, GENRE_MAX_QUANTITY).split(` `),
+    age: getRandomElement(ages),
+    rating: getRandomFloatNumber(MAX_RATING),
+    yourRating: getRandomFloatNumber(MAX_RATING),
+    country: getRandomElement(countries),
+    releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)).toDateString(),
+    runTime: `${Math.trunc(duration / MIN_IN_HOUR)}h ${duration % MIN_IN_HOUR}m`,
+    isWatched: getRandomBoolean(),
+    isFavorite: getRandomBoolean(),
+    isInWatchlist: getRandomBoolean(),
+    comments: new Array(getRandomNumber(MAX_COMMENT_QUANTITTY)).fill(``).map(() => generateComment()),
+  };
+};
+
+export const generateDetailInfo = (count) => {
+
+  return new Array(count)
+  .fill(``)
+  .map(getDetailInfo);
+};
 
 
