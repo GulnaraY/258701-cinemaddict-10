@@ -2,6 +2,7 @@
  * Модуль для генерации данных для фильтров
  * @exports generateFilters
  */
+
 import {getFilmsCount} from '../filters.js';
 
 const menuBlocks = [

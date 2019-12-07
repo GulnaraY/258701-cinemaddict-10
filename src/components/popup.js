@@ -61,15 +61,7 @@ const createPopup = (details) => {
               <p class="film-details__user-rating">Your rate ${yourRating}</p>
             </div>
           </div>
-
-          <table class="film-details__table">
-            ${Object.keys(detailsMap).map((detail) => (`<tr class="film-details__row">
-              <td class="film-details__term">${detail}</td>
-              ${!(detailsMap[detail] instanceof Array) ? `<td class="film-details__cell">${detailsMap[detail]}</td>` : `
-              <td class="film-details__cell">${detailsMap[detail].map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}</td>`}
-            </tr>`)).join(``)}
-          </table>
-
+          ${getDetailsTable(detailsMap)}
           <p class="film-details__film-description">
           ${description}
           </p>
@@ -93,7 +85,7 @@ const createPopup = (details) => {
               <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
             </span>
             <div>
-              <p c lass="film-details__comment-text">${comment.text}</p>
+              <p class="film-details__comment-text">${comment.text}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.name}</span>
                 <span class="film-details__comment-day">${comment.date}</span>
