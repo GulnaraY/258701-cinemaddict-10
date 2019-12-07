@@ -28,6 +28,14 @@ const createFilmsContainer = (showMoreButton) => {
   </section>`);
 };
 
+const createFilmContainerNoData = () => {
+  return (`<section class="films">
+    <section class="films-list">
+      <h2 class="films-list__title">There are no movies in our database</h2>
+    </section>
+  </section>`);
+};
+
 /**
  *Класс для создания компонента контейнера фильмов
 принимает на вход ссылку на созданный компонент showMoreButton
@@ -42,11 +50,22 @@ export default class Filmscontainer {
     return createFilmsContainer(this._showMoreButton);
   }
 
+  getNoDataTemplate() {
+    return createFilmContainerNoData();
+  }
+
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
 
+    return this._element;
+  }
+
+  getNoDataElement() {
+    if (!this._element) {
+      this._element = createElement(this.getNoDataTemplate());
+    }
     return this._element;
   }
 
