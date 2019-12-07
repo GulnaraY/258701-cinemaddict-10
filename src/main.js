@@ -27,7 +27,7 @@ const renderingFilms = [...films];
 let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
 
 render(siteHeaderElement, new UserComponent().getElement());
-render(siteMainElement, new NavigationCopmonent().getElement(generateFilters()));
+render(siteMainElement, new NavigationCopmonent().getElement(generateFilters(films)));
 render(siteMainElement, new SortingComponent().getElement());
 
 const showMoreButton = new ShowMoreButtonComponent();
