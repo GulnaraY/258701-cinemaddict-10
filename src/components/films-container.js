@@ -15,6 +15,11 @@ export default class Filmscontainer {
       comments: `Most commented`,
     };
   }
+
+  /**
+   * Возвращает разметку дополнительного блока
+   * @return {String}
+   */
   _createAdditionalBlocksMarkup() {
     return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
     <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
@@ -22,6 +27,11 @@ export default class Filmscontainer {
     </div>
   </section>`)).join(``);
   }
+
+  /**
+   * возвращает разметку контейнера фильмов
+   * @return {String}
+   */
   _createFilmsContainer() {
     return (`<section class="films">
     <section class="films-list">

@@ -12,6 +12,12 @@ export default class Navigation {
     this._element = null;
   }
 
+  /** Формирует разметку блока с фильтрами
+   * @param{Object} filter - значение фильтра и количество
+   * @param{Boolean} isChecked
+   * @param{Boolean} isStats
+   * @return {String}
+   */
   _createFilterMarkup(filter, isChecked, isStats) {
     const {name, count} = filter;
     const isItemChecked = `${isChecked ? `main-navigation__item--active` : ``}`;
