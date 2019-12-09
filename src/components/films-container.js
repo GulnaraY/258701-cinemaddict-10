@@ -15,7 +15,13 @@ export default class Filmscontainer {
       comments: `Most commented`,
     };
   }
-
+  _createAdditionalBlocksMarkup() {
+    return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
+    <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
+    <div class="films-list__container">
+    </div>
+  </section>`)).join(``);
+  }
   _createFilmsContainer() {
     return (`<section class="films">
     <section class="films-list">
@@ -24,11 +30,7 @@ export default class Filmscontainer {
       </div>
        ${this._showMoreButton.getTemplate()}
     </section>
-     ${Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
-      <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
-      <div class="films-list__container">
-      </div>
-    </section>`)).join(``)}
+     ${this._createAdditionalBlocksMarkup()}
     </section>`);
   }
 
