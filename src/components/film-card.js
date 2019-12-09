@@ -18,7 +18,7 @@ export default class FilmCard {
     this._isWatched = isWatched;
     this._isFavorite = isFavorite;
     this._isInWatchlist = isInWatchlist;
-    this._comments = comments.length;
+    this._commentsLenght = comments.length;
     this._duration = runTime;
     this._element = null;
   }
@@ -34,7 +34,7 @@ export default class FilmCard {
       </p>
       <img src="./images/posters/${this._poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${this._description}</p>
-      <a class="film-card__comments">${this._comments} comments</a>
+      <a class="film-card__comments">${this._commentsLenght} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${this._isInWatchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${this._isWatched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
