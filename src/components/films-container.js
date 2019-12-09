@@ -2,17 +2,13 @@
 
 import {createElement} from '../util.js';
 
-const sortingMap = {
-  rating: `Top rated`,
-  comments: `Most commented`,
-};
-
 /**
  * Метод возвращающий верстку контейнера фильмов
  * @param {Class} showMoreButton - экземпляр класса ShowMoreButton
+ * @param {Object} sortingMap - мапа для сортировки
  * @return {String}- разметка
  */
-const createFilmsContainer = (showMoreButton) => {
+const createFilmsContainer = (showMoreButton, sortingMap) => {
   return (`<section class="films">
   <section class="films-list">
     <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
@@ -36,10 +32,14 @@ export default class Filmscontainer {
   constructor(showMore) {
     this._element = null;
     this._showMoreButton = showMore;
+    this._sortingMap = {
+      rating: `Top rated`,
+      comments: `Most commented`,
+    };
   }
 
   getTemplate() {
-    return createFilmsContainer(this._showMoreButton);
+    return createFilmsContainer(this._showMoreButton, this._sortingMap);
   }
 
   getElement() {
