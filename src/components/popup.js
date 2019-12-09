@@ -40,6 +40,7 @@ export default class Popup {
   /**
    * Возвращает разметку блока с комментариями
    * @return {String}
+   * @private
    */
   _getCommentsMarkup() {
     return this._filmData.comments.map((comment) => `<li class="film-details__comment">
@@ -60,6 +61,7 @@ export default class Popup {
   /**
    * Возвращает разметку пользовательских контроллов
    * @return {String}
+   * @private
    */
   _getDetailsControlsMarkup() {
     return Object.keys(this._controlsMap).map((control) => `
@@ -72,6 +74,7 @@ export default class Popup {
    * Возвращает разметку одной строки детальной информации
    * @param {Any} data
    * @return {String}
+   * @private
    */
   _getDetailDataTemplate(data) {
     if (!(data instanceof Array)) {
@@ -86,6 +89,7 @@ export default class Popup {
 
   /**
    * Возвращает разметку с деталями фильма
+   * @private
    * @return {String}
    */
   _getDetailsTable() {
@@ -98,6 +102,7 @@ export default class Popup {
   }
 
   /** Возвращает разметку попапа
+   * @private
    * @return {String}
   */
   _createPopup() {

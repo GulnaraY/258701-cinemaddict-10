@@ -17,6 +17,7 @@ export default class Navigation {
    * @param{Boolean} isChecked
    * @param{Boolean} isStats
    * @return {String}
+   * @private
    */
   _createFilterMarkup(filter, isChecked, isStats) {
     const {name, count} = filter;

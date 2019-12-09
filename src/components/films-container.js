@@ -19,6 +19,7 @@ export default class Filmscontainer {
   /**
    * Возвращает разметку дополнительного блока
    * @return {String}
+   * @private
    */
   _createAdditionalBlocksMarkup() {
     return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
@@ -31,6 +32,7 @@ export default class Filmscontainer {
   /**
    * возвращает разметку контейнера фильмов
    * @return {String}
+   * @private
    */
   _createFilmsContainer() {
     return (`<section class="films">
@@ -44,6 +46,11 @@ export default class Filmscontainer {
     </section>`);
   }
 
+  /**
+   * Верстка контейнера фильмов без данных
+   * @return {String}
+   * @private
+   */
   _createFilmContainerNoData() {
     return (`<section class="films">
       <section class="films-list">
