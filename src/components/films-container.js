@@ -2,11 +2,6 @@
 
 import {createElement} from '../util.js';
 
-const sortingMap = {
-  rating: `Top rated`,
-  comments: `Most commented`,
-};
-
 /**
  * Метод возвращающий верстку контейнера фильмов
  * @param {Class} showMoreButton - экземпляр класса ShowMoreButton
@@ -44,10 +39,42 @@ export default class Filmscontainer {
   constructor(showMore) {
     this._element = null;
     this._showMoreButton = showMore;
+    this._sortingMap = {
+      rating: `Top rated`,
+      comments: `Most commented`,
+    };
+  }
+
+  /**
+   * Возвращает разметку дополнительного блока
+   * @return {String}
+   */
+  _createAdditionalBlocksMarkup() {
+    return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
+    <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
+    <div class="films-list__container">
+    </div>
+  </section>`)).join(``);
+  }
+
+  /**
+   * возвращает разметку контейнера фильмов
+   * @return {String}
+   */
+  _createFilmsContainer() {
+    return (`<section class="films">
+    <section class="films-list">
+      <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+      <div class="films-list__container">
+      </div>
+       ${this._showMoreButton.getTemplate()}
+    </section>
+     ${this._createAdditionalBlocksMarkup()}
+    </section>`);
   }
 
   getTemplate() {
-    return createFilmsContainer(this._showMoreButton);
+    return this._createFilmsContainer(this._showMoreButton, this._sortingMap);
   }
 
   getNoDataTemplate() {

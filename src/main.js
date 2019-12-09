@@ -36,22 +36,35 @@ const renderFilm = (film, container) => {
   const filmCard = new FilmCardComponent(film).getElement();
   const filmPopup = new PopupComponent(film);
 
+  const addClosePopupListener = () => {
+    filmPopup.getElement()
+    .querySelector(`.film-details__close-btn`)
+    .addEventListener(`click`, () => {
+      filmPopup.removeElement();
+      const popupNode = document.querySelector(`.film-details`);
+      unrender(popupNode);
+    });
+  };
+
   filmCard
   .querySelector(`.film-card__title`)
   .addEventListener(`click`, () => {
     render(bodyElement, filmPopup.getElement());
+    addClosePopupListener();
   });
 
   filmCard
   .querySelector(`.film-card__poster`)
   .addEventListener(`click`, () => {
     render(bodyElement, filmPopup.getElement());
+    addClosePopupListener();
   });
 
   filmCard
   .querySelector(`.film-card__comments`)
   .addEventListener(`click`, () => {
     render(bodyElement, filmPopup.getElement());
+    addClosePopupListener();
   });
 
   filmPopup.getElement()
