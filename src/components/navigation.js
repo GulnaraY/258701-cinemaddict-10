@@ -5,25 +5,6 @@
 import {createElement} from '../util.js';
 
 /**
- * метод для создания разметки навигации
- * @param {object} filter
- * @param {Boolean} isChecked
- * @param {Boolean} isStats
- * @return {String} разметка навигации
- */
-const createFilterMarkup = (filter, isChecked, isStats) => {
-  const {name, count} = filter;
-  const isItemChecked = `${isChecked ? `main-navigation__item--active` : ``}`;
-  const isItAdditionalItem = `${isStats ? `main-navigation__item--additional` : ``}`;
-  const isItCountingItem = `${isChecked || isStats ? `` : `<span class="main-navigation__item-count">${count}</span>`}`;
-  return `<a href="#${name}" class="main-navigation__item
-  ${isItemChecked}
-  ${isItAdditionalItem}">${name}
-  ${isItCountingItem}
-   </a>`;
-};
-
-/**
  * Класс для создания компонента основной навигаци
  */
 export default class Navigation {
@@ -31,9 +12,21 @@ export default class Navigation {
     this._element = null;
   }
 
+  _createFilterMarkup(filter, isChecked, isStats) {
+    const {name, count} = filter;
+    const isItemChecked = `${isChecked ? `main-navigation__item--active` : ``}`;
+    const isItAdditionalItem = `${isStats ? `main-navigation__item--additional` : ``}`;
+    const isItCountingItem = `${isChecked || isStats ? `` : `<span class="main-navigation__item-count">${count}</span>`}`;
+    return `<a href="#${name}" class="main-navigation__item
+    ${isItemChecked}
+    ${isItAdditionalItem}">${name}
+    ${isItCountingItem}
+     </a>`;
+  }
+
   getTemplate(filters) {
     return (`<nav class="main-navigation">
-        ${filters.map((filter, i) => createFilterMarkup(filter, i === 0, i === filters.length - 1)).join(``)}
+        ${filters.map((filter, i) => this._createFilterMarkup(filter, i === 0, i === filters.length - 1)).join(``)}
       </nav>`);
   }
 
