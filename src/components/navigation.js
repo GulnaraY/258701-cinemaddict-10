@@ -24,10 +24,10 @@ export default class Navigation {
     const isItAdditionalItem = `${isStats ? `main-navigation__item--additional` : ``}`;
     const isItCountingItem = `${isChecked || isStats ? `` : `<span class="main-navigation__item-count">${count}</span>`}`;
     return `<a href="#${name}" class="main-navigation__item
-    ${isItemChecked}
-    ${isItAdditionalItem}">${name}
-    ${isItCountingItem}
-     </a>`;
+      ${isItemChecked}
+      ${isItAdditionalItem}">${name}
+      ${isItCountingItem}
+    </a>`;
   }
 
   getTemplate(filters) {

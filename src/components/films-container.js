@@ -22,10 +22,10 @@ export default class Filmscontainer {
    */
   _createAdditionalBlocksMarkup() {
     return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
-    <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
-    <div class="films-list__container">
-    </div>
-  </section>`)).join(``);
+      <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
+      <div class="films-list__container">
+      </div>
+    </section>`)).join(``);
   }
 
   /**
@@ -34,13 +34,13 @@ export default class Filmscontainer {
    */
   _createFilmsContainer() {
     return (`<section class="films">
-    <section class="films-list">
-      <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-      <div class="films-list__container">
-      </div>
-       ${this._showMoreButton.getTemplate()}
-    </section>
-     ${this._createAdditionalBlocksMarkup()}
+      <section class="films-list">
+        <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+        <div class="films-list__container">
+        </div>
+        ${this._showMoreButton.getTemplate()}
+      </section>
+      ${this._createAdditionalBlocksMarkup()}
     </section>`);
   }
 
