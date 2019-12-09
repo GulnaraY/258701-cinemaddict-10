@@ -3,35 +3,6 @@
 import {createElement} from '../util.js';
 
 /**
- * Метод возвращающий верстку контейнера фильмов
- * @param {Class} showMoreButton - экземпляр класса ShowMoreButton
- * @return {String}- разметка
- */
-const createFilmsContainer = (showMoreButton) => {
-  return (`<section class="films">
-  <section class="films-list">
-    <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-    <div class="films-list__container">
-    </div>
-     ${showMoreButton.getTemplate()}
-  </section>
-   ${Object.keys(sortingMap).map((sorter) => (`<section class="films-list--extra">
-    <h2 class="films-list__title">${sortingMap[sorter]}</h2>
-    <div class="films-list__container">
-    </div>
-  </section>`)).join(``)}
-  </section>`);
-};
-
-const createFilmContainerNoData = () => {
-  return (`<section class="films">
-    <section class="films-list">
-      <h2 class="films-list__title">There are no movies in our database</h2>
-    </section>
-  </section>`);
-};
-
-/**
  *Класс для создания компонента контейнера фильмов
 принимает на вход ссылку на созданный компонент showMoreButton
  */
@@ -73,12 +44,20 @@ export default class Filmscontainer {
     </section>`);
   }
 
+  _createFilmContainerNoData() {
+    return (`<section class="films">
+      <section class="films-list">
+        <h2 class="films-list__title">There are no movies in our database</h2>
+      </section>
+    </section>`);
+  }
+
   getTemplate() {
     return this._createFilmsContainer(this._showMoreButton, this._sortingMap);
   }
 
   getNoDataTemplate() {
-    return createFilmContainerNoData();
+    return this._createFilmContainerNoData();
   }
 
   getElement() {
