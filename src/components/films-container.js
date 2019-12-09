@@ -1,49 +1,62 @@
+/** Модуль для генерации экземпляра класса для создании контейнера для карточек фильмов */
+
+import {createElement} from '../util.js';
+
 /**
- * Генерирует верстку контейнера с фильмами
- *@exports createFilmsContainer()
- *@exports createAdditionalBlock()
+ *Класс для создания компонента контейнера фильмов
+принимает на вход ссылку на созданный компонент showMoreButton
  */
+export default class Filmscontainer {
+  constructor(showMore) {
+    this._element = null;
+    this._showMoreButton = showMore;
+    this._sortingMap = {
+      rating: `Top rated`,
+      comments: `Most commented`,
+    };
+  }
 
-import {createFilmCard} from './film-card.js';
-import {createShowMoreButton} from './show-more-button.js';
-import {filmsToRender} from '../main.js';
-import {getSortedItems} from '../filters.js';
-
-const sortingMap = {
-  rating: `Top rated`,
-  comments: `Most commented`,
-};
-
-/**
-* Создает динамическую верстку блока с фильмами и доп блоков на основе моков
-* @return {String} - верстка контентного блока
-*/
-const createFilmsContainer = () => {
-
-  return (`<section class="films">
-  <section class="films-list">
-    <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+  /**
+   * Возвращает разметку дополнительного блока
+   * @return {String}
+   */
+  _createAdditionalBlocksMarkup() {
+    return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
+    <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
     <div class="films-list__container">
-      ${filmsToRender.map((film) => createFilmCard(film)).join(``)}
     </div>
-    ${createShowMoreButton()}
-  </section>
-  ${Object.keys(sortingMap).map((sorter) => (`<section class="films-list--extra">
-    <h2 class="films-list__title">${sortingMap[sorter]}</h2>
-    <div class="films-list__container">
-      ${getSortedItems(sorter).map((film) => createFilmCard(film)).join(``)}
-    </div>
-  </section>`)).join(``)}
-  </section>`);
-};
+  </section>`)).join(``);
+  }
 
-/**
-* Создает верстку дополнительной группы карточек после нажатия на showMoreButton
-* @param {Array} films - моковые данные для отрисовки блока
-* @return {String} - верстка дополнительного блока
-*/
-const createAdditionalBlock = (films) => {
-  return `${films.map((film) => createFilmCard(film)).join(``)}`;
-};
+  /**
+   * возвращает разметку контейнера фильмов
+   * @return {String}
+   */
+  _createFilmsContainer() {
+    return (`<section class="films">
+    <section class="films-list">
+      <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+      <div class="films-list__container">
+      </div>
+       ${this._showMoreButton.getTemplate()}
+    </section>
+     ${this._createAdditionalBlocksMarkup()}
+    </section>`);
+  }
 
-export {createFilmsContainer, createAdditionalBlock};
+  getTemplate() {
+    return this._createFilmsContainer(this._showMoreButton, this._sortingMap);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

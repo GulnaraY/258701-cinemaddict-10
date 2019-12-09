@@ -2,12 +2,11 @@
  * Модуль со служебными функциями
  */
 
-/**
- * Возвращает случайное целое число из диапазона включая границы
- * @param {Number} max - верхняя граница
- * @param {Number} min - нижняя граница
- * @return {Number} - случайное число
- */
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
 const getRandomNumber = (max, min = 0) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -65,14 +64,46 @@ const getRandomPart = (elements, minquantity, maxquantity, divider = ` `) => {
   return resultArray.join(divider);
 };
 
+// const render = (container, template, place = `beforeend`) => {
+//   container.insertAdjacentHTML(place, template);
+// };
+
 /**
- *Рендер компонентов на страницу
- * @param {Object} container
- * @param {String} template
- * @param {String} place
+ * Создает дом-элементы на основании разметки
+ * @param {String} template - разметка
+ * @return {Object} - созданный дом-элемент
  */
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+/**
+ * Рендеринг компонентов
+ * @param {Oblect} container - ссылка на дом-ноду, в которую рендерим
+ * @param {String} template - шаблон, который рендерим
+ * @param {String} place - указывает на место в дом-ноде, в которое вставляем
+ */
+const render = (container, template, place = RenderPosition.BEFOREEND) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(template);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(template);
+      break;
+  }
+};
+
+/**
+ * Удаление элемента из ДОМ
+ * @param {Object} element - ссылка на дом-ноду удаляемого объекта
+ */
+export const unrender = (element) => {
+  if (element) {
+    element.remove();
+  }
 };
 
 export {getRandomNumber, getRandomBoolean, getRandomFloatNumber, getRandomPart, getRandomElement, render};

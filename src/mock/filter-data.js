@@ -21,12 +21,13 @@ const filtersMap = {
 
 /**
 * Генерирует данные для фильтров
+* @param {Array} films - массив с фильмами
 * @return {Array} - массив объектов, свойствами которого являются фильтры и их количество
 */
-export const generateFilters = () => {
+export const generateFilters = (films) => {
 
   return menuBlocks.map((filter) => ({
     name: filter,
-    count: getFilmsCount(filtersMap[filter]),
+    count: getFilmsCount(filtersMap[filter], films),
   }));
 };
