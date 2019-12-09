@@ -66,10 +66,6 @@ const getRandomPart = (elements, minquantity, maxquantity, divider = ` `) => {
   return resultArray.join(divider);
 };
 
-// const render = (container, template, place = `beforeend`) => {
-//   container.insertAdjacentHTML(place, template);
-// };
-
 /**
  * Создает дом-элементы на основании разметки
  * @param {String} template - разметка
