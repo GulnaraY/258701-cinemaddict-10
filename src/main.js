@@ -36,11 +36,11 @@ const renderFilm = (film, container) => {
   const filmCard = new FilmCardComponent(film).getElement();
   const filmPopup = new PopupComponent(film);
 
-  const onEscPress = (evt) => {
+  const onPopupEscPress = (evt) => {
     if (evt.keyCode === ESC_CODE) {
       filmPopup.removeElement();
       const popupNode = document.querySelector(`.film-details`);
-      document.removeEventListener(`click`, onEscPress);
+      document.removeEventListener(`keydown`, onPopupEscPress);
       unrender(popupNode);
     }
   };
@@ -51,11 +51,11 @@ const renderFilm = (film, container) => {
     .addEventListener(`click`, () => {
       filmPopup.removeElement();
       const popupNode = document.querySelector(`.film-details`);
-      document.removeEventListener(`click`, onEscPress);
+      document.removeEventListener(`keydown`, onPopupEscPress);
       unrender(popupNode);
     });
 
-    document.addEventListener(`keydown`, onEscPress);
+    document.addEventListener(`keydown`, onPopupEscPress);
   };
 
   filmCard
