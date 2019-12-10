@@ -1,16 +1,17 @@
 /**
  * * Модуль для генерации экзепляра класса для создания карточки фильма */
 
-import {createElement, getRandomElement} from '../util.js';
+import {getRandomElement} from '../util.js';
+import AbstractComponent from './abstract-component.js';
 
 /**
  *  Класс для генерации компонента карточки филька
  принимает на вход объект с моковыми данными
  */
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
   constructor(filmData) {
+    super();
     this._filmData = filmData;
-    this._element = null;
   }
 
   getTemplate() {
@@ -31,17 +32,5 @@ export default class FilmCard {
         <button class="film-card__controls-item button film-card__controls-item--favorite ${this._filmData.isFavorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
       </form>
     </article>`);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

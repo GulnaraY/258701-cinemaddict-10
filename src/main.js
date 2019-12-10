@@ -24,7 +24,7 @@ const bodyElement = document.querySelector(`body`);
 const films = generateDetailInfo();
 
 render(siteHeaderElement, new UserComponent().getElement());
-render(siteMainElement, new NavigationCopmonent().getElement(generateFilters(films)));
+render(siteMainElement, new NavigationCopmonent(generateFilters(films)).getElement());
 render(siteMainElement, new SortingComponent().getElement());
 
 /**

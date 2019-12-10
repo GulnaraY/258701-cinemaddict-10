@@ -2,16 +2,18 @@
  * Модуль для создания экземппляра класса для основной навигации
  */
 
-import {createElement} from '../util.js';
+import AbstractComponent from './abstract-component.js';
 
 /**
  * Класс для создания компонента основной навигаци
  */
-export default class Navigation {
-  constructor() {
-    this._element = null;
-  }
+export default class Navigation extends AbstractComponent {
 
+  constructor(filters) {
+    super();
+
+    this._filters = filters;
+  }
   /** Формирует разметку блока с фильтрами
    * @param{Object} filter - значение фильтра и количество
    * @param{Boolean} isChecked
@@ -31,20 +33,9 @@ export default class Navigation {
     </a>`;
   }
 
-  getTemplate(filters) {
+  getTemplate() {
     return (`<nav class="main-navigation">
-        ${filters.map((filter, i) => this._createFilterMarkup(filter, i === 0, i === filters.length - 1)).join(``)}
+        ${this._filters.map((filter, i) => this._createFilterMarkup(filter, i === 0, i === this._filters.length - 1)).join(``)}
       </nav>`);
-  }
-
-  getElement(filters) {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(filters));
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

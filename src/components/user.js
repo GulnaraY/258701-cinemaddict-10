@@ -1,11 +1,12 @@
 /** Модуль для создания класса для Блока пользователя */
 import {getUserRating} from '../mock/user-data';
-import {createElement} from '../util.js';
+import AbstractComponent from './abstract-component.js';
 
 /** Класс, описывающий блок пользователя */
-export default class UserInfo {
+export default class UserInfo extends AbstractComponent {
   constructor() {
-    this._element = null;
+    super();
+
     this._userRating = getUserRating();
   }
 
@@ -14,16 +15,5 @@ export default class UserInfo {
       <p class="profile__rating">${this._userRating} films</p>
       <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
     </section>`;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

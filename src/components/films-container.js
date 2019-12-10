@@ -1,14 +1,13 @@
 /** Модуль для генерации экземпляра класса для создании контейнера для карточек фильмов */
 
-import {createElement} from '../util.js';
-
+import AbstractComponent from './abstract-component.js';
 /**
  *Класс для создания компонента контейнера фильмов
 принимает на вход ссылку на созданный компонент showMoreButton
  */
-export default class Filmscontainer {
+export default class Filmscontainer extends AbstractComponent {
   constructor(showMore) {
-    this._element = null;
+    super();
     this._showMoreButton = showMore;
     this._sortingMap = {
       rating: `Top rated`,
@@ -67,22 +66,10 @@ export default class Filmscontainer {
     return this._createFilmContainerNoData();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
   getNoDataElement() {
     if (!this._element) {
       this._element = createElement(this.getNoDataTemplate());
     }
     return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
