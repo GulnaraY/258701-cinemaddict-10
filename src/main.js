@@ -13,6 +13,7 @@ import ShowMoreButtonComponent from './components/show-more-button.js';
 import {unrender} from './util.js';
 import {generateDetailInfo} from './mock/film-data.js';
 import {getSortedItems} from './filters.js';
+import {ESC_CODE} from './util.js';
 
 const ONE_RENDER_QUANTITY = 5;
 
@@ -21,41 +22,28 @@ const siteMainElement = document.querySelector(`.main`);
 const bodyElement = document.querySelector(`body`);
 
 const films = generateDetailInfo();
-const totalAmount = films.length;
-const renderingFilms = [...films];
-let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
 
 render(siteHeaderElement, new UserComponent().getElement());
 render(siteMainElement, new NavigationCopmonent().getElement(generateFilters(films)));
 render(siteMainElement, new SortingComponent().getElement());
 
-const showMoreButton = new ShowMoreButtonComponent();
-render(siteMainElement, new FilmsContainerComponent(showMoreButton).getElement());
-const filmsContainer = siteMainElement.querySelector(`.films-list .films-list__container`);
-
-const renderData = {
-  randomFilms: {
-    data: filmsToRender,
-    place: filmsContainer
-  },
-  topRatedFilms: {
-    data: getSortedItems(films, `rating`),
-    place: siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`)[0],
-  },
-  mostCommentedFilms: {
-    data: getSortedItems(films, `comments`),
-    place: siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`)[1],
-  }
-};
-
 /**
- * Рендерит карточки фильмов, по ходу навешивая обработчики событий
- * @param {Object} film - объект с данными по фильм
- * @param {Object} container - дом нода в которую рендерим элемент
- */
+* Рендерит карточки фильмов, по ходу навешивая обработчики событий
+* @param {Object} film - объект с данными по фильм
+* @param {Object} container - дом нода в которую рендерим элемент
+*/
 const renderFilm = (film, container) => {
   const filmCard = new FilmCardComponent(film).getElement();
   const filmPopup = new PopupComponent(film);
+
+  const onPopupEscPress = (evt) => {
+    if (evt.keyCode === ESC_CODE) {
+      filmPopup.removeElement();
+      const popupNode = document.querySelector(`.film-details`);
+      document.removeEventListener(`keydown`, onPopupEscPress);
+      unrender(popupNode);
+    }
+  };
 
   const addClosePopupListener = () => {
     filmPopup.getElement()
@@ -63,8 +51,11 @@ const renderFilm = (film, container) => {
     .addEventListener(`click`, () => {
       filmPopup.removeElement();
       const popupNode = document.querySelector(`.film-details`);
+      document.removeEventListener(`keydown`, onPopupEscPress);
       unrender(popupNode);
     });
+
+    document.addEventListener(`keydown`, onPopupEscPress);
   };
 
   filmCard
@@ -88,29 +79,72 @@ const renderFilm = (film, container) => {
     addClosePopupListener();
   });
 
+  filmPopup.getElement()
+  .querySelector(`.film-details__close-btn`)
+  .addEventListener(`click`, () => {
+    filmPopup.removeElement();
+    const popupNode = document.querySelector(`.film-details`);
+    unrender(popupNode);
+  });
+
   render(container, filmCard);
 };
 
-Object.keys(renderData).map((key) => renderData[key].data.forEach((film) => {
-  renderFilm(film, renderData[key].place);
-}));
+const renderFilmData = (total) => {
+  if (!total) {
+    render(siteMainElement, new FilmsContainerComponent().getNoDataElement());
+  } else {
 
-render(siteMainElement, new FooterComponent().getElement());
-const loadMoreButton = document.querySelector(`.films-list__show-more`);
+    const renderingFilms = [...films];
+    let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
 
-/** Обработчик нажатия на кнопку show more */
-const onLoadMoreClick = () => {
-  if (renderingFilms.length) {
-    filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
-    filmsToRender.map((film) => renderFilm(film, filmsContainer));
-  }
+    const showMoreButton = new ShowMoreButtonComponent();
+    render(siteMainElement, new FilmsContainerComponent(showMoreButton).getElement());
+    const filmsContainer = siteMainElement.querySelector(`.films-list .films-list__container`);
+    const addBlockRenderPlace = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
 
-  if (!renderingFilms.length) {
-    unrender(loadMoreButton);
-    showMoreButton.removeElement();
+    const renderData = {
+      randomFilms: {
+        data: filmsToRender,
+        place: filmsContainer
+      },
+      topRatedFilms: {
+        data: getSortedItems(films, `rating`),
+        place: addBlockRenderPlace[0],
+      },
+      mostCommentedFilms: {
+        data: getSortedItems(films, `comments`),
+        place: addBlockRenderPlace[1],
+      }
+    };
+
+    Object.keys(renderData).map((key) => renderData[key].data.forEach((film) => {
+      renderFilm(film, renderData[key].place);
+    }));
+
+    const loadMoreButton = document.querySelector(`.films-list__show-more`);
+
+    /** Обработчик нажатия на кнопку show more */
+    const onLoadMoreClick = () => {
+      if (renderingFilms.length) {
+        filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
+        filmsToRender.map((film) => renderFilm(film, filmsContainer));
+      }
+
+      if (!renderingFilms.length) {
+        unrender(loadMoreButton);
+        showMoreButton.removeElement();
+      }
+    };
+
+    loadMoreButton.addEventListener(`click`, onLoadMoreClick);
   }
 };
 
-loadMoreButton.addEventListener(`click`, onLoadMoreClick);
+const totalAmount = films.length;
 
-export {totalAmount, filmsToRender, films};
+renderFilmData(totalAmount);
+
+render(siteMainElement, new FooterComponent().getElement());
+
+export {totalAmount};

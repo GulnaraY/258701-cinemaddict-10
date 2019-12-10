@@ -19,28 +19,43 @@ export default class Filmscontainer {
   /**
    * Возвращает разметку дополнительного блока
    * @return {String}
+   * @private
    */
   _createAdditionalBlocksMarkup() {
     return Object.keys(this._sortingMap).map((sorter) => (`<section class="films-list--extra">
-    <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
-    <div class="films-list__container">
-    </div>
-  </section>`)).join(``);
+      <h2 class="films-list__title">${this._sortingMap[sorter]}</h2>
+      <div class="films-list__container">
+      </div>
+    </section>`)).join(``);
   }
 
   /**
    * возвращает разметку контейнера фильмов
    * @return {String}
+   * @private
    */
   _createFilmsContainer() {
     return (`<section class="films">
-    <section class="films-list">
-      <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-      <div class="films-list__container">
-      </div>
-       ${this._showMoreButton.getTemplate()}
-    </section>
-     ${this._createAdditionalBlocksMarkup()}
+      <section class="films-list">
+        <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+        <div class="films-list__container">
+        </div>
+        ${this._showMoreButton.getTemplate()}
+      </section>
+      ${this._createAdditionalBlocksMarkup()}
+    </section>`);
+  }
+
+  /**
+   * Верстка контейнера фильмов без данных
+   * @return {String}
+   * @private
+   */
+  _createFilmContainerNoData() {
+    return (`<section class="films">
+      <section class="films-list">
+        <h2 class="films-list__title">There are no movies in our database</h2>
+      </section>
     </section>`);
   }
 
@@ -48,11 +63,22 @@ export default class Filmscontainer {
     return this._createFilmsContainer(this._showMoreButton, this._sortingMap);
   }
 
+  getNoDataTemplate() {
+    return this._createFilmContainerNoData();
+  }
+
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
 
+    return this._element;
+  }
+
+  getNoDataElement() {
+    if (!this._element) {
+      this._element = createElement(this.getNoDataTemplate());
+    }
     return this._element;
   }
 

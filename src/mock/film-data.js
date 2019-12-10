@@ -21,7 +21,7 @@ const MIN_IN_HOUR = 60;
 const EARLIEST_COMMENTING_DATE = Date.parse(new Date(`2016-01-01`));
 const LATEST_COMMENTING_DATE = Date.now();
 const MAX_COMMENT_QUANTITTY = 5;
-const FILM_COUNT = 18;
+const FILM_COUNT = 7;
 
 const titles = [
   `Friends`,

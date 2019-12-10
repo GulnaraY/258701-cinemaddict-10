@@ -6,48 +6,32 @@ import {createElement} from '../util.js';
  * принимает на вход объект с данными
  */
 export default class Popup {
-  constructor({title, description, poster, director, writers, actors, genres, age, rating, yourRating, country, releaseDate, runTime, isWatched, isFavorite, isInWatchlist, comments}) {
+  constructor(filmData) {
     this._element = null;
-    this._title = title;
-    this._description = description;
-    this._poster = poster;
-    this._director = director;
-    this._writers = writers;
-    this._actors = actors;
-    this._genres = genres;
-    this._age = age;
-    this._rating = rating;
-    this._yourRating = yourRating;
-    this._country = country;
-    this._releaseDate = releaseDate;
-    this._runTime = runTime;
-    this._isWatched = isWatched;
-    this._isFavorite = isFavorite;
-    this._isInWatchlist = isInWatchlist;
-    this._comments = comments;
+    this._filmData = filmData;
     this._detailsMap = {
-      Director: this._director,
-      Writers: this._writers,
-      Actors: this._actors,
-      [`Release Date`]: this._releaseDate,
-      Runtime: this._runTime,
-      Country: this._country,
-      Genres: this._genres,
+      Director: this._filmData.director,
+      Writers: this._filmData.writers,
+      Actors: this._filmData.actors,
+      [`Release Date`]: this._filmData.releaseDate,
+      Runtime: this._filmData.runTime,
+      Country: this._filmData.country,
+      Genres: this._filmData.genres,
     };
     this._controlsMap = {
       watchlist:
       {
-        value: this._isInWatchlist,
+        value: this._filmData.isInWatchlist,
         label: `Add to watchlist`,
       },
       watched:
       {
-        value: this._isWatched,
+        value: this._filmData.isWatched,
         label: `Already watched`,
       },
       favorite:
       {
-        value: this._isFavorite,
+        value: this._filmData.isFavorite,
         label: `Add to favorites`,
       }
     };
@@ -56,9 +40,10 @@ export default class Popup {
   /**
    * Возвращает разметку блока с комментариями
    * @return {String}
+   * @private
    */
   _getCommentsMarkup() {
-    return this._comments.map((comment) => `<li class="film-details__comment">
+    return this._filmData.comments.map((comment) => `<li class="film-details__comment">
             <span class="film-details__comment-emoji">
               <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
             </span>
@@ -76,6 +61,7 @@ export default class Popup {
   /**
    * Возвращает разметку пользовательских контроллов
    * @return {String}
+   * @private
    */
   _getDetailsControlsMarkup() {
     return Object.keys(this._controlsMap).map((control) => `
@@ -88,6 +74,7 @@ export default class Popup {
    * Возвращает разметку одной строки детальной информации
    * @param {Any} data
    * @return {String}
+   * @private
    */
   _getDetailDataTemplate(data) {
     if (!(data instanceof Array)) {
@@ -102,6 +89,7 @@ export default class Popup {
 
   /**
    * Возвращает разметку с деталями фильма
+   * @private
    * @return {String}
    */
   _getDetailsTable() {
@@ -114,6 +102,7 @@ export default class Popup {
   }
 
   /** Возвращает разметку попапа
+   * @private
    * @return {String}
   */
   _createPopup() {
@@ -125,26 +114,26 @@ export default class Popup {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${this._poster}" alt="">
+            <img class="film-details__poster-img" src="./images/posters/${this._filmData.poster}" alt="">
 
-            <p class="film-details__age">${this._age}+</p>
+            <p class="film-details__age">${this._filmData.age}+</p>
           </div>
 
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
-                <h3 class="film-details__title">${this._title}</h3>
+                <h3 class="film-details__title">${this._filmData.title}</h3>
                 <p class="film-details__title-original">Original: ${this._title}</p>
               </div>
 
               <div class="film-details__rating">
-                <p class="film-details__total-rating">${this._rating}</p>
-                <p class="film-details__user-rating">Your rate ${this._yourRating}</p>
+                <p class="film-details__total-rating">${this._filmData.rating}</p>
+                <p class="film-details__user-rating">Your rate ${this._filmData.yourRating}</p>
               </div>
             </div>
             ${this._getDetailsTable()}
             <p class="film-details__film-description">
-           ${this._description}
+           ${this._filmData.description}
             </p>
           </div>
         </div>
@@ -156,7 +145,7 @@ export default class Popup {
 
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
-          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
+          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._filmData.comments.length}</span></h3>
             <ul class="film-details__comments-list">
               ${this._getCommentsMarkup()}
             </ul>

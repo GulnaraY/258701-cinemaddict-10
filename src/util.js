@@ -2,6 +2,8 @@
  * Модуль со служебными функциями
  */
 
+export const ESC_CODE = 27;
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -63,10 +65,6 @@ const getRandomPart = (elements, minquantity, maxquantity, divider = ` `) => {
   }
   return resultArray.join(divider);
 };
-
-// const render = (container, template, place = `beforeend`) => {
-//   container.insertAdjacentHTML(place, template);
-// };
 
 /**
  * Создает дом-элементы на основании разметки
