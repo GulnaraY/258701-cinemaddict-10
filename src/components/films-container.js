@@ -50,13 +50,13 @@ export default class Filmscontainer extends AbstractComponent {
    * @return {String}
    * @private
    */
-  _createFilmContainerNoData() {
-    return (`<section class="films">
-      <section class="films-list">
-        <h2 class="films-list__title">There are no movies in our database</h2>
-      </section>
-    </section>`);
-  }
+  // _createFilmContainerNoData() {
+  //   return (`<section class="films">
+  //     <section class="films-list">
+  //       <h2 class="films-list__title">There are no movies in our database</h2>
+  //     </section>
+  //   </section>`);
+  // }
 
   getTemplate() {
     return this._createFilmsContainer(this._showMoreButton, this._sortingMap);
@@ -66,10 +66,10 @@ export default class Filmscontainer extends AbstractComponent {
     return this._createFilmContainerNoData();
   }
 
-  getNoDataElement() {
-    if (!this._element) {
-      this._element = createElement(this.getNoDataTemplate());
-    }
-    return this._element;
-  }
+  // getNoDataElement() {
+  //   if (!this._element) {
+  //     this._element = createElement(this.getNoDataTemplate());
+  //   }
+  //   return this._element;
+  // }
 }

@@ -3,7 +3,7 @@
  * @exports getUserRating()
  */
 
-import {getRandomNumber} from '../util.js';
+import {getRandomNumber} from '../utils/util.js';
 
 /**
 * Генерирует рейтинг пользователя на основе просмотренных фильмов

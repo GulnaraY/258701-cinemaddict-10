@@ -1,7 +1,7 @@
 /**
  * * Модуль для генерации экзепляра класса для создания карточки фильма */
 
-import {getRandomElement} from '../util.js';
+import {getRandomElement} from '../utils/util.js';
 import AbstractComponent from './abstract-component.js';
 
 /**

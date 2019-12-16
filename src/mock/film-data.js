@@ -2,7 +2,7 @@
  * Модуль для генерации данных для попапа(детальная информация о фильме)
  * @exports getDetailInfo
  */
-import {getRandomElement, getRandomPart, getRandomFloatNumber, getRandomNumber, getRandomBoolean} from '../util.js';
+import {getRandomElement, getRandomPart, getRandomFloatNumber, getRandomNumber, getRandomBoolean} from '../utils/util.js';
 
 const DESCRIPTION_MIN = 1;
 const DESCRIPTION_MAX = 3;

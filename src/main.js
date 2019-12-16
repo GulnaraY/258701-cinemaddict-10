@@ -1,7 +1,7 @@
 /** Основной модуль. Точка входа */
 
 import {generateFilters} from './mock/filter-data.js';
-import {render} from './util.js';
+import {render} from './utils/render.js';
 import FilmsContainerComponent from './components/films-container.js';
 import FooterComponent from './components/footer.js';
 import NavigationCopmonent from './components/navigation.js';
@@ -10,10 +10,11 @@ import UserComponent from './components/user.js';
 import PopupComponent from './components/popup.js';
 import FilmCardComponent from './components/film-card.js';
 import ShowMoreButtonComponent from './components/show-more-button.js';
-import {unrender} from './util.js';
+import {unrender} from './utils/render.js';
 import {generateDetailInfo} from './mock/film-data.js';
 import {getSortedItems} from './filters.js';
-import {ESC_CODE} from './util.js';
+import {ESC_CODE} from './utils/util.js';
+import NoFilmsComponent from './components/no-films.js';
 
 const ONE_RENDER_QUANTITY = 5;
 
@@ -23,9 +24,9 @@ const bodyElement = document.querySelector(`body`);
 
 const films = generateDetailInfo();
 
-render(siteHeaderElement, new UserComponent().getElement());
-render(siteMainElement, new NavigationCopmonent(generateFilters(films)).getElement());
-render(siteMainElement, new SortingComponent().getElement());
+render(siteHeaderElement, new UserComponent());
+render(siteMainElement, new NavigationCopmonent(generateFilters(films)));
+render(siteMainElement, new SortingComponent());
 
 /**
 * Рендерит карточки фильмов, по ходу навешивая обработчики событий
@@ -33,15 +34,14 @@ render(siteMainElement, new SortingComponent().getElement());
 * @param {Object} container - дом нода в которую рендерим элемент
 */
 const renderFilm = (film, container) => {
-  const filmCard = new FilmCardComponent(film).getElement();
+  const filmCard = new FilmCardComponent(film);
+  const filmCardElement = filmCard.getElement();
   const filmPopup = new PopupComponent(film);
 
   const onPopupEscPress = (evt) => {
     if (evt.keyCode === ESC_CODE) {
-      filmPopup.removeElement();
-      const popupNode = document.querySelector(`.film-details`);
       document.removeEventListener(`keydown`, onPopupEscPress);
-      unrender(popupNode);
+      unrender(filmPopup);
     }
   };
 
@@ -49,42 +49,38 @@ const renderFilm = (film, container) => {
     filmPopup.getElement()
     .querySelector(`.film-details__close-btn`)
     .addEventListener(`click`, () => {
-      filmPopup.removeElement();
-      const popupNode = document.querySelector(`.film-details`);
       document.removeEventListener(`keydown`, onPopupEscPress);
-      unrender(popupNode);
+      unrender(filmPopup);
     });
 
     document.addEventListener(`keydown`, onPopupEscPress);
   };
 
-  filmCard
+  filmCardElement
   .querySelector(`.film-card__title`)
   .addEventListener(`click`, () => {
-    render(bodyElement, filmPopup.getElement());
+    render(bodyElement, filmPopup);
     addClosePopupListener();
   });
 
-  filmCard
+  filmCardElement
   .querySelector(`.film-card__poster`)
   .addEventListener(`click`, () => {
-    render(bodyElement, filmPopup.getElement());
+    render(bodyElement, filmPopup);
     addClosePopupListener();
   });
 
-  filmCard
+  filmCardElement
   .querySelector(`.film-card__comments`)
   .addEventListener(`click`, () => {
-    render(bodyElement, filmPopup.getElement());
+    render(bodyElement, filmPopup);
     addClosePopupListener();
   });
 
   filmPopup.getElement()
   .querySelector(`.film-details__close-btn`)
   .addEventListener(`click`, () => {
-    filmPopup.removeElement();
-    const popupNode = document.querySelector(`.film-details`);
-    unrender(popupNode);
+    unrender(filmPopup);
   });
 
   render(container, filmCard);
@@ -92,14 +88,14 @@ const renderFilm = (film, container) => {
 
 const renderFilmData = (total) => {
   if (!total) {
-    render(siteMainElement, new FilmsContainerComponent().getNoDataElement());
+    render(siteMainElement, new NoFilmsComponent());
   } else {
 
     const renderingFilms = [...films];
     let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
 
     const showMoreButton = new ShowMoreButtonComponent();
-    render(siteMainElement, new FilmsContainerComponent(showMoreButton).getElement());
+    render(siteMainElement, new FilmsContainerComponent(showMoreButton));
     const filmsContainer = siteMainElement.querySelector(`.films-list .films-list__container`);
     const addBlockRenderPlace = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
 
@@ -132,8 +128,7 @@ const renderFilmData = (total) => {
       }
 
       if (!renderingFilms.length) {
-        unrender(loadMoreButton);
-        showMoreButton.removeElement();
+        unrender(showMoreButton);
       }
     };
 
@@ -145,6 +140,6 @@ const totalAmount = films.length;
 
 renderFilmData(totalAmount);
 
-render(siteMainElement, new FooterComponent().getElement());
+render(siteMainElement, new FooterComponent());
 
 export {totalAmount};
