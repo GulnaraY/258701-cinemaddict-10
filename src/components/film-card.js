@@ -19,7 +19,7 @@ export default class FilmCard extends AbstractComponent {
       <h3 class="film-card__title">${this._filmData.title}</h3>
       <p class="film-card__rating">${this._filmData.rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${this._filmData.releaseDate}</span>
+        <span class="film-card__year">${this._filmData.releaseDate.toDateString()}</span>
         <span class="film-card__duration">${this._filmData.runTime}</span>
         <span class="film-card__genre">${getRandomElement(this._filmData.genres)}</span>
       </p>

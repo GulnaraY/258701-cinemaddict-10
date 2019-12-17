@@ -12,7 +12,7 @@ export default class Popup extends AbstractComponents {
       Director: this._filmData.director,
       Writers: this._filmData.writers,
       Actors: this._filmData.actors,
-      [`Release Date`]: this._filmData.releaseDate,
+      [`Release Date`]: this._filmData.releaseDate.toDateString(),
       Runtime: this._filmData.runTime,
       Country: this._filmData.country,
       Genres: this._filmData.genres,

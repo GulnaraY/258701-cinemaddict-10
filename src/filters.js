@@ -4,8 +4,6 @@
  * @exports getSortedItems()
  */
 
-const ADDITIONAL_BLOCK_QUANTITY = 2;
-
 /**
    * Сортировка данных от большего к меньшему
    * @param {Array} filmsToSort - фильмы для фильтрации
@@ -18,7 +16,7 @@ const getSortedItems = (filmsToSort, sorter) => {
       return b[sorter].length - a[sorter].length;
     }
     return b[sorter] - a[sorter];
-  }).splice(0, ADDITIONAL_BLOCK_QUANTITY);
+  });
 };
 
 /**
