@@ -1,14 +1,13 @@
 /** Модуль для генерации экземпляра класса для создании контейнера для карточек фильмов */
 
 import AbstractComponent from './abstract-component.js';
+
 /**
  *Класс для создания компонента контейнера фильмов
-принимает на вход ссылку на созданный компонент showMoreButton
  */
 export default class Filmscontainer extends AbstractComponent {
-  constructor(showMore) {
+  constructor() {
     super();
-    this._showMoreButton = showMore;
     this._sortingMap = {
       rating: `Top rated`,
       comments: `Most commented`,
@@ -39,37 +38,12 @@ export default class Filmscontainer extends AbstractComponent {
         <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
         <div class="films-list__container">
         </div>
-        ${this._showMoreButton.getTemplate()}
       </section>
       ${this._createAdditionalBlocksMarkup()}
     </section>`);
   }
 
-  /**
-   * Верстка контейнера фильмов без данных
-   * @return {String}
-   * @private
-   */
-  // _createFilmContainerNoData() {
-  //   return (`<section class="films">
-  //     <section class="films-list">
-  //       <h2 class="films-list__title">There are no movies in our database</h2>
-  //     </section>
-  //   </section>`);
-  // }
-
   getTemplate() {
-    return this._createFilmsContainer(this._showMoreButton, this._sortingMap);
+    return this._createFilmsContainer(this._sortingMap);
   }
-
-  getNoDataTemplate() {
-    return this._createFilmContainerNoData();
-  }
-
-  // getNoDataElement() {
-  //   if (!this._element) {
-  //     this._element = createElement(this.getNoDataTemplate());
-  //   }
-  //   return this._element;
-  // }
 }
