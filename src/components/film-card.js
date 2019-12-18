@@ -12,6 +12,9 @@ export default class FilmCard extends AbstractComponent {
   constructor(filmData) {
     super();
     this._filmData = filmData;
+    this._title = this.getElement().querySelector(`.film-card__title`);
+    this._poster = this.getElement().querySelector(`.film-card__poster`);
+    this._comments = this.getElement().querySelector(`.film-card__comments`);
   }
 
   getTemplate() {
@@ -35,17 +38,14 @@ export default class FilmCard extends AbstractComponent {
   }
 
   setTitleClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__title`)
-    .addEventListener(`click`, handler);
+    this._title.addEventListener(`click`, handler);
   }
 
   setPosterClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__poster`)
-    .addEventListener(`click`, handler);
+    this._poster.addEventListener(`click`, handler);
   }
 
   setCommentsClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__comments`)
-    .addEventListener(`click`, handler);
+    this._comments.addEventListener(`click`, handler);
   }
 }
