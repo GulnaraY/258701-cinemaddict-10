@@ -192,4 +192,8 @@ export default class Popup extends AbstractComponents {
     this.getElement().querySelector(`.film-details__close-btn`)
     .addEventListener(`click`, handler);
   }
+
+  setEscPressHandler(handler) {
+    document.addEventListener(`keydown`, handler);
+  }
 }

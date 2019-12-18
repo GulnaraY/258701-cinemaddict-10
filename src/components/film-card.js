@@ -48,4 +48,10 @@ export default class FilmCard extends AbstractComponent {
   setCommentsClickHandler(handler) {
     this._comments.addEventListener(`click`, handler);
   }
+
+  setOpenHandler(handler) {
+    this.setTitleClickHandler(handler);
+    this.setPosterClickHandler(handler);
+    this.setCommentsClickHandler(handler);
+  }
 }

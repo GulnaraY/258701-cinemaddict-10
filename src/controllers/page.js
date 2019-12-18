@@ -72,7 +72,7 @@ export default class PageController {
   }
 
   /**
-   *@private
+   * @private
    * @param {Array} renderingFilms
    */
   _renderLoadMoreFunctional(renderingFilms) {
@@ -126,6 +126,14 @@ export default class PageController {
     const filmCard = new FilmCardComponent(film);
     const filmPopup = new PopupComponent(film);
 
+    filmCard.setOpenHandler(() => {
+      this._openPopup(filmPopup);
+    });
+
+    render(container, filmCard);
+  }
+
+  _openPopup(filmPopup) {
     const onPopupEscPress = (evt) => {
       if (evt.keyCode === ESC_CODE) {
         document.removeEventListener(`keydown`, onPopupEscPress);
@@ -138,30 +146,17 @@ export default class PageController {
         document.removeEventListener(`keydown`, onPopupEscPress);
         unrender(filmPopup);
       });
-
-      document.addEventListener(`keydown`, onPopupEscPress);
     };
 
-    filmCard.setTitleClickHandler(() => {
-      render(this._container.parentNode, filmPopup);
-      addClosePopupListener();
-    });
-
-    filmCard.setPosterClickHandler(() => {
-      render(this._container.parentNode, filmPopup);
-      addClosePopupListener();
-    });
-
-    filmCard.setCommentsClickHandler(() => {
-      render(this._container.parentNode, filmPopup);
-      addClosePopupListener();
-    });
+    filmPopup.setEscPressHandler((onPopupEscPress));
 
     filmPopup.setCloseButtonClickHandler(() => {
       document.removeEventListener(`keydown`, onPopupEscPress);
       unrender(filmPopup);
     });
 
-    render(container, filmCard);
+    render(this._container.parentNode, filmPopup);
+    addClosePopupListener();
   }
+
 }
