@@ -59,23 +59,28 @@ export default class PageController {
 
   _renderMainFilmsList(films) {
     const renderingFilms = [...films];
-    let filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
+    const filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
 
     filmsToRender.forEach((film) => {
       this._renderFilm(film, this._filmsListContainer);
     });
 
-    this._renderLoadMoreFunctional(filmsToRender, renderingFilms);
+    const isLoadMore = Boolean(renderingFilms.length)
+    if (isLoadMore) {
+      this._renderLoadMoreFunctional(renderingFilms);
+    }
   }
 
-  _renderLoadMoreFunctional(filmsToRender, renderingFilms) {
+  /**
+   *@private
+   * @param {Array} renderingFilms
+   */
+  _renderLoadMoreFunctional(renderingFilms) {
     render(this._container.querySelector(`.films-list`), this._loadMoreButtonComponent);
 
     this._loadMoreButtonComponent.setClickHandler(() => {
-      if (filmsToRender.length) {
-        filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
-        filmsToRender.forEach((film) => this._renderFilm(film, this._filmsListContainer));
-      }
+      const filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
+      filmsToRender.forEach((film) => this._renderFilm(film, this._filmsListContainer));
 
       if (!renderingFilms.length) {
         unrender(this._loadMoreButtonComponent);
