@@ -65,6 +65,10 @@ export default class PageController {
       this._renderFilm(film, this._filmsListContainer);
     });
 
+    this._renderLoadMoreFunctional(filmsToRender, renderingFilms);
+  }
+
+  _renderLoadMoreFunctional(filmsToRender, renderingFilms) {
     render(this._container.querySelector(`.films-list`), this._loadMoreButtonComponent);
 
     this._loadMoreButtonComponent.setClickHandler(() => {
