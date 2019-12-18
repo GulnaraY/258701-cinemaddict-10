@@ -34,16 +34,26 @@ export default class Sorting extends AbstractComponent {
       if (this._currentSortType === sortType) {
         return;
       }
-      const sortingElements = document.querySelectorAll(`.sort__button`);
-      Array.from(sortingElements).forEach((element) => {
-        if (element.classList.contains(`sort__button--active`)) {
-          element.classList.remove(`sort__button--active`);
-        }
-      });
+
+      this._removeActiveClass();
+
       this._currentSortType = sortType;
       document.querySelector(`[data-sort-type=${sortType}]`).classList.add(`sort__button--active`);
 
       handler(this._currentSortType);
+    });
+  }
+
+  /**
+   * Удаление текущего активного класса
+   * @private
+   */
+  _removeActiveClass() {
+    const sortingElements = document.querySelectorAll(`.sort__button`);
+    Array.from(sortingElements).forEach((element) => {
+      if (element.classList.contains(`sort__button--active`)) {
+        element.classList.remove(`sort__button--active`);
+      }
     });
   }
 }
