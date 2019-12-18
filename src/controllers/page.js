@@ -91,7 +91,7 @@ export default class PageController {
       this._renderFilm(film, this._filmsListContainer);
     });
 
-    const isLoadMore = Boolean(renderingFilms.length)
+    const isLoadMore = Boolean(renderingFilms.length);
     if (isLoadMore) {
       this._renderLoadMoreFunctional(renderingFilms);
     }
