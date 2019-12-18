@@ -7,6 +7,11 @@ export const SortMap = {
   RATING: `rating`,
 };
 
+const ClassMap = {
+  SIMPLE: `sort__button`,
+  ACTIVE: `sort__button--active`,
+};
+
 /** Класс, описывающий блок сортировки */
 export default class Sorting extends AbstractComponent {
   constructor() {
@@ -38,7 +43,7 @@ export default class Sorting extends AbstractComponent {
       this._removeActiveClass();
 
       this._currentSortType = sortType;
-      document.querySelector(`[data-sort-type=${sortType}]`).classList.add(`sort__button--active`);
+      document.querySelector(`[data-sort-type=${sortType}]`).classList.add(ClassMap.ACTIVE);
 
       handler(this._currentSortType);
     });
@@ -49,10 +54,10 @@ export default class Sorting extends AbstractComponent {
    * @private
    */
   _removeActiveClass() {
-    const sortingElements = document.querySelectorAll(`.sort__button`);
+    const sortingElements = document.querySelectorAll(`.${ClassMap.SIMPLE}`);
     Array.from(sortingElements).forEach((element) => {
-      if (element.classList.contains(`sort__button--active`)) {
-        element.classList.remove(`sort__button--active`);
+      if (element.classList.contains(ClassMap.ACTIVE)) {
+        element.classList.remove(ClassMap.ACTIVE);
       }
     });
   }
