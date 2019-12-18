@@ -1,16 +1,20 @@
 /**
  * * Модуль для генерации экзепляра класса для создания карточки фильма */
 
-import {createElement, getRandomElement} from '../util.js';
+import {getRandomElement} from '../utils/util.js';
+import AbstractComponent from './abstract-component.js';
 
 /**
  *  Класс для генерации компонента карточки филька
  принимает на вход объект с моковыми данными
  */
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
   constructor(filmData) {
+    super();
     this._filmData = filmData;
-    this._element = null;
+    this._title = this.getElement().querySelector(`.film-card__title`);
+    this._poster = this.getElement().querySelector(`.film-card__poster`);
+    this._comments = this.getElement().querySelector(`.film-card__comments`);
   }
 
   getTemplate() {
@@ -18,7 +22,7 @@ export default class FilmCard {
       <h3 class="film-card__title">${this._filmData.title}</h3>
       <p class="film-card__rating">${this._filmData.rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${this._filmData.releaseDate}</span>
+        <span class="film-card__year">${this._filmData.releaseDate.toDateString()}</span>
         <span class="film-card__duration">${this._filmData.runTime}</span>
         <span class="film-card__genre">${getRandomElement(this._filmData.genres)}</span>
       </p>
@@ -33,15 +37,21 @@ export default class FilmCard {
     </article>`);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  setTitleClickHandler(handler) {
+    this._title.addEventListener(`click`, handler);
   }
 
-  removeElement() {
-    this._element = null;
+  setPosterClickHandler(handler) {
+    this._poster.addEventListener(`click`, handler);
+  }
+
+  setCommentsClickHandler(handler) {
+    this._comments.addEventListener(`click`, handler);
+  }
+
+  setOpenHandler(handler) {
+    this.setTitleClickHandler(handler);
+    this.setPosterClickHandler(handler);
+    this.setCommentsClickHandler(handler);
   }
 }

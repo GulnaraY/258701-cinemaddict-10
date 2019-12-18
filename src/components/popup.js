@@ -1,19 +1,18 @@
 /** Модуль для создания компонета класса для Попапа с детальной информацией */
 
-import {createElement} from '../util.js';
-
+import AbstractComponents from './abstract-component.js';
 /** Класс для создания компонента попапа
  * принимает на вход объект с данными
  */
-export default class Popup {
+export default class Popup extends AbstractComponents {
   constructor(filmData) {
-    this._element = null;
+    super();
     this._filmData = filmData;
     this._detailsMap = {
       Director: this._filmData.director,
       Writers: this._filmData.writers,
       Actors: this._filmData.actors,
-      [`Release Date`]: this._filmData.releaseDate,
+      [`Release Date`]: this._filmData.releaseDate.toDateString(),
       Runtime: this._filmData.runTime,
       Country: this._filmData.country,
       Genres: this._filmData.genres,
@@ -189,14 +188,12 @@ export default class Popup {
     return this._createPopup(this._details);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  setCloseButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`)
+    .addEventListener(`click`, handler);
   }
 
-  removeElement() {
-    this._element = null;
+  setEscPressHandler(handler) {
+    document.addEventListener(`keydown`, handler);
   }
 }

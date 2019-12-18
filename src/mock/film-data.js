@@ -2,7 +2,7 @@
  * Модуль для генерации данных для попапа(детальная информация о фильме)
  * @exports getDetailInfo
  */
-import {getRandomElement, getRandomPart, getRandomFloatNumber, getRandomNumber, getRandomBoolean} from '../util.js';
+import {getRandomElement, getRandomPart, getRandomFloatNumber, getRandomNumber, getRandomBoolean} from '../utils/util.js';
 
 const DESCRIPTION_MIN = 1;
 const DESCRIPTION_MAX = 3;
@@ -160,7 +160,7 @@ export const getDetailInfo = () => {
     rating: getRandomFloatNumber(MAX_RATING),
     yourRating: getRandomFloatNumber(MAX_RATING),
     country: getRandomElement(countries),
-    releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)).toDateString(),
+    releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)),
     runTime: `${Math.trunc(duration / MIN_IN_HOUR)}h ${duration % MIN_IN_HOUR}m`,
     isWatched: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
@@ -179,5 +179,4 @@ export const generateDetailInfo = () => {
   .fill(``)
   .map(getDetailInfo);
 };
-
 
