@@ -27,6 +27,11 @@ export default class PageController {
     this._filmsListcontainer = null;
   }
 
+  /**
+   * Точка входа для контроллера страницы
+   * @public
+   * @param {Array} films - массив с данными для фильмов
+   */
   render(films) {
 
     render(this._container, this._sortingComponent);
@@ -36,13 +41,15 @@ export default class PageController {
       this._renderFilmData(films);
       this._sortingComponent.setSortTypeChangeHandler((sortType) => {
         let sortedFilms = [];
-
+        let isDefaultList = true;
         switch (sortType) {
           case SortMap.DATE:
             sortedFilms = getSortedItems(films, `releaseDate`);
+            isDefaultList = false;
             break;
           case SortMap.RATING:
             sortedFilms = getSortedItems(films, `rating`);
+            isDefaultList = false;
             break;
           case SortMap.DEFAULT:
             sortedFilms = [...films];
@@ -51,12 +58,31 @@ export default class PageController {
         unrender(this._loadMoreButtonComponent);
         this._filmsListContainer.innerHTML = ``;
 
+        if (isDefaultList) {
+          this._renderMainFilmsList(sortedFilms);
+        } else {
+          this._renderSortedFilmsList(sortedFilms);
+        }
 
-        this._renderMainFilmsList(sortedFilms);
       });
     }
   }
 
+  /**
+   * Рендеринг сортированных фильмов
+   * @param {Array} films - отсортированный массив фильмов
+   */
+  _renderSortedFilmsList(films) {
+    films.forEach((film) => {
+      this._renderFilm(film, this._filmsListContainer);
+    });
+  }
+
+  /**
+   * Рендеринг основного блока фильмов
+   * @private
+   * @param {Array} films - список фильмов
+    */
   _renderMainFilmsList(films) {
     const renderingFilms = [...films];
     const filmsToRender = renderingFilms.splice(0, ONE_RENDER_QUANTITY);
@@ -72,6 +98,7 @@ export default class PageController {
   }
 
   /**
+   * Рендеринг кнопки showMore и фильмов по кнопке
    * @private
    * @param {Array} renderingFilms
    */
@@ -133,6 +160,11 @@ export default class PageController {
     render(container, filmCard);
   }
 
+  /**
+   * Логика открытия попапа
+   * @private
+   * @param {Class} filmPopup - инстанс класса Popup
+   */
   _openPopup(filmPopup) {
     const onPopupEscPress = (evt) => {
       if (evt.keyCode === ESC_CODE) {
