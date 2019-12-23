@@ -1,34 +1,56 @@
 /** */
 
-import {render, unrender} from '../utils/render.js';
+import {render, unrender, replace} from '../utils/render.js';
 import {ESC_CODE} from '../utils/util.js';
 import FilmCardComponent from '../components/film-card';
 import PopupComponent from '../components/popup.js';
 
 export default class MovieController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
+    this._filmComponent = null;
+    this._popupComponent = null;
   }
 
   render(film) {
-    this._renderFilm(film, this._container);
-  }
+    const oldFilmComponent = this._filmComponent;
+    const oldPopupComponent = this._popupComponent;
 
-  /**
-  * Рендерит карточки фильмов, по ходу навешивая обработчики событий
-  * @param {Object} film - объект с данными по фильм
-  * @param {Object} container - дом нода в которую рендерим элемент
-  * @private
-  */
-  _renderFilm(film, container) {
-    const filmCard = new FilmCardComponent(film);
-    const filmPopup = new PopupComponent(film);
+    this._filmComponent = new FilmCardComponent(film);
+    this._popupComponent = new PopupComponent(film);
 
-    filmCard.setOpenHandler(() => {
-      this._openPopup(filmPopup);
+    this._filmComponent.setOpenHandler(() => {
+      this._openPopup(this._popupComponent);
     });
 
-    render(container, filmCard);
+    this._filmComponent.setAddToWatchlistHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isInWatchlist: !film.isInWatchlist,
+      }));
+    });
+
+    this._filmComponent.setMarkAsWatchedHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatched: !film.isWatched,
+      }));
+    });
+
+    this._filmComponent.setMarkAsFavoriteHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isFavorite: !film.isFavorite,
+      }));
+    });
+
+    if (oldFilmComponent) {
+      replace(this._filmComponent, oldFilmComponent);
+    } else {
+      render(this._container, this._filmComponent);
+    }
+
   }
 
   /**

@@ -34,6 +34,9 @@ export default class Popup extends AbstractComponents {
         label: `Add to favorites`,
       }
     };
+    this._addToWatchlist = this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`);
+    this._markAsWatched = this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`);
+    this._markAsFavorite = this.getElement().querySelector(`.film-card__controls-item--favorite`);
   }
 
   /**
@@ -195,5 +198,17 @@ export default class Popup extends AbstractComponents {
 
   setEscPressHandler(handler) {
     document.addEventListener(`keydown`, handler);
+  }
+
+  setAddToWatchlistHandler(handler) {
+    this._addToWatchlist.addEventListener(`click`, handler);
+  }
+
+  setMarkAsWatchedHandler(handler) {
+    this._markAsWatched.addEventListener(`click`, handler);
+  }
+
+  setMarkAsFavoriteHandler(handler) {
+    this._markAsFavorite.addEventListener(`click`, handler);
   }
 }

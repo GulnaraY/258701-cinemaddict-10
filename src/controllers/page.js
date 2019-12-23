@@ -3,13 +3,10 @@
  */
 
 import ShowMoreButtonComponent from '../components/show-more-button.js';
-import FilmCardComponent from '../components/film-card';
-import PopupComponent from '../components/popup.js';
 import FilmsContainerComponent from '../components/films-container.js';
 import NoFilmsComponent from '../components/no-films.js';
 import {getSortedItems} from '../filters.js';
 import {render, unrender} from '../utils/render.js';
-import {ESC_CODE} from '../utils/util.js';
 import SortingComponent, {SortMap} from '../components/sorting.js';
 import MovieController from './movie.js';
 
@@ -21,11 +18,14 @@ export default class PageController {
   constructor(container) {
     this._container = container;
 
+    this._films = [];
     this._noFilmsComponent = new NoFilmsComponent();
     this._loadMoreButtonComponent = new ShowMoreButtonComponent();
     this._filmsContainercomponent = new FilmsContainerComponent();
     this._sortingComponent = new SortingComponent();
     this._filmsListcontainer = null;
+
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   /**
@@ -34,7 +34,7 @@ export default class PageController {
    * @param {Array} films - массив с данными для фильмов
    */
   render(films) {
-
+    this._films = films;
     render(this._container, this._sortingComponent);
     if (!films.length) {
       render(this._container, this._noFilmsComponent);
@@ -151,6 +151,16 @@ export default class PageController {
   * @private
   */
   _renderFilm(film, container) {
-    new MovieController(container).render(film);
+    new MovieController(container, this._onDataChange).render(film);
+  }
+
+  _onDataChange(movieController, oldData, newData) {
+    const index = this._films.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+    this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
+    movieController.render(this._films[index]);
   }
 }
