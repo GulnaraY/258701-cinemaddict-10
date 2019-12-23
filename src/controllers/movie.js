@@ -24,6 +24,17 @@ export default class MovieController {
       this._openPopup(this._popupComponent);
     });
 
+    this._setFilmComponentControlsHandlers(film);
+    this._setPopupComponentControlsHandlers(film);
+
+    if (oldFilmComponent && oldPopupComponent) {
+      replace(this._filmComponent, oldFilmComponent);
+    } else {
+      render(this._container, this._filmComponent);
+    }
+  }
+
+  _setFilmComponentControlsHandlers(film) {
     this._filmComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
       this._onDataChange(this, film, Object.assign({}, film, {
@@ -44,15 +55,30 @@ export default class MovieController {
         isFavorite: !film.isFavorite,
       }));
     });
-
-    if (oldFilmComponent) {
-      replace(this._filmComponent, oldFilmComponent);
-    } else {
-      render(this._container, this._filmComponent);
-    }
-
   }
 
+  _setPopupComponentControlsHandlers(film) {
+    this._popupComponent.setAddToWatchlistHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isInWatchlist: !film.isInWatchlist,
+      }));
+    });
+
+    this._popupComponent.setMarkAsWatchedHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatched: !film.isWatched,
+      }));
+    });
+
+    this._popupComponent.setMarkAsFavoriteHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isFavorite: !film.isFavorite,
+      }));
+    });
+  }
   /**
   * Логика открытия попапа
   * @private

@@ -34,9 +34,9 @@ export default class Popup extends AbstractComponents {
         label: `Add to favorites`,
       }
     };
-    this._addToWatchlist = this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`);
-    this._markAsWatched = this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`);
-    this._markAsFavorite = this.getElement().querySelector(`.film-card__controls-item--favorite`);
+    this._addToWatchlist = this.getElement().querySelector(`#watchlist`);
+    this._markAsWatched = this.getElement().querySelector(`#watched`);
+    this._markAsFavorite = this.getElement().querySelector(`#favorite`);
   }
 
   /**
@@ -68,7 +68,7 @@ export default class Popup extends AbstractComponents {
   _getDetailsControlsMarkup() {
     return Object.keys(this._controlsMap).map((control) => `
           <input type="checkbox" class="film-details__control-input visually-hidden" id="${control}" name="control" ${this._controlsMap[control].value ? `checked` : ``}>
-          <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">${this._controlsMap[control].label}</label>
+          <label for="${control}" class="film-details__control-label film-details__control-label--watchlist">${this._controlsMap[control].label}</label>
         `).join(``);
   }
 
@@ -201,14 +201,14 @@ export default class Popup extends AbstractComponents {
   }
 
   setAddToWatchlistHandler(handler) {
-    this._addToWatchlist.addEventListener(`click`, handler);
+    this._addToWatchlist.addEventListener(`change`, handler);
   }
 
   setMarkAsWatchedHandler(handler) {
-    this._markAsWatched.addEventListener(`click`, handler);
+    this._markAsWatched.addEventListener(`change`, handler);
   }
 
   setMarkAsFavoriteHandler(handler) {
-    this._markAsFavorite.addEventListener(`click`, handler);
+    this._markAsFavorite.addEventListener(`change`, handler);
   }
 }
