@@ -11,6 +11,7 @@ import {getSortedItems} from '../filters.js';
 import {render, unrender} from '../utils/render.js';
 import {ESC_CODE} from '../utils/util.js';
 import SortingComponent, {SortMap} from '../components/sorting.js';
+import MovieController from './movie.js';
 
 const ONE_RENDER_QUANTITY = 5;
 const ADDITIONAL_BLOCK_QUANTITY = 2;
@@ -150,45 +151,6 @@ export default class PageController {
   * @private
   */
   _renderFilm(film, container) {
-    const filmCard = new FilmCardComponent(film);
-    const filmPopup = new PopupComponent(film);
-
-    filmCard.setOpenHandler(() => {
-      this._openPopup(filmPopup);
-    });
-
-    render(container, filmCard);
+    new MovieController(container).render(film);
   }
-
-  /**
-   * Логика открытия попапа
-   * @private
-   * @param {Class} filmPopup - инстанс класса Popup
-   */
-  _openPopup(filmPopup) {
-    const onPopupEscPress = (evt) => {
-      if (evt.keyCode === ESC_CODE) {
-        document.removeEventListener(`keydown`, onPopupEscPress);
-        unrender(filmPopup);
-      }
-    };
-
-    const addClosePopupListener = () => {
-      filmPopup.setCloseButtonClickHandler(() => {
-        document.removeEventListener(`keydown`, onPopupEscPress);
-        unrender(filmPopup);
-      });
-    };
-
-    filmPopup.setEscPressHandler((onPopupEscPress));
-
-    filmPopup.setCloseButtonClickHandler(() => {
-      document.removeEventListener(`keydown`, onPopupEscPress);
-      unrender(filmPopup);
-    });
-
-    render(this._container.parentNode, filmPopup);
-    addClosePopupListener();
-  }
-
 }
