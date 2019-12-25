@@ -68,7 +68,7 @@ export default class MovieController {
     this._popupComponent.setMarkAsWatchedHandler((evt) => {
       evt.preventDefault();
       this._onDataChange(this, film, Object.assign({}, film, {
-        isWatched: !film.isWatched,
+        isWatched: film.isWatched,
       }));
     });
 
