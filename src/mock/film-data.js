@@ -17,7 +17,7 @@ const EARLIES_RELEASE = 0;
 const LATEST_RELEASE = Date.now();
 const MIN_DURATION = 20;
 const MAX_DURATION = 180;
-const MIN_IN_HOUR = 60;
+const MS_IN_MIN = 60000;
 const EARLIEST_COMMENTING_DATE = Date.parse(new Date(`2016-01-01`));
 const LATEST_COMMENTING_DATE = Date.now();
 const MAX_COMMENT_QUANTITTY = 5;
@@ -161,7 +161,7 @@ export const getDetailInfo = () => {
     yourRating: getRandomFloatNumber(MAX_RATING),
     country: getRandomElement(countries),
     releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)),
-    runTime: `${Math.trunc(duration / MIN_IN_HOUR)}h ${duration % MIN_IN_HOUR}m`,
+    runTime: new Date(duration * MS_IN_MIN),
     isWatched: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
     isInWatchlist: getRandomBoolean(),

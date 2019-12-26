@@ -2,6 +2,7 @@
 
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {unrender} from '../utils/render.js';
+import moment from 'moment';
 
 /** Класс для создания компонента попапа
  * принимает на вход объект с данными
@@ -16,8 +17,8 @@ export default class Popup extends AbstractSmartComponent {
       Director: this._filmData.director,
       Writers: this._filmData.writers,
       Actors: this._filmData.actors,
-      [`Release Date`]: this._filmData.releaseDate.toDateString(),
-      Runtime: this._filmData.runTime,
+      [`Release Date`]: moment(this._filmData.releaseDate).format(`DD MMMM YYYY`),
+      Runtime: `${moment.utc(this._filmData.runTime).format(`H`)}h ${moment.utc(this._filmData.runTime).format(`mm`)}m`,
       Country: this._filmData.country,
       Genres: this._filmData.genres,
     };
