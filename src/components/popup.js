@@ -49,7 +49,7 @@ export default class Popup extends AbstractSmartComponent {
     this._addToWatchlist = this.getElement().querySelector(`#watchlist`);
     this._markAsWatched = this.getElement().querySelector(`#watched`);
     this._markAsFavorite = this.getElement().querySelector(`#favorite`);
-    this._isSetUserRating = false;
+    this._needUserRating = false;
     this._isEmojiAdding = false;
     this._subscribeOnEvents();
   }
@@ -159,7 +159,7 @@ export default class Popup extends AbstractSmartComponent {
           ${this._getDetailsControlsMarkup()}
         </section>
       </div>
-      ${!this._isSetUserRating ? `` : this._getYourRatingTemplate()}
+      ${!this._needUserRating ? `` : this._getYourRatingTemplate()}
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._filmData.comments.length}</span></h3>
@@ -274,19 +274,19 @@ export default class Popup extends AbstractSmartComponent {
       this._filmData.isWatched = !this._filmData.isWatched;
       this._controlsMap.watched.value = this._filmData.isWatched;
       if (this._filmData.isWatched) {
-        this._isSetUserRating = true;
+        this._needUserRating = true;
       } else {
-        this._isSetUserRating = false;
+        this._needUserRating = false;
         this._yourRating = ``;
       }
       this.rerender();
     });
 
-    if (this._isSetUserRating) {
+    if (this._needUserRating) {
       element.querySelector(`.film-details__user-rating-score`)
       .addEventListener(`change`, (evt) => {
         this._yourRating = evt.target.value;
-        this._isSetUserRating = false;
+        this._needUserRating = false;
         this.rerender();
       });
     }
