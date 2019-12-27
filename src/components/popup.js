@@ -18,7 +18,7 @@ export default class Popup extends AbstractSmartComponent {
       Writers: this._filmData.writers,
       Actors: this._filmData.actors,
       [`Release Date`]: moment(this._filmData.releaseDate).format(`DD MMMM YYYY`),
-      Runtime: `${moment.utc(this._filmData.runTime).format(`H`)}h ${moment.utc(this._filmData.runTime).format(`mm`)}m`,
+      Runtime: moment.utc(this._filmData.runTime).format(`h[h] mm[m]`),
       Country: this._filmData.country,
       Genres: this._filmData.genres,
     };

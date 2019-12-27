@@ -27,7 +27,7 @@ export default class FilmCard extends AbstractComponent {
       <p class="film-card__rating">${this._filmData.rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${moment(this._filmData.releaseDate).format(`YYYY`)}</span>
-        <span class="film-card__duration">${moment.utc(this._filmData.runTime).format(`H`)}h ${moment.utc(this._filmData.runTime).format(`mm`)}m</span>
+        <span class="film-card__duration">${moment.utc(this._filmData.runTime).format(`h[h] mm[m]`)}</span>
         <span class="film-card__genre">${getRandomElement(this._filmData.genres)}</span>
       </p>
       <img src="./images/posters/${this._filmData.poster}" alt="" class="film-card__poster">
