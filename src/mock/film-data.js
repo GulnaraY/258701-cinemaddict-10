@@ -158,7 +158,7 @@ export const getDetailInfo = () => {
     genres: getRandomPart(genres, GENRE_MIN_QUANTITY, GENRE_MAX_QUANTITY).split(` `),
     age: getRandomElement(ages),
     rating: getRandomFloatNumber(MAX_RATING),
-    yourRating: getRandomFloatNumber(MAX_RATING),
+    yourRating: ``,
     country: getRandomElement(countries),
     releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)),
     runTime: new Date(duration * MS_IN_MIN),

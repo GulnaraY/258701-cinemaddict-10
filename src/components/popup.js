@@ -40,6 +40,8 @@ export default class Popup extends AbstractSmartComponent {
       }
     };
 
+    this._ratingValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
     this._emojiMap = {
       SMILE: `smile.png`,
       SLEEPING: `sleeping.png`,
@@ -50,7 +52,8 @@ export default class Popup extends AbstractSmartComponent {
     this._addToWatchlistElement = _element.querySelector(`#watchlist`);
     this._markAsWatchedElement = _element.querySelector(`#watched`);
     this._markAsFavoriteElement = _element.querySelector(`#favorite`);
-    this._needUserRating = false;
+    // this._needUserRating = this._getNeedRatingAnswer();
+
     this._isEmojiAdding = false;
     this._subscribeOnEvents();
   }
@@ -76,6 +79,13 @@ export default class Popup extends AbstractSmartComponent {
           </li>`).join(``);
   }
 
+  _getNeedRatingAnswer() {
+
+    if (this._filmData.isWatched && !this._yourRating) {
+      return true;
+    }
+    return false;
+  }
   /**
    * Возвращает разметку пользовательских контроллов
    * @return {String}
@@ -119,6 +129,34 @@ export default class Popup extends AbstractSmartComponent {
   </table>`;
   }
 
+  _getYourRatingTemplate() {
+    return `<div class="form-details__middle-container">
+    <section class="film-details__user-rating-wrap">
+      <div class="film-details__user-rating-controls">
+        <button class="film-details__watched-reset" type="button">Undo</button>
+      </div>
+
+      <div class="film-details__user-score">
+        <div class="film-details__user-rating-poster">
+          <img src="./images/posters/${this._filmData.poster}" alt="film-poster" class="film-details__user-rating-img">
+        </div>
+
+        <section class="film-details__user-rating-inner">
+          <h3 class="film-details__user-rating-title">${this._filmData.title}</h3>
+
+          <p class="film-details__user-rating-feelings">How you feel it?</p>
+
+          <div class="film-details__user-rating-score">
+            ${this._ratingValues.map((value) => `
+              <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${value}" id="rating-${value}">
+              <label class="film-details__user-rating-label" for="rating-${value}">${value}</label>`).join(``)}
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>`;
+  }
+
   /** Возвращает разметку попапа
    * @private
    * @return {String}
@@ -160,7 +198,7 @@ export default class Popup extends AbstractSmartComponent {
           ${this._getDetailsControlsMarkup()}
         </section>
       </div>
-      ${!this._needUserRating ? `` : this._getYourRatingTemplate()}
+      ${this._getNeedRatingAnswer() ? this._getYourRatingTemplate() : ``}
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._filmData.comments.length}</span></h3>
@@ -205,58 +243,6 @@ export default class Popup extends AbstractSmartComponent {
     </section>`;
   }
 
-  _getYourRatingTemplate() {
-    return `<div class="form-details__middle-container">
-    <section class="film-details__user-rating-wrap">
-      <div class="film-details__user-rating-controls">
-        <button class="film-details__watched-reset" type="button">Undo</button>
-      </div>
-
-      <div class="film-details__user-score">
-        <div class="film-details__user-rating-poster">
-          <img src="./images/posters/${this._filmData.poster}" alt="film-poster" class="film-details__user-rating-img">
-        </div>
-
-        <section class="film-details__user-rating-inner">
-          <h3 class="film-details__user-rating-title">${this._filmData.title}</h3>
-
-          <p class="film-details__user-rating-feelings">How you feel it?</p>
-
-          <div class="film-details__user-rating-score">
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="1" id="rating-1">
-            <label class="film-details__user-rating-label" for="rating-1">1</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="2" id="rating-2">
-            <label class="film-details__user-rating-label" for="rating-2">2</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="3" id="rating-3">
-            <label class="film-details__user-rating-label" for="rating-3">3</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="4" id="rating-4">
-            <label class="film-details__user-rating-label" for="rating-4">4</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="5" id="rating-5">
-            <label class="film-details__user-rating-label" for="rating-5">5</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="6" id="rating-6">
-            <label class="film-details__user-rating-label" for="rating-6">6</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="7" id="rating-7">
-            <label class="film-details__user-rating-label" for="rating-7">7</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="8" id="rating-8">
-            <label class="film-details__user-rating-label" for="rating-8">8</label>
-
-            <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="9" id="rating-9" checked>
-            <label class="film-details__user-rating-label" for="rating-9">9</label>
-
-          </div>
-        </section>
-      </div>
-    </section>
-  </div>`;
-  }
-
   getTemplate() {
     return this._createPopup(this._details);
   }
@@ -274,20 +260,22 @@ export default class Popup extends AbstractSmartComponent {
     element.querySelector(`#watched`).addEventListener(`change`, () => {
       this._filmData.isWatched = !this._filmData.isWatched;
       this._controlsMap.watched.value = this._filmData.isWatched;
-      if (this._filmData.isWatched) {
-        this._needUserRating = true;
-      } else {
-        this._needUserRating = false;
-        this._yourRating = ``;
-      }
+      // if (this._filmData.isWatched) {
+      //   // this._needUserRating = true;
+      // } else {
+      //   // this._needUserRating = false;
+      //   this._yourRating = ``;
+      // }
+
+      // if (this._)
       this.rerender();
     });
 
-    if (this._needUserRating) {
+    if (this._getNeedRatingAnswer()) {
       element.querySelector(`.film-details__user-rating-score`)
       .addEventListener(`change`, (evt) => {
         this._yourRating = evt.target.value;
-        this._needUserRating = false;
+        // this._needUserRating = false;
         this.rerender();
       });
     }
