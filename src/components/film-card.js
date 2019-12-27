@@ -13,12 +13,14 @@ export default class FilmCard extends AbstractComponent {
   constructor(filmData) {
     super();
     this._filmData = filmData;
-    this._title = this.getElement().querySelector(`.film-card__title`);
-    this._poster = this.getElement().querySelector(`.film-card__poster`);
-    this._comments = this.getElement().querySelector(`.film-card__comments`);
-    this._addToWatchlist = this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`);
-    this._markAsWatched = this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`);
-    this._markAsFavorite = this.getElement().querySelector(`.film-card__controls-item--favorite`);
+    const _element = this.getElement();
+
+    this._title = _element.querySelector(`.film-card__title`);
+    this._poster = _element.querySelector(`.film-card__poster`);
+    this._comments = _element.querySelector(`.film-card__comments`);
+    this._addToWatchlist = _element.querySelector(`.film-card__controls-item--add-to-watchlist`);
+    this._markAsWatched = _element.querySelector(`.film-card__controls-item--mark-as-watched`);
+    this._markAsFavorite = _element.querySelector(`.film-card__controls-item--favorite`);
   }
 
   getTemplate() {
