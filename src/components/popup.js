@@ -283,7 +283,7 @@ export default class Popup extends AbstractSmartComponent {
     });
 
     if (this._isSetUserRating) {
-      this.getElement().querySelector(`.film-details__user-rating-score`)
+      element.querySelector(`.film-details__user-rating-score`)
       .addEventListener(`change`, (evt) => {
         this._yourRating = evt.target.value;
         this._isSetUserRating = false;
@@ -291,11 +291,11 @@ export default class Popup extends AbstractSmartComponent {
       });
     }
 
-    this.getElement().querySelector(`.film-details__emoji-list`)
+    element.querySelector(`.film-details__emoji-list`)
     .addEventListener(`change`, (evt) => {
       this._isEmojiAdding = true;
       this.rerender();
-      this.getElement().querySelector(`.film-details__add-emoji-label`).querySelector(`img`).src = `./images/emoji/${this._emojiMap[evt.target.id.toString().slice(6).toUpperCase()]}`;
+      element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`).src = `./images/emoji/${this._emojiMap[evt.target.id.toString().slice(6).toUpperCase()]}`;
     });
 
   }
