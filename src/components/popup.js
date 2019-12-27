@@ -46,9 +46,10 @@ export default class Popup extends AbstractSmartComponent {
       GPUKE: `puke.png`,
       ANGRY: `angry.png`,
     };
-    this._addToWatchlist = this.getElement().querySelector(`#watchlist`);
-    this._markAsWatched = this.getElement().querySelector(`#watched`);
-    this._markAsFavorite = this.getElement().querySelector(`#favorite`);
+    const _element = this.getElement();
+    this._addToWatchlistElement = _element.querySelector(`#watchlist`);
+    this._markAsWatchedElement = _element.querySelector(`#watched`);
+    this._markAsFavoriteElement = _element.querySelector(`#favorite`);
     this._needUserRating = false;
     this._isEmojiAdding = false;
     this._subscribeOnEvents();
@@ -314,14 +315,14 @@ export default class Popup extends AbstractSmartComponent {
   }
 
   setAddToWatchlistHandler(handler) {
-    this._addToWatchlist.addEventListener(`change`, handler);
+    this._addToWatchlistElement.addEventListener(`change`, handler);
   }
 
   setMarkAsWatchedHandler(handler) {
-    this._markAsWatched.addEventListener(`change`, handler);
+    this._markAsWatchedElement.addEventListener(`change`, handler);
   }
 
   setMarkAsFavoriteHandler(handler) {
-    this._markAsFavorite.addEventListener(`change`, handler);
+    this._markAsFavoriteElement.addEventListener(`change`, handler);
   }
 }
