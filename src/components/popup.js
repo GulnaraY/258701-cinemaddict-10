@@ -263,7 +263,7 @@ export default class Popup extends AbstractSmartComponent {
   recoveryListeners() {
     this._subscribeOnEvents();
     this.setCloseButtonClickHandler(() => {
-      unrender(this.getElement());
+      unrender(this);
     });
   }
 
