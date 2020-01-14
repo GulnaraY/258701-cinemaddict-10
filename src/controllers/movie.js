@@ -5,10 +5,16 @@ import {ESC_CODE} from '../utils/util.js';
 import FilmCardComponent from '../components/film-card';
 import PopupComponent from '../components/popup.js';
 
+const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`,
+};
+
 export default class MovieController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
     this._filmComponent = null;
     this._popupComponent = null;
   }
@@ -32,6 +38,10 @@ export default class MovieController {
     } else {
       render(this._container, this._filmComponent);
     }
+  }
+
+  setDefaultView() {
+
   }
 
   _setFilmComponentControlsHandlers(film) {

@@ -55,6 +55,7 @@ export default class Popup extends AbstractSmartComponent {
     // this._needUserRating = this._getNeedRatingAnswer();
 
     this._isEmojiAdding = false;
+    this._emojiCurrent = `#`;
     this._subscribeOnEvents();
   }
 
@@ -208,7 +209,7 @@ export default class Popup extends AbstractSmartComponent {
 
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label">
-                ${this._isEmojiAdding ? `<img src="images/emoji/smile.png" width="55" height="55" alt="emoji">` : ``}
+                ${this._isEmojiAdding ? `<img src=${this._emojiCurrent} width="55" height="55" alt="emoji">` : ``}
               </div>
 
               <label class="film-details__comment-label">
@@ -216,25 +217,11 @@ export default class Popup extends AbstractSmartComponent {
               </label>
 
               <div class="film-details__emoji-list">
-               <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="sleeping">
-                <label class="film-details__emoji-label" for="emoji-smile">
-                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-                </label>
+                ${Object.keys(this._emojiMap).map((emoji) => `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji.toLowerCase()}" value="${emoji.toLowerCase()}">
+                  <label class="film-details__emoji-label" for="emoji-${emoji.toLowerCase()}">
+                    <img src="./images/emoji/${this._emojiMap[emoji]}" width="30" height="30" alt="emoji">
+                  </label>`).join(``)}
 
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="neutral-face">
-                <label class="film-details__emoji-label" for="emoji-sleeping">
-                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-gpuke" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-gpuke">
-                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-angry">
-                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-                </label>
               </div>
             </div>
           </section>
@@ -283,8 +270,8 @@ export default class Popup extends AbstractSmartComponent {
     element.querySelector(`.film-details__emoji-list`)
     .addEventListener(`change`, (evt) => {
       this._isEmojiAdding = true;
+      this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.toString().slice(6).toUpperCase()]}`;
       this.rerender();
-      element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`).src = `./images/emoji/${this._emojiMap[evt.target.id.toString().slice(6).toUpperCase()]}`;
     });
 
   }
