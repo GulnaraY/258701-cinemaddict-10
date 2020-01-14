@@ -52,7 +52,6 @@ export default class Popup extends AbstractSmartComponent {
     this._addToWatchlistElement = _element.querySelector(`#watchlist`);
     this._markAsWatchedElement = _element.querySelector(`#watched`);
     this._markAsFavoriteElement = _element.querySelector(`#favorite`);
-    // this._needUserRating = this._getNeedRatingAnswer();
 
     this._isEmojiAdding = false;
     this._emojiCurrent = `#`;
@@ -243,37 +242,42 @@ export default class Popup extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
+    this._watchedHandler(element);
+    this._ratingHandler(element);
+    this._emojiHandler(element);
+  }
 
+  _watchedHandler(element) {
     element.querySelector(`#watched`).addEventListener(`change`, () => {
       this._filmData.isWatched = !this._filmData.isWatched;
       this._controlsMap.watched.value = this._filmData.isWatched;
-      // if (this._filmData.isWatched) {
-      //   // this._needUserRating = true;
-      // } else {
-      //   // this._needUserRating = false;
-      //   this._yourRating = ``;
-      // }
-
-      // if (this._)
+      this._isSetUserRating = this._filmData.isWatched;
       this.rerender();
     });
+  }
 
+  _ratingHandler(element) {
     if (this._getNeedRatingAnswer()) {
       element.querySelector(`.film-details__user-rating-score`)
       .addEventListener(`change`, (evt) => {
-        this._yourRating = evt.target.value;
-        // this._needUserRating = false;
+        this._changeUserRating(evt.target.value);
         this.rerender();
       });
     }
+  }
 
+  _emojiHandler(element) {
     element.querySelector(`.film-details__emoji-list`)
     .addEventListener(`change`, (evt) => {
       this._isEmojiAdding = true;
       this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.toString().slice(6).toUpperCase()]}`;
       this.rerender();
     });
+  }
 
+  _changeUserRating(value = ``) {
+    this._needUserRating = this._filmData.isWatched && !value;
+    this._yourRating = value;
   }
 
   rerender() {
