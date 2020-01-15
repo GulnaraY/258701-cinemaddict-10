@@ -275,15 +275,17 @@ export default class Popup extends AbstractSmartComponent {
     if (this._getNeedRatingAnswer()) {
       element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
         this._changeUserRating(evt.target.value);
+        this.rerender();
       });
     }
   }
 
   _emojiHandler(element) {
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
-      if (evt.target.tagName === `IMG`) {
+      if (evt.target.tagName === `INPUT`) {
         this._isEmojiAdding = true;
-        this._emojiCurrent = evt.target.src;
+        this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.slice(6).toUpperCase()]}`;
+        this.rerender();
       }
     });
   }
