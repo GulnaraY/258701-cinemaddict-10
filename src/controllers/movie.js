@@ -136,7 +136,7 @@ export default class MovieController {
     this._onViewChange();
     this._mode = Mode.DETAILS;
 
-    render(this._container.parentNode, this._popupComponent);
+    render(this._container.parentNode.parentNode.parentNode, this._popupComponent);
     document.addEventListener(`keydown`, this._onPopupEscPress);
   }
 
