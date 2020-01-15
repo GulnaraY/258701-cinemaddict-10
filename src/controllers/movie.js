@@ -1,6 +1,6 @@
 /** */
 
-import {render, unrender, replace} from '../utils/render.js';
+import {render, replace} from '../utils/render.js';
 import {ESC_CODE} from '../utils/util.js';
 import FilmCardComponent from '../components/film-card';
 import PopupComponent from '../components/popup.js';
@@ -17,6 +17,11 @@ export default class MovieController {
     this._onViewChange = onViewChange;
     this._filmComponent = null;
     this._popupComponent = null;
+    this._mode = Mode.DEFAULT;
+
+    this._openPopup = this._openPopup.bind(this);
+    this._onPopupEscPress = this._onPopupEscPress.bind(this);
+    this._onPopupClickCloseButton = this._onPopupClickCloseButton.bind(this);
   }
 
   render(film) {
@@ -26,24 +31,25 @@ export default class MovieController {
     this._filmComponent = new FilmCardComponent(film);
     this._popupComponent = new PopupComponent(film);
 
-    this._filmComponent.setOpenHandler(() => {
-      this._openPopup(this._popupComponent);
-    });
+    this._filmComponent.setOpenHandler(this._openPopup);
+    this._popupComponent.setCloseButtonClickHandler(this._onPopupClickCloseButton);
 
     this._setFilmComponentControlsHandlers(film);
     this._setPopupComponentControlsHandlers(film);
 
     if (oldFilmComponent && oldPopupComponent) {
       replace(this._filmComponent, oldFilmComponent);
+      replace(this._popupComponent, oldPopupComponent);
     } else {
       render(this._container, this._filmComponent);
     }
   }
 
-  setDefaultView() {
-
-  }
-
+  /**
+   * Подписка на события карточки
+   *
+   * @param {Any} film
+   */
   _setFilmComponentControlsHandlers(film) {
     this._filmComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
@@ -67,6 +73,11 @@ export default class MovieController {
     });
   }
 
+  /**
+   * Подписка на события попапа
+   *
+   * @param {Any} film
+   */
   _setPopupComponentControlsHandlers(film) {
     this._popupComponent.setAddToWatchlistHandler((evt) => {
       evt.preventDefault();
@@ -78,7 +89,7 @@ export default class MovieController {
     this._popupComponent.setMarkAsWatchedHandler((evt) => {
       evt.preventDefault();
       this._onDataChange(this, film, Object.assign({}, film, {
-        isWatched: film.isWatched,
+        isWatched: !film.isWatched,
       }));
     });
 
@@ -89,34 +100,52 @@ export default class MovieController {
       }));
     });
   }
+
   /**
-  * Логика открытия попапа
-  * @private
-  * @param {Class} filmPopup - инстанс класса Popup
-  */
-  _openPopup(filmPopup) {
-    const onPopupEscPress = (evt) => {
-      if (evt.keyCode === ESC_CODE) {
-        document.removeEventListener(`keydown`, onPopupEscPress);
-        unrender(filmPopup);
-      }
-    };
+   * Нажатие на крестик попапа
+   */
+  _onPopupClickCloseButton() {
+    this._hidePopup();
+  }
 
-    const addClosePopupListener = () => {
-      filmPopup.setCloseButtonClickHandler(() => {
-        document.removeEventListener(`keydown`, onPopupEscPress);
-        unrender(filmPopup);
-      });
-    };
+  /**
+   * Событие нажатия на Esc
+   *
+   * @param {Event} evt
+   */
+  _onPopupEscPress(evt) {
+    if (evt.keyCode === ESC_CODE) {
+      this._hidePopup();
+    }
+  }
 
-    filmPopup.setEscPressHandler((onPopupEscPress));
+  /**
+   * Закрыть попап
+   */
+  _hidePopup() {
+    this._popupComponent.getElement().remove();
+    this._mode = Mode.DEFAULT;
+    document.removeEventListener(`keydown`, this._onPopupEscPress);
+  }
 
-    filmPopup.setCloseButtonClickHandler(() => {
-      document.removeEventListener(`keydown`, onPopupEscPress);
-      unrender(filmPopup);
-    });
+  /**
+   * Открыть попап
+   */
+  _openPopup() {
+    // дергаем триггер, что открывем один попап – закрываем другой, если он открыт вдруг
+    this._onViewChange();
+    this._mode = Mode.DETAILS;
 
-    render(this._container.parentNode, filmPopup);
-    addClosePopupListener();
+    render(this._container.parentNode, this._popupComponent);
+    document.addEventListener(`keydown`, this._onPopupEscPress);
+  }
+
+  /**
+   * Закрываем попап, если он вдруг открыт
+   */
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._hidePopup();
+    }
   }
 }

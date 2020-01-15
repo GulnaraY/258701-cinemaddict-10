@@ -11,7 +11,6 @@ export default class Popup extends AbstractSmartComponent {
   constructor(filmData) {
     super();
     this._filmData = filmData;
-    this._isWatched = this._filmData.isWatched;
     this._yourRating = this._filmData.yourRating;
     this._detailsMap = {
       Director: this._filmData.director,
@@ -64,28 +63,27 @@ export default class Popup extends AbstractSmartComponent {
    * @private
    */
   _getCommentsMarkup() {
-    return this._filmData.comments.map((comment) => `<li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
-            </span>
-            <div>
-              <p class="film-details__comment-text">${comment.text}</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${comment.name}</span>
-                <span class="film-details__comment-day">${comment.date}</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>`).join(``);
+    return this._filmData.comments.map((comment) => `
+      <li class="film-details__comment">
+        <span class="film-details__comment-emoji">
+          <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
+        </span>
+        <div>
+          <p class="film-details__comment-text">${comment.text}</p>
+          <p class="film-details__comment-info">
+            <span class="film-details__comment-author">${comment.name}</span>
+            <span class="film-details__comment-day">${comment.date}</span>
+            <button class="film-details__comment-delete">Delete</button>
+          </p>
+        </div>
+      </li>
+    `).join(``);
   }
 
   _getNeedRatingAnswer() {
-
-    if (this._filmData.isWatched && !this._yourRating) {
-      return true;
-    }
-    return false;
+    return this._filmData.isWatched && !this._yourRating;
   }
+
   /**
    * Возвращает разметку пользовательских контроллов
    * @return {String}
@@ -105,14 +103,13 @@ export default class Popup extends AbstractSmartComponent {
    * @private
    */
   _getDetailDataTemplate(data) {
-    if (!(data instanceof Array)) {
+    if (!Array.isArray(data)) {
       return `<td class="film-details__cell">${data}</td>`;
-    } else {
-      return `<td class="film-details__cell">
-      ${data.map((genre) => `
-      <span class="film-details__genre">${genre}</span>`).join(``)}
-      </td>`;
     }
+
+    return `<td class="film-details__cell">
+      ${data.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(``)}
+    </td>`;
   }
 
   /**
@@ -121,12 +118,24 @@ export default class Popup extends AbstractSmartComponent {
    * @return {String}
    */
   _getDetailsTable() {
+    const content = Object.keys(this._detailsMap).map((detail) => (
+      `<tr class="film-details__row">
+        ${this._getDetailTermTemplate(detail)}
+        ${this._getDetailDataTemplate(this._detailsMap[detail])}
+      </tr>`
+    )).join(``);
+
     return `<table class="film-details__table">
-    ${Object.keys(this._detailsMap).map((detail) => (`<tr class="film-details__row">
-      <td class="film-details__term">${detail}</td>
-      ${this._getDetailDataTemplate(this._detailsMap[detail])}
-    </tr>`)).join(``)}
-  </table>`;
+      ${content}
+    </table>`;
+  }
+
+  _getDetailTermTemplate(detail) {
+    if (detail.toLowerCase() === `genres` && Array.from(this._detailsMap[detail]).length === 1) {
+      return `<td class="film-details__term">Genre</td>`;
+    }
+
+    return `<td class="film-details__term">${detail}</td>`;
   }
 
   _getYourRatingTemplate() {
@@ -233,45 +242,49 @@ export default class Popup extends AbstractSmartComponent {
     return this._createPopup(this._details);
   }
 
-  recoveryListeners() {
-    this._subscribeOnEvents();
-    this.setCloseButtonClickHandler(() => {
-      unrender(this);
-    });
-  }
-
   _subscribeOnEvents() {
     const element = this.getElement();
-    this._watchedHandler(element);
+
     this._ratingHandler(element);
     this._emojiHandler(element);
   }
 
-  _watchedHandler(element) {
-    element.querySelector(`#watched`).addEventListener(`change`, () => {
-      this._filmData.isWatched = !this._filmData.isWatched;
-      this._controlsMap.watched.value = this._filmData.isWatched;
-      this._isSetUserRating = this._filmData.isWatched;
-      this.rerender();
+  setMarkAsWatchedHandler(handler) {
+    this.getElement().querySelector(`#watched`).addEventListener(`change`, (evt) => {
+      handler(evt);
+      this._controlsMap.watched.value = !this._controlsMap.watched.value;
+      this._isSetUserRating = this._controlsMap.watched.value;
+    });
+  }
+
+  setAddToWatchlistHandler(handler) {
+    this.getElement().querySelector(`#watchlist`).addEventListener(`click`, (evt) => {
+      handler(evt);
+      this._controlsMap.watchlist.value = !this._controlsMap.watchlist.value;
+    });
+  }
+
+  setMarkAsFavoriteHandler(handler) {
+    this.getElement().querySelector(`#favorite`).addEventListener(`click`, (evt) => {
+      handler(evt);
+      this._controlsMap.favorite.value = !this._controlsMap.favorite.value;
     });
   }
 
   _ratingHandler(element) {
     if (this._getNeedRatingAnswer()) {
-      element.querySelector(`.film-details__user-rating-score`)
-      .addEventListener(`change`, (evt) => {
+      element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
         this._changeUserRating(evt.target.value);
-        this.rerender();
       });
     }
   }
 
   _emojiHandler(element) {
-    element.querySelector(`.film-details__emoji-list`)
-    .addEventListener(`change`, (evt) => {
-      this._isEmojiAdding = true;
-      this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.toString().slice(6).toUpperCase()]}`;
-      this.rerender();
+    element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
+      if (evt.target.tagName === `IMG`) {
+        this._isEmojiAdding = true;
+        this._emojiCurrent = evt.target.src;
+      }
     });
   }
 
@@ -280,28 +293,15 @@ export default class Popup extends AbstractSmartComponent {
     this._yourRating = value;
   }
 
-  rerender() {
-    super.rerender();
-  }
-
   setCloseButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
-    .addEventListener(`click`, handler);
+      .addEventListener(`click`, handler);
   }
 
-  setEscPressHandler(handler) {
-    document.addEventListener(`keydown`, handler);
-  }
-
-  setAddToWatchlistHandler(handler) {
-    this._addToWatchlistElement.addEventListener(`change`, handler);
-  }
-
-  setMarkAsWatchedHandler(handler) {
-    this._markAsWatchedElement.addEventListener(`change`, handler);
-  }
-
-  setMarkAsFavoriteHandler(handler) {
-    this._markAsFavoriteElement.addEventListener(`change`, handler);
+  recoveryListeners() {
+    this._subscribeOnEvents();
+    this.setCloseButtonClickHandler(() => {
+      unrender(this);
+    });
   }
 }
