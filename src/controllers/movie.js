@@ -29,13 +29,13 @@ export default class MovieController {
     const oldPopupComponent = this._popupComponent;
 
     this._filmComponent = new FilmCardComponent(film);
-    this._popupComponent = new PopupComponent(film);
+    this._popupComponent = new PopupComponent(film, this._onDataChange, this);
 
     this._filmComponent.setOpenHandler(this._openPopup);
     this._popupComponent.setCloseButtonClickHandler(this._onPopupClickCloseButton);
 
     this._setFilmComponentControlsHandlers(film);
-    this._setPopupComponentControlsHandlers(film);
+    // this._setPopupComponentControlsHandlers(film);
 
     if (oldFilmComponent && oldPopupComponent) {
       replace(this._filmComponent, oldFilmComponent);

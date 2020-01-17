@@ -8,9 +8,11 @@ import moment from 'moment';
  * принимает на вход объект с данными
  */
 export default class Popup extends AbstractSmartComponent {
-  constructor(filmData) {
+  constructor(filmData, onDataChange, movieController) {
     super();
     this._filmData = filmData;
+    this._onDataChange = onDataChange;
+    this._movieController = movieController;
     this._yourRating = this._filmData.yourRating;
     this._detailsMap = {
       Director: this._filmData.director,
@@ -245,8 +247,39 @@ export default class Popup extends AbstractSmartComponent {
   _subscribeOnEvents() {
     const element = this.getElement();
 
+    this._watchedHandler(element);
+    this._watchlistHandler(element);
+    this._favoriteHandler(element);
     this._ratingHandler(element);
     this._emojiHandler(element);
+  }
+
+  _watchedHandler(element) {
+    element.querySelector(`#watched`).addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+      this._onDataChange(this._movieController, this._filmData, Object.assign({}, this._filmData, {
+        isWatched: !this._filmData.isWatched,
+        yourRating: this._filmData.isWatched ? `` : this._filmData.yourRating,
+      }));
+    });
+  }
+
+  _watchlistHandler(element) {
+    element.querySelector(`#watchlist`).addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+      this._onDataChange(this._movieController, this._filmData, Object.assign({}, this._filmData, {
+        isInWatchlist: !this._filmData.isInWatchlist,
+      }));
+    });
+  }
+
+  _favoriteHandler(element) {
+    element.querySelector(`#favorite`).addEventListener(`change`, (evt) => {
+      evt.preventDefault();
+      this._onDataChange(this._movieController, this._filmData, Object.assign({}, this._filmData, {
+        isFavorite: !this._filmData.isFavorite,
+      }));
+    });
   }
 
   setMarkAsWatchedHandler(handler) {
