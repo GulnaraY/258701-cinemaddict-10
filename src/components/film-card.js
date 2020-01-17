@@ -3,6 +3,7 @@
 
 import {getRandomElement} from '../utils/util.js';
 import AbstractComponent from './abstract-component.js';
+import moment from 'moment';
 
 /**
  *  Класс для генерации компонента карточки филька
@@ -11,10 +12,9 @@ import AbstractComponent from './abstract-component.js';
 export default class FilmCard extends AbstractComponent {
   constructor(filmData) {
     super();
+
     this._filmData = filmData;
-    this._title = this.getElement().querySelector(`.film-card__title`);
-    this._poster = this.getElement().querySelector(`.film-card__poster`);
-    this._comments = this.getElement().querySelector(`.film-card__comments`);
+    this._element = this.getElement();
   }
 
   getTemplate() {
@@ -22,8 +22,8 @@ export default class FilmCard extends AbstractComponent {
       <h3 class="film-card__title">${this._filmData.title}</h3>
       <p class="film-card__rating">${this._filmData.rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${this._filmData.releaseDate.toDateString()}</span>
-        <span class="film-card__duration">${this._filmData.runTime}</span>
+        <span class="film-card__year">${moment(this._filmData.releaseDate).format(`YYYY`)}</span>
+        <span class="film-card__duration">${moment.utc(this._filmData.runTime).format(`h[h] mm[m]`)}</span>
         <span class="film-card__genre">${getRandomElement(this._filmData.genres)}</span>
       </p>
       <img src="./images/posters/${this._filmData.poster}" alt="" class="film-card__poster">
@@ -38,20 +38,44 @@ export default class FilmCard extends AbstractComponent {
   }
 
   setTitleClickHandler(handler) {
-    this._title.addEventListener(`click`, handler);
+    const title = this._element.querySelector(`.film-card__title`);
+
+    title.addEventListener(`click`, handler);
   }
 
   setPosterClickHandler(handler) {
-    this._poster.addEventListener(`click`, handler);
+    const poster = this._element.querySelector(`.film-card__poster`);
+
+    poster.addEventListener(`click`, handler);
   }
 
   setCommentsClickHandler(handler) {
-    this._comments.addEventListener(`click`, handler);
+    const comments = this._element.querySelector(`.film-card__comments`);
+
+    comments.addEventListener(`click`, handler);
   }
 
   setOpenHandler(handler) {
     this.setTitleClickHandler(handler);
     this.setPosterClickHandler(handler);
     this.setCommentsClickHandler(handler);
+  }
+
+  setAddToWatchlistHandler(handler) {
+    const addToWatchlist = this._element.querySelector(`.film-card__controls-item--add-to-watchlist`);
+
+    addToWatchlist.addEventListener(`click`, handler);
+  }
+
+  setMarkAsWatchedHandler(handler) {
+    const markAsWatched = this._element.querySelector(`.film-card__controls-item--mark-as-watched`);
+
+    markAsWatched.addEventListener(`click`, handler);
+  }
+
+  setMarkAsFavoriteHandler(handler) {
+    const markAsFavorite = this._element.querySelector(`.film-card__controls-item--favorite`);
+
+    markAsFavorite.addEventListener(`click`, handler);
   }
 }

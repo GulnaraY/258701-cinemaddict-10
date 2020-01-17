@@ -8,12 +8,12 @@ import AbstractComponent from './abstract-component.js';
  * Класс для создания компонента основной навигаци
  */
 export default class Navigation extends AbstractComponent {
-
   constructor(filters) {
     super();
 
     this._filters = filters;
   }
+
   /** Формирует разметку блока с фильтрами
    * @param{Object} filter - значение фильтра и количество
    * @param{Boolean} isChecked
