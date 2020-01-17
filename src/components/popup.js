@@ -1,7 +1,6 @@
 /** Модуль для создания компонета класса для Попапа с детальной информацией */
 
 import AbstractSmartComponent from './abstract-smart-component.js';
-import {unrender} from '../utils/render.js';
 import moment from 'moment';
 
 /** Класс для создания компонента попапа
