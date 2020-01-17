@@ -56,6 +56,7 @@ export default class Popup extends AbstractSmartComponent {
 
     this._isEmojiAdding = false;
     this._emojiCurrent = `#`;
+    this._closeButtonHandler = null;
     this._subscribeOnEvents();
   }
 
@@ -338,6 +339,7 @@ export default class Popup extends AbstractSmartComponent {
    * @param {*} handler
    */
   setCloseButtonClickHandler(handler) {
+    this._closeButtonHandler = handler;
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
   }
@@ -347,8 +349,6 @@ export default class Popup extends AbstractSmartComponent {
    */
   recoveryListeners() {
     this._subscribeOnEvents();
-    this.setCloseButtonClickHandler(() => {
-      unrender(this);
-    });
+    this.setCloseButtonClickHandler(this._closeButtonHandler);
   }
 }
