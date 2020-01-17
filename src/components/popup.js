@@ -244,9 +244,12 @@ export default class Popup extends AbstractSmartComponent {
     return this._createPopup(this._details);
   }
 
+  /**
+   * Подписка на события
+   * @private
+   */
   _subscribeOnEvents() {
     const element = this.getElement();
-
     this._watchedHandler(element);
     this._watchlistHandler(element);
     this._favoriteHandler(element);
@@ -254,6 +257,10 @@ export default class Popup extends AbstractSmartComponent {
     this._emojiHandler(element);
   }
 
+  /**
+   * Подписка на нажатие watched
+   * @param {*} element
+   */
   _watchedHandler(element) {
     element.querySelector(`#watched`).addEventListener(`change`, (evt) => {
       evt.preventDefault();
@@ -264,6 +271,10 @@ export default class Popup extends AbstractSmartComponent {
     });
   }
 
+  /**
+   * Подписка на нажатие watchlist
+   * @param {*} element
+   */
   _watchlistHandler(element) {
     element.querySelector(`#watchlist`).addEventListener(`change`, (evt) => {
       evt.preventDefault();
@@ -273,6 +284,10 @@ export default class Popup extends AbstractSmartComponent {
     });
   }
 
+  /**
+   * Подписка на нажатие favorite
+   * @param {*} element
+   */
   _favoriteHandler(element) {
     element.querySelector(`#favorite`).addEventListener(`change`, (evt) => {
       evt.preventDefault();
@@ -282,6 +297,10 @@ export default class Popup extends AbstractSmartComponent {
     });
   }
 
+  /**
+   * Подписка на установку рейтинга
+   * @param {*} element
+   */
   _ratingHandler(element) {
     if (this._getNeedRatingAnswer()) {
       element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
@@ -291,6 +310,10 @@ export default class Popup extends AbstractSmartComponent {
     }
   }
 
+  /**
+   * Подписка на выбор эмоджи
+   * @param {*} element
+   */
   _emojiHandler(element) {
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
@@ -301,16 +324,27 @@ export default class Popup extends AbstractSmartComponent {
     });
   }
 
+  /**
+   * Установить значение рейтинга
+   * @param {*} value
+   */
   _changeUserRating(value = ``) {
     this._needUserRating = this._filmData.isWatched && !value;
     this._yourRating = value;
   }
 
+  /**
+   * Подписка на нажатие на крестик
+   * @param {*} handler
+   */
   setCloseButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
   }
 
+  /**
+   * Восстановка подписок после перерендера
+   */
   recoveryListeners() {
     this._subscribeOnEvents();
     this.setCloseButtonClickHandler(() => {
