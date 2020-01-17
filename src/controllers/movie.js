@@ -35,7 +35,6 @@ export default class MovieController {
     this._popupComponent.setCloseButtonClickHandler(this._onPopupClickCloseButton);
 
     this._setFilmComponentControlsHandlers(film);
-    // this._setPopupComponentControlsHandlers(film);
 
     if (oldFilmComponent && oldPopupComponent) {
       replace(this._filmComponent, oldFilmComponent);
@@ -66,34 +65,6 @@ export default class MovieController {
     });
 
     this._filmComponent.setMarkAsFavoriteHandler((evt) => {
-      evt.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {
-        isFavorite: !film.isFavorite,
-      }));
-    });
-  }
-
-  /**
-   * Подписка на события попапа
-   *
-   * @param {Any} film
-   */
-  _setPopupComponentControlsHandlers(film) {
-    this._popupComponent.setAddToWatchlistHandler((evt) => {
-      evt.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {
-        isInWatchlist: !film.isInWatchlist,
-      }));
-    });
-
-    this._popupComponent.setMarkAsWatchedHandler((evt) => {
-      evt.preventDefault();
-      this._onDataChange(this, film, Object.assign({}, film, {
-        isWatched: !film.isWatched,
-      }));
-    });
-
-    this._popupComponent.setMarkAsFavoriteHandler((evt) => {
       evt.preventDefault();
       this._onDataChange(this, film, Object.assign({}, film, {
         isFavorite: !film.isFavorite,

@@ -282,28 +282,6 @@ export default class Popup extends AbstractSmartComponent {
     });
   }
 
-  setMarkAsWatchedHandler(handler) {
-    this.getElement().querySelector(`#watched`).addEventListener(`change`, (evt) => {
-      handler(evt);
-      this._controlsMap.watched.value = !this._controlsMap.watched.value;
-      this._isSetUserRating = this._controlsMap.watched.value;
-    });
-  }
-
-  setAddToWatchlistHandler(handler) {
-    this.getElement().querySelector(`#watchlist`).addEventListener(`click`, (evt) => {
-      handler(evt);
-      this._controlsMap.watchlist.value = !this._controlsMap.watchlist.value;
-    });
-  }
-
-  setMarkAsFavoriteHandler(handler) {
-    this.getElement().querySelector(`#favorite`).addEventListener(`click`, (evt) => {
-      handler(evt);
-      this._controlsMap.favorite.value = !this._controlsMap.favorite.value;
-    });
-  }
-
   _ratingHandler(element) {
     if (this._getNeedRatingAnswer()) {
       element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
