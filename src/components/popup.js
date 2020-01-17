@@ -49,10 +49,6 @@ export default class Popup extends AbstractSmartComponent {
       GPUKE: `puke.png`,
       ANGRY: `angry.png`,
     };
-    const _element = this.getElement();
-    this._addToWatchlistElement = _element.querySelector(`#watchlist`);
-    this._markAsWatchedElement = _element.querySelector(`#watched`);
-    this._markAsFavoriteElement = _element.querySelector(`#favorite`);
 
     this._isEmojiAdding = false;
     this._emojiCurrent = `#`;
@@ -305,8 +301,9 @@ export default class Popup extends AbstractSmartComponent {
   _ratingHandler(element) {
     if (this._getNeedRatingAnswer()) {
       element.querySelector(`.film-details__user-rating-score`).addEventListener(`change`, (evt) => {
-        this._changeUserRating(evt.target.value);
-        this.rerender();
+        this._onDataChange(this._movieController, this._filmData, Object.assign({}, this._filmData, {
+          yourRating: evt.target.value,
+        }));
       });
     }
   }
@@ -323,15 +320,6 @@ export default class Popup extends AbstractSmartComponent {
         this.rerender();
       }
     });
-  }
-
-  /**
-   * Установить значение рейтинга
-   * @param {*} value
-   */
-  _changeUserRating(value = ``) {
-    this._needUserRating = this._filmData.isWatched && !value;
-    this._yourRating = value;
   }
 
   /**
