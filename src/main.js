@@ -21,7 +21,7 @@ render(siteMainElement, new NavigationCopmonent(generateFilters(films)));
 
 const totalAmount = films.length;
 
-new PageController(siteMainElement).render(films);
+new PageController(siteMainElement, moviesModel).render();
 render(siteMainElement, new FooterComponent());
 
 export {totalAmount};

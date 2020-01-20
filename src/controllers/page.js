@@ -15,10 +15,10 @@ const ADDITIONAL_BLOCK_QUANTITY = 2;
 
 /** Класс контроллера страницы */
 export default class PageController {
-  constructor(container) {
+  constructor(container, moviesModel) {
     this._container = container;
+    this._moviesModel = moviesModel;
 
-    this._films = [];
     this._moviesControllers = [];
     this._noFilmsComponent = new NoFilmsComponent();
     this._loadMoreButtonComponent = new ShowMoreButtonComponent();
@@ -37,10 +37,9 @@ export default class PageController {
    * @public
    * @param {Array} films - массив с данными для фильмов
    */
-  render(films) {
-    this._films = films;
-
-    if (!this._films.length) {
+  render() {
+    const movies = this._moviesModel.getMovies();
+    if (!movies.length) {
       render(this._container, this._noFilmsComponent);
 
       return;
@@ -48,23 +47,23 @@ export default class PageController {
 
     render(this._container, this._sortingComponent);
 
-    this._renderContent(films);
+    this._renderContent(movies);
     this._sortSubscribe();
   }
 
   _sortSubscribe() {
     this._sortingComponent.setSortTypeChangeHandler((sortType) => {
       let sortedFilms = [];
-
+      const movies = this._moviesModel.getMovies();
       switch (sortType) {
         case SortMap.DATE:
-          sortedFilms = getSortedItems(this._films, `releaseDate`);
+          sortedFilms = getSortedItems(movies, `releaseDate`);
           break;
         case SortMap.RATING:
-          sortedFilms = getSortedItems(this._films, `rating`);
+          sortedFilms = getSortedItems(movies, `rating`);
           break;
         case SortMap.DEFAULT:
-          sortedFilms = [...this._films];
+          sortedFilms = [...movies];
           break;
       }
 
@@ -107,7 +106,7 @@ export default class PageController {
    * @return {Boolean}
    */
   _isLoadMore() {
-    return this._visibledCards < this._films.length;
+    return this._visibledCards < this._moviesModel.getMovies().length;
   }
 
   /**
@@ -143,14 +142,14 @@ export default class PageController {
    */
   _renderFilmsExtra() {
     const addBlockRenderPlace = this._container.querySelectorAll(`.films-list--extra .films-list__container`);
-
+    const movies = this._moviesModel.getMovies();
     const renderData = [
       {
-        films: getSortedItems(this._films, `rating`).slice(0, ADDITIONAL_BLOCK_QUANTITY),
+        films: getSortedItems(movies, `rating`).slice(0, ADDITIONAL_BLOCK_QUANTITY),
         place: addBlockRenderPlace[0],
       },
       {
-        films: getSortedItems(this._films, `comments`).slice(0, ADDITIONAL_BLOCK_QUANTITY),
+        films: getSortedItems(movies, `comments`).slice(0, ADDITIONAL_BLOCK_QUANTITY),
         place: addBlockRenderPlace[1],
       }
     ];
@@ -183,15 +182,11 @@ export default class PageController {
    * @param {Array} newData
    */
   _onDataChange(movieController, oldData, newData) {
-    const index = this._films.findIndex((it) => it === oldData);
+    const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
-    if (index === -1) {
-      return;
+    if (isSuccess) {
+      movieController.render(newData);
     }
-
-    this._films.splice(index, 1, newData);
-
-    movieController.render(this._films[index]);
   }
 
   /**

@@ -11,7 +11,7 @@ export default class Movies {
    * Получить фильмы
    * @return {Array}
    */
-  getMoviesAll() {
+  getMovies() {
     return this._movies;
   }
 
