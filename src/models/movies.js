@@ -7,14 +7,26 @@ export default class Movies {
 
   }
 
+  /**
+   * Получить фильмы
+   * @return {Array}
+   */
   getMoviesAll() {
     return this._movies;
   }
 
+  /** Записать фильмы
+   * @param {Any} movies
+   */
   setMovies(movies) {
     this._movies = Array.from(movies);
   }
 
+  /** Обновление фильма
+   * @param {String} id
+   * @param {-} movie
+   * @return {boolean}
+   */
   updateMovie(id, movie) {
     const index = this._movies.findIndex((it) => it.id === id);
 
@@ -27,5 +39,4 @@ export default class Movies {
     return true;
   }
 
-  }
 }
