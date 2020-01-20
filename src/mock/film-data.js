@@ -149,6 +149,7 @@ const generateComment = () => ({
 export const getDetailInfo = () => {
   const duration = getRandomNumber(MAX_DURATION, MIN_DURATION);
   return {
+    id: String(new Date() + Math.random()),
     title: getRandomElement(titles),
     description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),
     poster: getRandomElement(posters),
