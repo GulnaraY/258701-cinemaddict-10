@@ -7,11 +7,27 @@ import AbstractComponent from './abstract-component.js';
 /**
  * Класс для создания компонента основной навигаци
  */
+
+const FILTER_ID_PREFIX = `#`;
+
+const getFilterNameById = (id) => {
+  return id.substring(FILTER_ID_PREFIX.length);
+};
+
 export default class Navigation extends AbstractComponent {
   constructor(filters) {
     super();
 
     this._filters = filters;
+    this._addStatsToNavigation();
+  }
+
+  _addStatsToNavigation() {
+    this._filters.push({
+      name: `Stats`,
+      count: ``,
+      checked: false,
+    });
   }
 
   /** Формирует разметку блока с фильтрами
@@ -37,5 +53,12 @@ export default class Navigation extends AbstractComponent {
     return (`<nav class="main-navigation">
         ${this._filters.map((filter, i) => this._createFilterMarkup(filter, i === 0, i === this._filters.length - 1)).join(``)}
       </nav>`);
+  }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      const filterName = getFilterNameById(evt.target.hash);
+      handler(filterName);
+    });
   }
 }

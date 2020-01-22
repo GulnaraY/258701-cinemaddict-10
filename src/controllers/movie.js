@@ -1,11 +1,11 @@
 /** */
 
-import {render, replace} from '../utils/render.js';
+import {render, replace, remove} from '../utils/render.js';
 import {ESC_CODE} from '../utils/util.js';
 import FilmCardComponent from '../components/film-card';
 import PopupComponent from '../components/popup.js';
 
-const Mode = {
+export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
 };
@@ -119,5 +119,11 @@ export default class MovieController {
     if (this._mode !== Mode.DEFAULT) {
       this._hidePopup();
     }
+  }
+
+  destroy() {
+    remove(this._filmComponent);
+    remove(this._popupComponent);
+    document.removeEventListener(`keydown`, this._onPopupEscPress);
   }
 }
