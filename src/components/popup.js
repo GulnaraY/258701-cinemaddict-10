@@ -251,6 +251,7 @@ export default class Popup extends AbstractSmartComponent {
     this._favoriteHandler(element);
     this._ratingHandler(element);
     this._emojiHandler(element);
+    this._commentsDeleteHandler(element);
   }
 
   /**
@@ -337,5 +338,22 @@ export default class Popup extends AbstractSmartComponent {
   recoveryListeners() {
     this._subscribeOnEvents();
     this.setCloseButtonClickHandler(this._closeButtonHandler);
+  }
+
+  _commentsDeleteHandler(element) {
+    const deleteButtons = element.querySelectorAll(`.film-details__comment-delete`);
+
+    if (deleteButtons) {
+      Array.from(deleteButtons).forEach((deleteButton) => {
+        deleteButton.addEventListener(`click`, (evt) => {
+          evt.preventDefault();
+          const parentNode = evt.target.parentNode.parentNode.parentNode.parentNode;
+          const currentCommentNode = evt.target.parentNode.parentNode.parentNode;
+          const index = Array.from(parentNode.children).findIndex((elem) => elem === currentCommentNode);
+          this._filmData.comments[index] = null;
+          this._onDataChange(this._movieController, this._filmData, null);
+        });
+      });
+    }
   }
 }

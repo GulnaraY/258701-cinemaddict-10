@@ -61,4 +61,15 @@ export default class Movies {
     this._dataChangeHandlers.push(handler);
   }
 
+  removeComment(data) {
+    const index = this._movies.findIndex((it) => it.id === data.id);
+    if (index === -1) {
+      return false;
+    }
+
+    const commentIndex = data.comments.findIndex((elem) => (elem === null));
+
+    this._movies[index].comments = [].concat(this._movies[index].comments.slice(0, commentIndex), this._movies[index].comments.slice(commentIndex + 1));
+    return this._movies[index];
+  }
 }

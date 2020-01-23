@@ -25,7 +25,6 @@ export default class PageController {
     this._filmsContainerComponent = new FilmsContainerComponent();
     this._sortingComponent = new SortingComponent();
     this._filmsListcontainer = null;
-    // флаг, которым говорит о том, отображается ли кнопка дозагрузки. можешь это в какой-то метод трансформировать7
     this._hasLoadButton = false;
 
     this._onDataChange = this._onDataChange.bind(this);
@@ -75,8 +74,6 @@ export default class PageController {
 
       this._filmsListContainer.innerHTML = ``;
 
-      // _renderFilmsList – теперь это метол, который отображает только переданные в него фильмы.
-      // а то у тебя была смесь и снаружи меняла список, еще и внутри он фильтровался
       this._renderFilmsList(sortedFilms.slice(0, this._visibledCards));
     });
   }
@@ -88,17 +85,13 @@ export default class PageController {
    * @private
     */
   _renderFilmsList(films) {
-    // рендерим то, что нам нужно
     films.forEach((film) => {
       this._renderFilm(film, this._filmsListContainer);
     });
 
-    // это проверки надо ли что-то делать с кнопкой дозагрузки
     if (!this._hasLoadButton && this._isLoadMore()) {
-      // кнопки нет, но она нужна
       this._renderLoadMoreButton();
     } else if (this._hasLoadButton && !this._isLoadMore()) {
-      // кнопка есть, но она не нужна
       this._hasLoadButton = false;
       remove(this._loadMoreButtonComponent);
     }
@@ -134,7 +127,6 @@ export default class PageController {
 
     this._filmsListContainer = this._container.querySelector(`.films-list__container`);
 
-    // отображаем только начальные карточки в первом отображении
     this._renderFilmsList(films.slice(0, this._visibledCards));
     this._renderFilmsExtra();
   }
@@ -184,11 +176,15 @@ export default class PageController {
    * @param {Array} newData
    */
   _onDataChange(movieController, oldData, newData) {
+    if (newData === null) {
+      newData = this._moviesModel.removeComment(oldData);
+    }
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
     if (isSuccess) {
       movieController.render(newData);
     }
+
   }
 
   /**
@@ -205,10 +201,8 @@ export default class PageController {
 
   _onFilterChange() {
     this._removeMovies();
-    // меняем фильтр – сбрасываем в дефолт количество видимых карточек – можно тожн в метод засунуть
     this._visibledCards = ONE_RENDER_QUANTITY;
     this._renderFilmsList(this._moviesModel.getMovies().slice(0, ONE_RENDER_QUANTITY));
-    // забыла про нижную часть с карточками
     this._renderFilmsExtra();
   }
 
@@ -220,7 +214,6 @@ export default class PageController {
 
     this._renderFilmsList(movies.slice(prevMoviesCount, this._visibledCards));
 
-    // если после нажатия на кнопку дозагрузки, она больше не нужна, то удаляем её
     if (!this._isLoadMore()) {
       this._hasLoadButton = false;
       remove(this._loadMoreButtonComponent);
