@@ -6,7 +6,7 @@ import ShowMoreButtonComponent from '../components/show-more-button.js';
 import FilmsContainerComponent from '../components/films-container.js';
 import NoFilmsComponent from '../components/no-films.js';
 import {getSortedItems} from '../filters.js';
-import {render, unrender, remove} from '../utils/render.js';
+import {render, remove} from '../utils/render.js';
 import SortingComponent, {SortMap} from '../components/sorting.js';
 import MovieController from './movie.js';
 
@@ -25,6 +25,8 @@ export default class PageController {
     this._filmsContainerComponent = new FilmsContainerComponent();
     this._sortingComponent = new SortingComponent();
     this._filmsListcontainer = null;
+    // флаг, которым говорит о том, отображается ли кнопка дозагрузки. можешь это в какой-то метод трансформировать7
+    this._hasLoadButton = false;
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -73,7 +75,9 @@ export default class PageController {
 
       this._filmsListContainer.innerHTML = ``;
 
-      this._renderFilmsList(sortedFilms);
+      // _renderFilmsList – теперь это метол, который отображает только переданные в него фильмы.
+      // а то у тебя была смесь и снаружи меняла список, еще и внутри он фильтровался
+      this._renderFilmsList(sortedFilms.slice(0, this._visibledCards));
     });
   }
 
@@ -84,26 +88,30 @@ export default class PageController {
    * @private
     */
   _renderFilmsList(films) {
-    const filmsToRender = films.slice(0, this._visibledCards);
-
-    filmsToRender.forEach((film) => {
+    // рендерим то, что нам нужно
+    films.forEach((film) => {
       this._renderFilm(film, this._filmsListContainer);
     });
-    this._renderLoadMoreButton();
+
+    // это проверки надо ли что-то делать с кнопкой дозагрузки
+    if (!this._hasLoadButton && this._isLoadMore()) {
+      // кнопки нет, но она нужна
+      this._renderLoadMoreButton();
+    } else if (this._hasLoadButton && !this._isLoadMore()) {
+      // кнопка есть, но она не нужна
+      this._hasLoadButton = false;
+      remove(this._loadMoreButtonComponent);
+    }
   }
 
+  /**
+   * Рендер кнопки дозагрузки и подписка на событие клика
+   */
   _renderLoadMoreButton() {
-    if (this._isLoadMore()) {
-      render(this._container.querySelector(`.films-list`), this._loadMoreButtonComponent);
+    this._hasLoadButton = true;
 
-      this._loadMoreButtonComponent.setClickHandler(() => {
-        this._renderNewCards();
+    render(this._container.querySelector(`.films-list`), this._loadMoreButtonComponent);
 
-        if (!this._isLoadMore()) {
-          unrender(this._loadMoreButtonComponent);
-        }
-      });
-    }
     this._loadMoreButtonComponent.setClickHandler(this._onLoadMoreButtonClick);
   }
 
@@ -118,22 +126,6 @@ export default class PageController {
   }
 
   /**
-   * Рендер новых карточек при дозагрузке
-   *
-   * @private
-   */
-  _renderNewCards() {
-    const nextStepOfVisible = this._visibledCards + ONE_RENDER_QUANTITY;
-    const movies = this._moviesModel.getMovies();
-
-    movies.slice(this._visibledCards, nextStepOfVisible).forEach((film) => {
-      this._renderFilm(film, this._filmsListContainer);
-    });
-
-    this._visibledCards = nextStepOfVisible;
-  }
-
-  /**
    * @private
    * @param {Array} films массив с данными о фильмах
    */
@@ -142,7 +134,8 @@ export default class PageController {
 
     this._filmsListContainer = this._container.querySelector(`.films-list__container`);
 
-    this._renderFilmsList(films);
+    // отображаем только начальные карточки в первом отображении
+    this._renderFilmsList(films.slice(0, this._visibledCards));
     this._renderFilmsExtra();
   }
 
@@ -212,8 +205,11 @@ export default class PageController {
 
   _onFilterChange() {
     this._removeMovies();
+    // меняем фильтр – сбрасываем в дефолт количество видимых карточек – можно тожн в метод засунуть
+    this._visibledCards = ONE_RENDER_QUANTITY;
     this._renderFilmsList(this._moviesModel.getMovies().slice(0, ONE_RENDER_QUANTITY));
-    // this._renderLoadMoreButton();
+    // забыла про нижную часть с карточками
+    this._renderFilmsExtra();
   }
 
   _onLoadMoreButtonClick() {
@@ -224,7 +220,9 @@ export default class PageController {
 
     this._renderFilmsList(movies.slice(prevMoviesCount, this._visibledCards));
 
-    if (this._visibledCards >= movies.length) {
+    // если после нажатия на кнопку дозагрузки, она больше не нужна, то удаляем её
+    if (!this._isLoadMore()) {
+      this._hasLoadButton = false;
       remove(this._loadMoreButtonComponent);
     }
   }
