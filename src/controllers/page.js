@@ -179,6 +179,11 @@ export default class PageController {
     if (newData === null) {
       newData = this._moviesModel.removeComment(oldData);
     }
+
+    if (oldData === null) {
+      oldData = newData;
+    }
+
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
 
     if (isSuccess) {

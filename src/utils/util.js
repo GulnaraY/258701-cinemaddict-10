@@ -3,6 +3,8 @@
  */
 
 export const ESC_CODE = 27;
+export const ENTER_CODE = 13;
+export const CTRL_CODE = 17;
 
 const getRandomNumber = (max, min = 0) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;

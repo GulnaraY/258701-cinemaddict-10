@@ -1,9 +1,7 @@
 /** Основной модуль. Точка входа */
 
-// import {generateFilters} from './mock/filter-data.js';
 import {render} from './utils/render.js';
 import FooterComponent from './components/footer.js';
-// import NavigationCopmonent from './components/navigation.js';
 import FilterController from './controllers/filter.js';
 import UserComponent from './components/user.js';
 import MoviesModel from './models/movies.js';
@@ -18,7 +16,6 @@ const moviesModel = new MoviesModel();
 moviesModel.setMovies(films);
 
 render(siteHeaderElement, new UserComponent());
-// render(siteMainElement, new NavigationCopmonent(generateFilters(films)));
 const filterController = new FilterController(siteMainElement, moviesModel);
 filterController.render();
 

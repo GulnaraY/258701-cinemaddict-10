@@ -1,6 +1,8 @@
 /** Модуль для создания компонета класса для Попапа с детальной информацией */
 
 import AbstractSmartComponent from './abstract-smart-component.js';
+import {ENTER_CODE, getRandomElement} from '../utils/util.js';
+import {userNames} from '../mock/film-data.js';
 import moment from 'moment';
 
 /** Класс для создания компонента попапа
@@ -45,13 +47,16 @@ export default class Popup extends AbstractSmartComponent {
     this._emojiMap = {
       SMILE: `smile.png`,
       SLEEPING: `sleeping.png`,
-      GPUKE: `puke.png`,
+      PUKE: `puke.png`,
       ANGRY: `angry.png`,
     };
 
     this._isEmojiAdding = false;
     this._emojiCurrent = `#`;
+    this._emoji = ``;
     this._closeButtonHandler = null;
+    this._isTextAdding = false;
+    this._commentText = ``;
     this._subscribeOnEvents();
   }
 
@@ -219,7 +224,7 @@ export default class Popup extends AbstractSmartComponent {
               </div>
 
               <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._isTextAdding ? this._commentText : ``}</textarea>
               </label>
 
               <div class="film-details__emoji-list">
@@ -252,6 +257,8 @@ export default class Popup extends AbstractSmartComponent {
     this._ratingHandler(element);
     this._emojiHandler(element);
     this._commentsDeleteHandler(element);
+    this._commentsTextHandler(element);
+    this._commentsAddingHandler();
   }
 
   /**
@@ -316,6 +323,7 @@ export default class Popup extends AbstractSmartComponent {
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
         this._isEmojiAdding = true;
+        this._emoji = evt.target.id;
         this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.slice(6).toUpperCase()]}`;
         this.rerender();
       }
@@ -355,5 +363,31 @@ export default class Popup extends AbstractSmartComponent {
         });
       });
     }
+  }
+
+  _commentsAddingHandler() {
+    document.addEventListener(`keydown`, (evt) => {
+      if (this._isEmojiAdding && this._isTextAdding) {
+        if (evt.ctrlKey && evt.keyCode === ENTER_CODE) {
+          this._filmData.comments.unshift({
+            name: getRandomElement(userNames),
+            reaction: this._emoji.slice(6),
+            text: this._commentText,
+            date: moment(Date.now()).format(`DD MMMM YYYY`),
+          });
+          this._isEmojiAdding = false;
+          this._isTextAdding = false;
+          this._onDataChange(this._movieController, null, this._filmData);
+        }
+      }
+    });
+  }
+
+  _commentsTextHandler(element) {
+    const textArea = element.querySelector(`.film-details__comment-input`);
+    textArea.addEventListener(`keydown`, () => {
+      this._isTextAdding = true;
+      this._commentText = textArea.value;
+    });
   }
 }
