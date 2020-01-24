@@ -1,6 +1,8 @@
 /** Модуль для создания компонета класса для Попапа с детальной информацией */
 
 import AbstractSmartComponent from './abstract-smart-component.js';
+import {ENTER_CODE, getRandomElement} from '../utils/util.js';
+import {userNames} from '../mock/film-data.js';
 import moment from 'moment';
 
 /** Класс для создания компонента попапа
@@ -45,13 +47,14 @@ export default class Popup extends AbstractSmartComponent {
     this._emojiMap = {
       SMILE: `smile.png`,
       SLEEPING: `sleeping.png`,
-      GPUKE: `puke.png`,
+      PUKE: `puke.png`,
       ANGRY: `angry.png`,
     };
 
-    this._isEmojiAdding = false;
     this._emojiCurrent = `#`;
     this._closeButtonHandler = null;
+    this._isEmojiAdding = false;
+    this._commentText = ``;
     this._subscribeOnEvents();
   }
 
@@ -71,7 +74,7 @@ export default class Popup extends AbstractSmartComponent {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.name}</span>
             <span class="film-details__comment-day">${comment.date}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button class="film-details__comment-delete" id="${comment.id}">Delete</button>
           </p>
         </div>
       </li>
@@ -215,11 +218,11 @@ export default class Popup extends AbstractSmartComponent {
 
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label">
-                ${this._isEmojiAdding ? `<img src=${this._emojiCurrent} width="55" height="55" alt="emoji">` : ``}
+                ${this._isEmojiAdding ? `<img src=${`./images/emoji/${this._emojiMap[this._emojiCurrent.toUpperCase()]}`} width="55" height="55" alt="emoji">` : ``}
               </div>
 
               <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._commentText}</textarea>
               </label>
 
               <div class="film-details__emoji-list">
@@ -251,6 +254,8 @@ export default class Popup extends AbstractSmartComponent {
     this._favoriteHandler(element);
     this._ratingHandler(element);
     this._emojiHandler(element);
+    this._commentsDeleteHandler(element);
+    this._commentsAddingHandler();
   }
 
   /**
@@ -315,7 +320,8 @@ export default class Popup extends AbstractSmartComponent {
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
         this._isEmojiAdding = true;
-        this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.slice(6).toUpperCase()]}`;
+        this._isCommentAdding();
+        this._emojiCurrent = evt.target.id.slice(6);
         this.rerender();
       }
     });
@@ -337,5 +343,63 @@ export default class Popup extends AbstractSmartComponent {
   recoveryListeners() {
     this._subscribeOnEvents();
     this.setCloseButtonClickHandler(this._closeButtonHandler);
+  }
+
+  /**
+   * Обработчик удаления комментария
+   * @param {Object} element
+   */
+  _commentsDeleteHandler(element) {
+    element.querySelector(`.film-details__comments-list`).addEventListener(`click`, (evt) => {
+      if (evt.target.className === `film-details__comment-delete`) {
+        evt.preventDefault();
+        this._filmData.comments[this._filmData.comments.findIndex((elem) => elem.id === evt.target.id)] = null;
+        this._onDataChange(this._movieController, this._filmData, null);
+      }
+    });
+  }
+
+  /**
+   * Добавлен ли текст комментария
+   * @return {Boolean}
+   */
+  _isCommentAdding() {
+    const inputText = document.querySelector(`.film-details__comment-input`);
+    if (inputText.value) {
+      this._commentText = inputText.value;
+      return true;
+    }
+
+    return false;
+  }
+
+  /** Проверка на выполнение условий добавления коммента
+   * @param {Object} evt
+   * @return {Boolean}
+   */
+  _commentAddingCheck(evt) {
+    if ((this._isEmojiAdding && this._isCommentAdding()) && (evt.ctrlKey && evt.keyCode === ENTER_CODE)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /** Обработчик добавления комментария */
+  _commentsAddingHandler() {
+    document.addEventListener(`keydown`, (evt) => {
+      if (this._commentAddingCheck(evt)) {
+        this._filmData.comments.unshift({
+          name: getRandomElement(userNames),
+          reaction: this._emojiCurrent,
+          text: this._commentText,
+          date: moment(Date.now()).format(`DD MMMM YYYY`),
+          id: String(Math.random()),
+        });
+        this._isEmojiAdding = false;
+        this._commentText = ``;
+        this._onDataChange(this._movieController, null, this._filmData);
+      }
+    });
   }
 }
