@@ -140,6 +140,7 @@ const generateComment = () => ({
   reaction: getRandomElement(reactions),
   text: getRandomElement(commentTexts),
   date: new Date(getRandomNumber(LATEST_COMMENTING_DATE, EARLIEST_COMMENTING_DATE)).toDateString(),
+  id: String(Math.random())
 });
 
 /**

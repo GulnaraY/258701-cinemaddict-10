@@ -51,11 +51,9 @@ export default class Popup extends AbstractSmartComponent {
       ANGRY: `angry.png`,
     };
 
-    this._isEmojiAdding = false;
     this._emojiCurrent = `#`;
-    this._emoji = ``;
     this._closeButtonHandler = null;
-    this._isTextAdding = false;
+    this._isEmojiAdding = false;
     this._commentText = ``;
     this._subscribeOnEvents();
   }
@@ -76,7 +74,7 @@ export default class Popup extends AbstractSmartComponent {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.name}</span>
             <span class="film-details__comment-day">${comment.date}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button class="film-details__comment-delete" id="${comment.id}">Delete</button>
           </p>
         </div>
       </li>
@@ -220,11 +218,11 @@ export default class Popup extends AbstractSmartComponent {
 
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label">
-                ${this._isEmojiAdding ? `<img src=${this._emojiCurrent} width="55" height="55" alt="emoji">` : ``}
+                ${this._isEmojiAdding ? `<img src=${`./images/emoji/${this._emojiMap[this._emojiCurrent.toUpperCase()]}`} width="55" height="55" alt="emoji">` : ``}
               </div>
 
               <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._isTextAdding ? this._commentText : ``}</textarea>
+                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${this._commentText}</textarea>
               </label>
 
               <div class="film-details__emoji-list">
@@ -257,7 +255,6 @@ export default class Popup extends AbstractSmartComponent {
     this._ratingHandler(element);
     this._emojiHandler(element);
     this._commentsDeleteHandler(element);
-    this._commentsTextHandler(element);
     this._commentsAddingHandler();
   }
 
@@ -323,8 +320,8 @@ export default class Popup extends AbstractSmartComponent {
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
         this._isEmojiAdding = true;
-        this._emoji = evt.target.id;
-        this._emojiCurrent = `./images/emoji/${this._emojiMap[evt.target.id.slice(6).toUpperCase()]}`;
+        this._isCommentAdding();
+        this._emojiCurrent = evt.target.id.slice(6);
         this.rerender();
       }
     });
@@ -348,46 +345,61 @@ export default class Popup extends AbstractSmartComponent {
     this.setCloseButtonClickHandler(this._closeButtonHandler);
   }
 
+  /**
+   * Обработчик удаления комментария
+   * @param {Object} element
+   */
   _commentsDeleteHandler(element) {
-    const deleteButtons = element.querySelectorAll(`.film-details__comment-delete`);
-
-    if (deleteButtons) {
-      Array.from(deleteButtons).forEach((deleteButton) => {
-        deleteButton.addEventListener(`click`, (evt) => {
-          evt.preventDefault();
-          const parentNode = evt.target.parentNode.parentNode.parentNode.parentNode;
-          const currentCommentNode = evt.target.parentNode.parentNode.parentNode;
-          const index = Array.from(parentNode.children).findIndex((elem) => elem === currentCommentNode);
-          this._filmData.comments[index] = null;
-          this._onDataChange(this._movieController, this._filmData, null);
-        });
-      });
-    }
-  }
-
-  _commentsAddingHandler() {
-    document.addEventListener(`keydown`, (evt) => {
-      if (this._isEmojiAdding && this._isTextAdding) {
-        if (evt.ctrlKey && evt.keyCode === ENTER_CODE) {
-          this._filmData.comments.unshift({
-            name: getRandomElement(userNames),
-            reaction: this._emoji.slice(6),
-            text: this._commentText,
-            date: moment(Date.now()).format(`DD MMMM YYYY`),
-          });
-          this._isEmojiAdding = false;
-          this._isTextAdding = false;
-          this._onDataChange(this._movieController, null, this._filmData);
-        }
+    element.querySelector(`.film-details__comments-list`).addEventListener(`click`, (evt) => {
+      if (evt.target.className === `film-details__comment-delete`) {
+        evt.preventDefault();
+        this._filmData.comments[this._filmData.comments.findIndex((elem) => elem.id === evt.target.id)] = null;
+        this._onDataChange(this._movieController, this._filmData, null);
       }
     });
   }
 
-  _commentsTextHandler(element) {
-    const textArea = element.querySelector(`.film-details__comment-input`);
-    textArea.addEventListener(`keydown`, () => {
-      this._isTextAdding = true;
-      this._commentText = textArea.value;
+  /**
+   * Добавлен ли текст комментария
+   * @return {Boolean}
+   */
+  _isCommentAdding() {
+    const inputText = document.querySelector(`.film-details__comment-input`);
+    if (inputText.value) {
+      this._commentText = inputText.value;
+      return true;
+    }
+
+    return false;
+  }
+
+  /** Проверка на выполнение условий добавления коммента
+   * @param {Object} evt
+   * @return {Boolean}
+   */
+  _commentAddingCheck(evt) {
+    if ((this._isEmojiAdding && this._isCommentAdding()) && (evt.ctrlKey && evt.keyCode === ENTER_CODE)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /** Обработчик добавления комментария */
+  _commentsAddingHandler() {
+    document.addEventListener(`keydown`, (evt) => {
+      if (this._commentAddingCheck(evt)) {
+        this._filmData.comments.unshift({
+          name: getRandomElement(userNames),
+          reaction: this._emojiCurrent,
+          text: this._commentText,
+          date: moment(Date.now()).format(`DD MMMM YYYY`),
+          id: String(Math.random()),
+        });
+        this._isEmojiAdding = false;
+        this._commentText = ``;
+        this._onDataChange(this._movieController, null, this._filmData);
+      }
     });
   }
 }
