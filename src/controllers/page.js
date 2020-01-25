@@ -56,6 +56,22 @@ export default class PageController {
     this._sortSubscribe();
   }
 
+  /**
+   * @public
+   * показать контроллер
+   */
+  show() {
+    this._container.show();
+  }
+
+  /**
+   * @public
+   * скрыть контроллер
+   */
+  hide() {
+    this._container.hide();
+  }
+
   _sortSubscribe() {
     this._sortingComponent.setSortTypeChangeHandler((sortType) => {
       let sortedFilms = [];
