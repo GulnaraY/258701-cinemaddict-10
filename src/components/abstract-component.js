@@ -4,6 +4,7 @@
 
 import {createElement} from '../utils/render.js';
 
+const HIDDEN_CLASS = `visually-hidden`;
 /**
  * Абстрактный класс, от которого наследуются компоненты
  */
@@ -44,4 +45,24 @@ export default class AbstractComponent {
   removeElement() {
     this._element = null;
   }
+  /**
+   * @public
+   * скрывает элемент
+   */
+  hide() {
+    if (this._element) {
+      this._element.classList.add(HIDDEN_CLASS);
+    }
+  }
+
+  /**
+   * @public
+   * показывает элемент
+   */
+  show() {
+    if (this._element) {
+      this._element.classList.remove(HIDDEN_CLASS);
+    }
+  }
+
 }
