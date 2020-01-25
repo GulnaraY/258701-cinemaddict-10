@@ -66,11 +66,12 @@ export default class FilterController {
   }
 
   setActiveItem(menuItem) {
-    const item = this.getElement().querySelector(`[href =${menuItem}]`);
+    const item = this._container.querySelector(`.main-navigation__item--active`);
 
     if (item) {
-      item.isChecked = true;
+      item.classList.remove(`main-navigation__item--active`);
     }
-  }
 
+    menuItem.classList.add(`main-navigation__item--active`);
+  }
 }

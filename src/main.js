@@ -37,6 +37,7 @@ filterController.setOnChange((menuItem) => {
     statisticComponent.hide();
     pageController.show();
   }
+  filterController.setActiveItem(menuItem);
 });
 render(siteMainElement, new FooterComponent());
 
