@@ -9,6 +9,7 @@ import {getSortedItems} from '../filters.js';
 import {render, remove} from '../utils/render.js';
 import SortingComponent, {SortMap} from '../components/sorting.js';
 import MovieController from './movie.js';
+import {HIDDEN_CLASS} from '../components/abstract-component.js';
 
 const ONE_RENDER_QUANTITY = 5;
 const ADDITIONAL_BLOCK_QUANTITY = 2;
@@ -61,7 +62,7 @@ export default class PageController {
    * показать контроллер
    */
   show() {
-    this._container.show();
+    this._container.querySelector(`.films`).classList.remove(HIDDEN_CLASS);
   }
 
   /**
@@ -69,7 +70,7 @@ export default class PageController {
    * скрыть контроллер
    */
   hide() {
-    this._container.hide();
+    this._container.querySelector(`.films`).classList.add(HIDDEN_CLASS);
   }
 
   _sortSubscribe() {

@@ -22,8 +22,22 @@ filterController.render();
 
 const totalAmount = films.length;
 
-new PageController(siteMainElement, moviesModel).render();
-render(siteMainElement, new StatisticComponent());
+const pageController = new PageController(siteMainElement, moviesModel);
+pageController.render();
+
+const statisticComponent = new StatisticComponent();
+render(siteMainElement, statisticComponent);
+statisticComponent.hide();
+
+filterController.setOnChange((menuItem) => {
+  if (menuItem.classList.contains(`main-navigation__item--additional`)) {
+    statisticComponent.show();
+    pageController.hide();
+  } else {
+    statisticComponent.hide();
+    pageController.show();
+  }
+});
 render(siteMainElement, new FooterComponent());
 
 export {totalAmount};

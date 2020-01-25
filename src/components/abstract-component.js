@@ -4,7 +4,7 @@
 
 import {createElement} from '../utils/render.js';
 
-const HIDDEN_CLASS = `visually-hidden`;
+export const HIDDEN_CLASS = `visually-hidden`;
 /**
  * Абстрактный класс, от которого наследуются компоненты
  */

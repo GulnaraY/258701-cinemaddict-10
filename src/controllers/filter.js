@@ -53,4 +53,24 @@ export default class FilterController {
     this.render();
   }
 
+  setOnChange(handler) {
+    this._container.addEventListener(`click`, (evt) => {
+      if (evt.target.tagName !== `A`) {
+        return;
+      }
+
+      const menuItem = evt.target;
+
+      handler(menuItem);
+    });
+  }
+
+  setActiveItem(menuItem) {
+    const item = this.getElement().querySelector(`[href =${menuItem}]`);
+
+    if (item) {
+      item.isChecked = true;
+    }
+  }
+
 }
