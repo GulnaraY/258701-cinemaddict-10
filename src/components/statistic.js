@@ -1,4 +1,5 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
+import moment from 'moment';
 
 const StatisticMap = {
   ALL_TIME: `All time`,
@@ -9,8 +10,9 @@ const StatisticMap = {
 };
 
 export default class Statistic extends AbstractSmartComponent {
-  constructor() {
+  constructor(watchedFilms) {
     super();
+    this._films = watchedFilms;
   }
 
   getTemplate() {
@@ -32,11 +34,11 @@ export default class Statistic extends AbstractSmartComponent {
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">22 <span class="statistic__item-description">movies</span></p>
+  <p class="statistic__item-text">${this._films.length}<span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+          <p class="statistic__item-text">${moment(this._getDuration()).format(`hh`)} <span class="statistic__item-description">h</span> ${moment(this._getDuration()).format(`mm`)} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
@@ -49,5 +51,9 @@ export default class Statistic extends AbstractSmartComponent {
       </div>
 
     </section>`;
+  }
+
+  _getDuration() {
+    return this._films.reduce((x, y) => (moment.utc(x.runTime) + moment.utc(y.runTime)));
   }
 }
