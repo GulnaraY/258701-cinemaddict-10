@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
 
 const StatisticMap = {
   ALL_TIME: `All time`,
@@ -8,7 +8,7 @@ const StatisticMap = {
   YEAR: `Year`,
 };
 
-export default class Statistic extends AbstractComponent {
+export default class Statistic extends AbstractSmartComponent {
   constructor() {
     super();
   }
