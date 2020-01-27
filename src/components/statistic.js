@@ -1,6 +1,10 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import moment from 'moment';
+import Chart from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+const chartColor = `#ffe800`;
+const labelsColor = `#fff`;
 const StatisticMap = {
   ALL_TIME: `All time`,
   TODAY: `Today`,
@@ -13,6 +17,8 @@ export default class Statistic extends AbstractSmartComponent {
   constructor(watchedFilms) {
     super();
     this._films = watchedFilms;
+    this._chart = null;
+    this._renderCharts();
   }
 
   getTemplate() {
@@ -55,5 +61,77 @@ export default class Statistic extends AbstractSmartComponent {
 
   _getDuration() {
     return this._films.reduce((x, y) => (moment.utc(x.runTime) + moment.utc(y.runTime)));
+  }
+
+  _renderCharts() {
+    const element = this.getElement();
+
+    const ctx = element.querySelector(`.statistic__chart`);
+
+    this._chart = this.renderChart(ctx);
+  }
+
+  _getFilmsQuantityByGenre(genre) {
+    return this._films.filter((film) => film.genres.find((elem) => elem === genre)).length;
+  }
+
+  renderChart(ctx) {
+    const genreSet = new Set();
+    this._films.map((films) => films.genres.forEach((genre) => genreSet.add(genre)));
+    const genres = Array.from(genreSet).sort((a, b) => this._getFilmsQuantityByGenre(b) - this._getFilmsQuantityByGenre(a));
+    return new Chart(ctx, {
+      plugins: [ChartDataLabels],
+      type: `horizontalBar`,
+      data: {
+        labels: genres,
+        datasets: [{
+          data: genres.map((genre) => this._getFilmsQuantityByGenre(genre)),
+          backgroundColor: chartColor,
+
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              display: false,
+            },
+          }],
+          yAxes: [{
+            ticks: {
+              fontColor: labelsColor,
+              fontSize: 20,
+              padding: 80,
+              align: `right`,
+            },
+          }],
+        },
+
+        legend: {
+          display: false,
+          labels: {
+            display: false,
+          }
+        },
+
+        ticks: {
+          display: false,
+        },
+
+        plugins: {
+          datalabels: {
+            color: labelsColor,
+            offset: `25`,
+            anchor: `start`,
+            align: `left`,
+            font: {
+              weight: `normal`,
+              size: `20`,
+            },
+          }
+        },
+      }
+    });
   }
 }
