@@ -2,6 +2,7 @@ import AbstractSmartComponent from './abstract-smart-component.js';
 import moment from 'moment';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {getUserRating} from '../mock/user-data.js';
 
 const chartColor = `#ffe800`;
 const labelsColor = `#fff`;
@@ -26,7 +27,7 @@ export default class Statistic extends AbstractSmartComponent {
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">Sci-Fighter</span>
+        <span class="statistic__rank-label">${getUserRating()}</span>
       </p>
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -48,7 +49,7 @@ export default class Statistic extends AbstractSmartComponent {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">Sci-Fi</p>
+          <p class="statistic__item-text">${this._getSortedGenres()[0]}</p>
         </li>
       </ul>
 
@@ -75,10 +76,14 @@ export default class Statistic extends AbstractSmartComponent {
     return this._films.filter((film) => film.genres.find((elem) => elem === genre)).length;
   }
 
-  renderChart(ctx) {
+  _getSortedGenres() {
     const genreSet = new Set();
     this._films.map((films) => films.genres.forEach((genre) => genreSet.add(genre)));
-    const genres = Array.from(genreSet).sort((a, b) => this._getFilmsQuantityByGenre(b) - this._getFilmsQuantityByGenre(a));
+    return Array.from(genreSet).sort((a, b) => this._getFilmsQuantityByGenre(b) - this._getFilmsQuantityByGenre(a));
+  }
+
+  renderChart(ctx) {
+    const genres = this._getSortedGenres();
     return new Chart(ctx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
