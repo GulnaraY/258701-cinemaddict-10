@@ -267,7 +267,7 @@ export default class Popup extends AbstractSmartComponent {
       evt.preventDefault();
       this._onDataChange(this._movieController, this._filmData, Object.assign({}, this._filmData, {
         isWatched: !this._filmData.isWatched,
-        watchedDate: !this._filmData.isWatched ? new Date(Date.now()) : null,
+        watchedDate: !this._filmData.isWatched ? Date.now() : null,
         yourRating: this._filmData.isWatched ? `` : this._filmData.yourRating,
       }));
     });

@@ -14,12 +14,21 @@ const StatisticMap = {
   YEAR: `Year`,
 };
 
+const RangeMap = {
+  'statistic-all-time': new Date(0),
+  'statistic-today': new Date(new Date().setHours(0, 0, 0)),
+  'statistic-week': new Date(new Date().setDate(new Date().getDate() - 7)),
+  'statistic-month': new Date(new Date().setMonth(new Date().getMonth() - 1)),
+  'statistic-year': new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+};
+
 export default class Statistic extends AbstractSmartComponent {
   constructor(watchedFilms) {
     super();
     this._films = watchedFilms;
     this._chart = null;
     this._renderCharts();
+    this.setStatisticPeriodHandler();
   }
 
   getTemplate() {
@@ -49,7 +58,7 @@ export default class Statistic extends AbstractSmartComponent {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">${this._getSortedGenres()[0]}</p>
+          <p class="statistic__item-text">${this._getSortedGenres(this._films)[0]}</p>
         </li>
       </ul>
 
@@ -65,26 +74,41 @@ export default class Statistic extends AbstractSmartComponent {
   }
 
   _renderCharts() {
-    const element = this.getElement();
 
-    const ctx = element.querySelector(`.statistic__chart`);
-
-    this._chart = this.renderChart(ctx);
+    this._chart = this.renderChart(this._films);
   }
 
-  _getFilmsQuantityByGenre(genre) {
-    return this._films.filter((film) => film.genres.find((elem) => elem === genre)).length;
+  _getFilmsQuantityByGenre(genre, filmsToQuantity) {
+    return filmsToQuantity.filter((film) => film.genres.find((elem) => elem === genre)).length;
   }
 
-  _getSortedGenres() {
+  _getSortedGenres(filmsToSort) {
     const genreSet = new Set();
-    this._films.map((films) => films.genres.forEach((genre) => genreSet.add(genre)));
+    filmsToSort.map((films) => films.genres.forEach((genre) => genreSet.add(genre)));
 
-    return Array.from(genreSet).sort((a, b) => this._getFilmsQuantityByGenre(b) - this._getFilmsQuantityByGenre(a));
+    return Array.from(genreSet).sort((a, b) => this._getFilmsQuantityByGenre(b, filmsToSort) - this._getFilmsQuantityByGenre(a, filmsToSort));
   }
 
-  renderChart(ctx) {
-    const genres = this._getSortedGenres();
+  setStatisticPeriodHandler() {
+    this.getElement().querySelector(`.statistic__filters`).addEventListener(`change`, (evt) => {
+      if (evt.target.tagName === `INPUT`) {
+        const filmsByPeriod = this._getFilmsByPeriod(evt.target.id);
+        this.renderChart(filmsByPeriod);
+      }
+    });
+
+  }
+
+  _getFilmsByPeriod(id) {
+    return this._films.filter((film) => {
+      return film.watchedDate >= RangeMap[id].getTime();
+    });
+  }
+
+  renderChart(filmsToChart) {
+    const element = this.getElement();
+    const ctx = element.querySelector(`.statistic__chart`);
+    const genres = this._getSortedGenres(filmsToChart);
 
     return new Chart(ctx, {
       plugins: [ChartDataLabels],
@@ -92,7 +116,7 @@ export default class Statistic extends AbstractSmartComponent {
       data: {
         labels: genres,
         datasets: [{
-          data: genres.map((genre) => this._getFilmsQuantityByGenre(genre)),
+          data: genres.map((genre) => this._getFilmsQuantityByGenre(genre, filmsToChart)),
           backgroundColor: chartColor,
 
         }]

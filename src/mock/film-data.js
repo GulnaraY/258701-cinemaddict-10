@@ -145,7 +145,7 @@ const generateComment = () => ({
 });
 
 const getWatchedDate = (film) => {
-  film.watchedDate = film.isWatched ? `${new Date(getRandomNumber(Date.now(), Date.now() - MS_IN_YEAR))}` : null;
+  film.watchedDate = film.isWatched ? `${getRandomNumber(Date.now(), Date.now() - MS_IN_YEAR)}` : null;
 };
 
 /**
