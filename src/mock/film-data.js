@@ -18,6 +18,7 @@ const LATEST_RELEASE = Date.now();
 const MIN_DURATION = 20;
 const MAX_DURATION = 180;
 const MS_IN_MIN = 60000;
+const MS_IN_YEAR = 525600 * MS_IN_MIN;
 const EARLIEST_COMMENTING_DATE = Date.parse(new Date(`2016-01-01`));
 const LATEST_COMMENTING_DATE = Date.now();
 const MAX_COMMENT_QUANTITTY = 5;
@@ -143,13 +144,18 @@ const generateComment = () => ({
   id: String(Math.random())
 });
 
+const getWatchedDate = (film) => {
+  film.watchedDate = film.isWatched ? `${new Date(getRandomNumber(Date.now(), Date.now() - MS_IN_YEAR))}` : null;
+};
+
 /**
 * Генерирует объект с детальной информацией о фильме
 * @return {Object} - моки с детальной инфой о фильме
 */
 export const getDetailInfo = () => {
   const duration = getRandomNumber(MAX_DURATION, MIN_DURATION);
-  return {
+
+  const film = {
     id: String(new Date() + Math.random()),
     title: getRandomElement(titles),
     description: getRandomPart(descriptionParts, DESCRIPTION_MIN, DESCRIPTION_MAX),
@@ -169,6 +175,10 @@ export const getDetailInfo = () => {
     isInWatchlist: getRandomBoolean(),
     comments: new Array(getRandomNumber(MAX_COMMENT_QUANTITTY)).fill(``).map(() => generateComment()),
   };
+
+  getWatchedDate(film);
+
+  return film;
 };
 
 /**
