@@ -206,7 +206,6 @@ export default class PageController {
     if (isSuccess) {
       movieController.render(newData);
     }
-
   }
 
   /**
