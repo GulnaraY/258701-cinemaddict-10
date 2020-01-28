@@ -57,8 +57,10 @@ export default class Navigation extends AbstractComponent {
 
   setFilterChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
-      const filterName = getFilterNameById(evt.target.hash);
-      handler(filterName);
+      if (evt.target.tagName === `A`) {
+        const filterName = getFilterNameById(evt.target.hash);
+        handler(filterName);
+      }
     });
   }
 }
