@@ -79,11 +79,13 @@ export default class Statistic extends AbstractSmartComponent {
   _getSortedGenres() {
     const genreSet = new Set();
     this._films.map((films) => films.genres.forEach((genre) => genreSet.add(genre)));
+
     return Array.from(genreSet).sort((a, b) => this._getFilmsQuantityByGenre(b) - this._getFilmsQuantityByGenre(a));
   }
 
   renderChart(ctx) {
     const genres = this._getSortedGenres();
+
     return new Chart(ctx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
