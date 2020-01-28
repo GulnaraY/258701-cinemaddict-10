@@ -35,7 +35,7 @@ export default class Statistic extends AbstractSmartComponent {
     super();
     this._moviesModel = moviesModel;
     this._chart = null;
-    this._currentFilter = StatisticRangeMap.YEAR;
+    this._currentFilter = StatisticRangeMap.ALL_TIME;
   }
 
   getTemplate() {
@@ -51,7 +51,7 @@ export default class Statistic extends AbstractSmartComponent {
         <p class="statistic__filters-description">Show stats:</p>
         ${Object.keys(StatisticMap).map((statName) => `<input type="radio" class="statistic__filters-input visually-hidden"
           name="statistic-filter" id="statistic-${statName.toLowerCase().replace(`_`, `-`)}"
-          value="${statName.toLowerCase().replace(`_`, `-`)}" checked>
+          value="${statName.toLowerCase().replace(`_`, `-`)}" ${this._currentFilter === `statistic-${statName.toLowerCase().replace(`_`, `-`)}` ? `checked` : `` }>
           <label for="statistic-${statName.toLowerCase().replace(`_`, `-`)}" class="statistic__filters-label">${StatisticMap[statName]}</label>`).join(``)}
       </form>
 
@@ -115,6 +115,7 @@ export default class Statistic extends AbstractSmartComponent {
       if (evt.target.tagName === `INPUT`) {
         const filmsByPeriod = this._getFilmsByPeriod(evt.target.id);
         this._currentFilter = evt.target.id;
+
         this.rerender();
         this._renderChart(filmsByPeriod);
       }
