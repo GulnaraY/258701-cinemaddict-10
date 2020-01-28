@@ -25,7 +25,7 @@ const totalAmount = films.length;
 const pageController = new PageController(siteMainElement, moviesModel);
 pageController.render();
 
-const statisticComponent = new StatisticComponent(films.filter((film) => film.isWatched));
+const statisticComponent = new StatisticComponent(moviesModel);
 render(siteMainElement, statisticComponent);
 statisticComponent.hide();
 

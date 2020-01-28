@@ -169,7 +169,7 @@ export const getDetailInfo = () => {
     yourRating: ``,
     country: getRandomElement(countries),
     releaseDate: new Date(getRandomNumber(LATEST_RELEASE, EARLIES_RELEASE)),
-    runTime: new Date(duration * MS_IN_MIN),
+    runTime: duration * MS_IN_MIN,
     isWatched: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
     isInWatchlist: getRandomBoolean(),

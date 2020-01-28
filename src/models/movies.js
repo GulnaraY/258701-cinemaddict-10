@@ -72,4 +72,8 @@ export default class Movies {
     this._movies[index].comments = [].concat(this._movies[index].comments.slice(0, commentIndex), this._movies[index].comments.slice(commentIndex + 1));
     return this._movies[index];
   }
+
+  getWatchedMovies() {
+    return getMoviesByFilter(this.getMoviesAll(), FilterType.HISTORY)
+  }
 }
