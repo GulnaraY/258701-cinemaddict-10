@@ -1,5 +1,5 @@
 /** Основной модуль. Точка входа */
-
+import API from './api.js';
 import {render} from './utils/render.js';
 import FooterComponent from './components/footer.js';
 import FilterController from './controllers/filter.js';
@@ -11,6 +11,9 @@ import StatisticComponent from './components/statistic.js';
 
 const AUTHORIZATION = `Basic WrR0fUVoaETOiMDnFU6W`;
 const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
+
+const api = new API(END_POINT, AUTHORIZATION);
+
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
