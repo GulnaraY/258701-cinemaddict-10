@@ -9,6 +9,8 @@ import {generateDetailInfo} from './mock/film-data.js';
 import PageController from './controllers/page.js';
 import StatisticComponent from './components/statistic.js';
 
+const AUTHORIZATION = `Basic WrR0fUVoaETOiMDnFU6W`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
