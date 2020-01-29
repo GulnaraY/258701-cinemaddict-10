@@ -21,19 +21,21 @@ const API = class {
     this._authorization = authorization;
   }
 
-  getTasks() {
+  getMovies() {
+    return this._load({url: `movies`})
+    .then((response) => response.json())
+    .then(Movie.parseTasks);
+  }
+
+  createMovie(movie) {
 
   }
 
-  createTask(task) {
+  updateMovie(id, data) {
 
   }
 
-  updateTask(id, data) {
-
-  }
-
-  deleteTask(id) {
+  deleteMovie(id) {
 
   }
 
