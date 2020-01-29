@@ -19,6 +19,22 @@ const API = class {
     this._endPoint = endPoint;
     this._authorization = authorization;
   }
+
+  getTasks() {
+
+  }
+
+  createTask(task) {
+
+  }
+
+  updateTask(id, data) {
+
+  }
+
+  deleteTask(id) {
+    
+  }
 };
 
 export default API;
