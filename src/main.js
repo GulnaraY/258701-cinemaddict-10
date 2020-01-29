@@ -19,22 +19,20 @@ const siteMainElement = document.querySelector(`.main`);
 
 const films = generateDetailInfo();
 const moviesModel = new MoviesModel();
-moviesModel.setMovies(films);
+// moviesModel.setMovies(films);
 
-render(siteHeaderElement, new UserComponent());
+const pageController = new PageController(siteMainElement, moviesModel);
 const filterController = new FilterController(siteMainElement, moviesModel);
 filterController.render();
 
-const totalAmount = films.length;
-
-const pageController = new PageController(siteMainElement, moviesModel);
-
 api.getMovies()
   .then((movies) => {
-    // moviesModel.setMovies(movies);
-    // pageController.render();
+    moviesModel.setMovies(movies);
+    pageController.render();
     // console.log(movies);
   });
+
+const totalAmount = films.length;
 
 const statisticComponent = new StatisticComponent(moviesModel);
 render(siteMainElement, statisticComponent);
