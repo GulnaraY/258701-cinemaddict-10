@@ -28,7 +28,12 @@ filterController.render();
 const totalAmount = films.length;
 
 const pageController = new PageController(siteMainElement, moviesModel);
-pageController.render();
+
+api.getMovies()
+  .then((movies) => {
+    moviesModel.setMovies(movies);
+    pageController.render();
+  });
 
 const statisticComponent = new StatisticComponent(moviesModel);
 render(siteMainElement, statisticComponent);
