@@ -31,8 +31,9 @@ const pageController = new PageController(siteMainElement, moviesModel);
 
 api.getMovies()
   .then((movies) => {
-    moviesModel.setMovies(movies);
-    pageController.render();
+    // moviesModel.setMovies(movies);
+    // pageController.render();
+    // console.log(movies);
   });
 
 const statisticComponent = new StatisticComponent(moviesModel);
