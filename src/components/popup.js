@@ -3,6 +3,7 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {ENTER_CODE, getRandomElement} from '../utils/util.js';
 import {userNames} from '../mock/film-data.js';
+import {render, createElement} from '../utils/render.js';
 import moment from 'moment';
 
 /** Класс для создания компонента попапа
@@ -58,13 +59,9 @@ export default class Popup extends AbstractSmartComponent {
     this._subscribeOnEvents();
   }
 
-  /**
-   * Возвращает разметку блока с комментариями
-   * @return {String}
-   * @private
-   */
-  _getCommentsMarkup() {
-    return this._filmData.comments.map((comment) => `
+  renderComments(comments) {
+
+    return comments.map((comment) => `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
           <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
@@ -213,7 +210,7 @@ export default class Popup extends AbstractSmartComponent {
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._filmData.comments.length}</span></h3>
             <ul class="film-details__comments-list">
-              ${this._getCommentsMarkup()}
+
             </ul>
 
             <div class="film-details__new-comment">
@@ -402,5 +399,9 @@ export default class Popup extends AbstractSmartComponent {
         this._onDataChange(this._movieController, null, this._filmData);
       }
     });
+  }
+
+  getId() {
+    return this._filmData.id;
   }
 }

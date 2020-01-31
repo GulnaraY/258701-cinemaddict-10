@@ -4,6 +4,12 @@ import {render, replace, remove} from '../utils/render.js';
 import {ESC_CODE} from '../utils/util.js';
 import FilmCardComponent from '../components/film-card';
 import PopupComponent from '../components/popup.js';
+import API from '../api.js';
+
+const AUTHORIZATION = `Basic WrR0fUVoaETOiMDnFU6W`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
+
+const api = new API(END_POINT, AUTHORIZATION);
 
 export const Mode = {
   DEFAULT: `default`,
@@ -13,6 +19,7 @@ export const Mode = {
 export default class MovieController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
+    this._api = api;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._filmComponent = null;
@@ -108,8 +115,9 @@ export default class MovieController {
     // дергаем триггер, что открывем один попап – закрываем другой, если он открыт вдруг
     this._onViewChange();
     this._mode = Mode.DETAILS;
-
     render(this._container.parentNode.parentNode.parentNode, this._popupComponent);
+    this._renderComments();
+
     document.addEventListener(`keydown`, this._onPopupEscPress);
   }
 
@@ -126,5 +134,10 @@ export default class MovieController {
     remove(this._filmComponent);
     remove(this._popupComponent);
     document.removeEventListener(`keydown`, this._onPopupEscPress);
+  }
+
+  _renderComments() {
+    this._api.getComments(this._popupComponent.getId())
+      .then(this._popupComponent.renderComments);
   }
 }

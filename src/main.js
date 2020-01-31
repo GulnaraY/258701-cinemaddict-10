@@ -53,7 +53,7 @@ api.getMovies()
   .then((ids) => {
     return ids.map((filmId) => (api.getComments(filmId)));
   })
-  .then((data) => {
+  .then(() => {
     pageController.render();
     render(siteMainElement, new FooterComponent());
   });
