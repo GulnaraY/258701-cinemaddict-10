@@ -43,6 +43,7 @@ export default class Popup extends AbstractSmartComponent {
       }
     };
 
+    this.renderComments = this.renderComments.bind(this);
     this._ratingValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     this._emojiMap = {
@@ -60,22 +61,24 @@ export default class Popup extends AbstractSmartComponent {
   }
 
   renderComments(comments) {
-
-    return comments.map((comment) => `
+    const container = this.getElement().querySelector(`.film-details__comments-list`);
+    const element = createElement(comments.map((comment) => `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.reaction}.png" width="55" height="55" alt="emoji">
+          <img src="" width="55" height="55" alt="emoji">
         </span>
         <div>
-          <p class="film-details__comment-text">${comment.text}</p>
+          <p class="film-details__comment-text">${comment.comment}</p>
           <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.name}</span>
+            <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${comment.date}</span>
             <button class="film-details__comment-delete" id="${comment.id}">Delete</button>
           </p>
         </div>
       </li>
-    `).join(``);
+    `).join(``));
+
+    container.append(element);
   }
 
   _getNeedRatingAnswer() {
