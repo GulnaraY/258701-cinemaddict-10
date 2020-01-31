@@ -76,4 +76,8 @@ export default class Movies {
   getWatchedMovies() {
     return getMoviesByFilter(this.getMoviesAll(), FilterType.HISTORY);
   }
+
+  static parseComments(data) {
+    return data;
+  }
 }

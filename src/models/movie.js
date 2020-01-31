@@ -48,4 +48,5 @@ export default class Movie {
   static clone(data) {
     return new Movie(data.toRAW());
   }
+
 }

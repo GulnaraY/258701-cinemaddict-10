@@ -10,7 +10,7 @@ import PageController from './controllers/page.js';
 import StatisticComponent from './components/statistic.js';
 
 const AUTHORIZATION = `Basic WrR0fUVoaETOiMDnFU6W`;
-const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict/`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
 
 const api = new API(END_POINT, AUTHORIZATION);
 
@@ -22,15 +22,10 @@ const moviesModel = new MoviesModel();
 // moviesModel.setMovies(films);
 
 const pageController = new PageController(siteMainElement, moviesModel);
+
+render(siteHeaderElement, new UserComponent());
 const filterController = new FilterController(siteMainElement, moviesModel);
 filterController.render();
-
-api.getMovies()
-  .then((movies) => {
-    moviesModel.setMovies(movies);
-    pageController.render();
-    // console.log(movies);
-  });
 
 const totalAmount = films.length;
 
@@ -48,6 +43,19 @@ filterController.setOnChange((menuItem) => {
   }
   filterController.setActiveItem(menuItem);
 });
-render(siteMainElement, new FooterComponent());
+
+api.getMovies()
+  .then((movies) => {
+
+    moviesModel.setMovies(movies);
+    return movies.map((movie) => movie.id);
+  })
+  .then((ids) => {
+    return ids.map((filmId) => (api.getComments(filmId)));
+  })
+  .then((data) => {
+    pageController.render();
+    render(siteMainElement, new FooterComponent());
+  });
 
 export {totalAmount};
